@@ -1,5 +1,16 @@
 // TODO:
-// Multiple tabs
+// Never show one row - e.g. Zarino's Zero 7 is confusing
+// Let you click the ... to show more (Zarino)
+// Show total number of rows (Ian) e.g. in comparison to total.
+// Maybe show % (Zarino)
+// Bar charts better than pie chart (Ian)
+// JASL station list should show top 10 countries (David)
+// Say *something* about each column? (David)
+// Have better criteria for when to show/not show columns (Zarino)
+// Loading spinner
+// Tabs don't look like tabs
+// Anscombe quartet (Ian)
+//
 // Make pie charts of the group data http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
 // Detect type of columns: 
 //    integer
@@ -8,11 +19,13 @@
 //    option
 //    free text
 //    ids (e.g. 12d432a3-feb0-49b1-a107-d20751880764 in last.fm data) vs. human language text (can autodetect?)
-//    url
+//    url - pull out domain names
 //    image
-//    date/time
+//    date/time - show density map, or in JASL station list show just limited number
 //    lat/lng
+//    percentage - guess it is e.g. inventory.ci in JASL station list
 // Show most common elements - if more than x% of total
+// Look at the column names and guess if it is geographical or music
 
 var meta
 var table
