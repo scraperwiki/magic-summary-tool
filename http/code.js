@@ -73,7 +73,7 @@ var make_tab = function(cb) {
   if (table_ix == 1) {
     nav_cls = "active"
   }
-  $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><h1>' + table + '</h1><div class="simple_groups"></div></div>')
+  $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="simple_groups"></div></div>')
   tab = $("#" + tab_id)
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="pill">' + table + '</a> </li>')
   $(".nav a").on("shown", function (e) {
