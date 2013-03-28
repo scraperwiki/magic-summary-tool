@@ -28,9 +28,9 @@ $(function() {
     html += '<tr><th>' + col + '</th><th>count</th></tr>'
     var gotten = 0
     $.each(group, function(ix, value) {
-      // for long lists, only show items accounting for 2% of rows
+      // for long lists, only show items accounting for 5% of rows
       if (group.length > 10) {
-        if (value.c / total < 0.02) {
+        if (value.c / total < 0.05) {
           html += '<tr class="' + cls + '">'
           html += '<td>&hellip;</td>'
           html += '<td>&nbsp;</td>'
