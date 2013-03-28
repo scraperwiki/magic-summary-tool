@@ -4,3 +4,9 @@
   float: left;
   /* background-color: #eeeeee; */
 }
+div.tab {
+  display: none;
+}
+div.active {
+  display: block;
+}
