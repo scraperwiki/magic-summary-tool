@@ -7,11 +7,12 @@ $(function() {
     console.log("err", err)
   }
 
+  // for columns that have less than 10 values, show in a table
   var simple_groups = function(col, group) {
     if (group.length < 10) {
       var html = '<div class="item">'
-      html += '<h2>' + col + '</h2>'
-      html += '<table class="table table-striped"><tr><th>value</th><th>count</th></tr>'
+      html += '<table class="table table-striped">'
+      html += '<tr><th>' + col + '</th><th>count</th></tr>'
       $.each(group, function(ix, value) {
         html += '<tr>'
         html += '<td>' + value.val + '</td>'
