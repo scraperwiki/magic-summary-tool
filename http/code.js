@@ -1,6 +1,15 @@
 // TODO:
+// Multiple tabs
 // Make pie charts of the group data http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
-// Detect type of columns: integer, float, option, free text, url, date/time, lat/lng
+// Detect type of columns: 
+//    integer
+//    float 
+//    option
+//    free text
+//    url
+//    image
+//    date/time
+//    lat/lng
 // Show most common elements - if more than x% of total
 
 $(function() {
