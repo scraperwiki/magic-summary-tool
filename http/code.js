@@ -3,9 +3,11 @@
 // Make pie charts of the group data http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
 // Detect type of columns: 
 //    integer
+//    ids (e.g. twitter id long number) vs. integers that are quantities
 //    float 
 //    option
 //    free text
+//    ids (e.g. 12d432a3-feb0-49b1-a107-d20751880764 in last.fm data) vs. human language text (can autodetect?)
 //    url
 //    image
 //    date/time
