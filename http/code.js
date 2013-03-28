@@ -62,7 +62,11 @@ $(function() {
     // Get schema of SQL database
     getMeta: function(cb) {
       scraperwiki.sql.meta(function(lmeta) {
-        table = "tweets" // XXX todo dehardcode this
+        // XXX just pick first table for now
+        $.each(lmeta['table'], function (key, val) {
+          table = key
+          return false
+        })
         meta = lmeta['table'][table]
         console.log("meta", meta)
         cb()
