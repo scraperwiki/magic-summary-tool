@@ -1,31 +1,37 @@
 // TODO:
+// Loading spinner
+// Tabs don't look like tabs, change to just normal tabs
+// Change it to generate "fact" boxes with a score weighting and show the top ones / top one per column (scroll for more facts!)
+// 
 // Never show one row - e.g. Zarino's Zero 7 is confusing
 // Let you click the ... to show more (Zarino)
 // Show total number of rows (Ian) e.g. in comparison to total.
 // Maybe show % (Zarino)
-// Bar charts better than pie chart (Ian)
 // JASL station list should show top 10 countries (David)
-// Say *something* about each column? (David)
-// Have better criteria for when to show/not show columns (Zarino)
-// Loading spinner
-// Tabs don't look like tabs
-// Anscombe quartet (Ian)
 //
-// Make pie charts of the group data http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
+// Total number of rows as its own fact
+// Total size of database as its own fact
+// Pie charts of small group data http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
+// Histogram bar chart of data when larger groups, esp. ones with an order
 // Detect type of columns: 
-//    integer
-//    ids (e.g. twitter id long number) vs. integers that are quantities
+//    integer - give the range, show a mini histogram
+//    ids (e.g. twitter id long number) vs. integers that are quantities - cross reference between columns
 //    float 
 //    option
-//    free text
+//    free text - make a wordle
 //    ids (e.g. 12d432a3-feb0-49b1-a107-d20751880764 in last.fm data) vs. human language text (can autodetect?)
-//    url - pull out domain names
-//    image
+//    url - pull out domain names and show frequency of them, or if all same pull out path, all same pull out query etc.
+//    images - highlight the most common image, or do a little mosaic of random images
 //    date/time - show density map, or in JASL station list show just limited number
-//    lat/lng
+//    lat/lng - show a statically generated basic map of the area covered with some shading? country boundary maps?
 //    percentage - guess it is e.g. inventory.ci in JASL station list
-// Show most common elements - if more than x% of total
-// Look at the column names and guess if it is geographical or music
+//    country codes / names - detect them and show flags magically
+//    x/y coordinates, spot them and plot on a square
+// Unique columns - ones where every key is different, show that as a fact
+// Improve look of fact which shows every key is the same
+// Look at the table / column names and guess what kind of data it is, e.g. geogaphical, music
+// 
+// Anscombe quartet (Ian)
 
 var meta
 var table
