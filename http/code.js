@@ -1,4 +1,6 @@
 // TODO:
+// Write blog post about it
+//
 // Loading spinner
 // Tabs don't look like tabs, change to just normal tabs
 // Change it to generate "fact" boxes with a score weighting and show the top ones / top one per column (scroll for more facts!)
@@ -32,6 +34,7 @@
 // Look at the table / column names and guess what kind of data it is, e.g. geogaphical, music
 // 
 // Anscombe quartet (Ian)
+// Regression correlation between every pair of columns (what Zarino does on Stata)
 
 var meta
 var table
