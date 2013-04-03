@@ -3,8 +3,6 @@ Write blog post about it
 Show blank strings and null better in the tables
 
 Unique columns - ones where every key is different, show that as a fact
-Pie charts of small group data http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
-Histogram bar chart of data when larger groups, esp. ones with an order
 Detect type of columns: 
    integer - give the range, show a mini histogram
    ids (e.g. twitter id long number) vs. integers that are quantities - cross reference between columns
