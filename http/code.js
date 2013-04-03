@@ -51,6 +51,11 @@ var add_fact = function(col, html) {
   tab.find('.facts').append(html)
 }
 
+// Show total number of rows
+var fact_total_rows = function() {
+  add_fact(null, 'There are <b>' + total + '</b> rows')
+}
+
 // Fact - if every value in the columns is the same, say that clearly
 var fact_one_value = function(col, group) {
   if (group.length == 1) {
@@ -59,21 +64,29 @@ var fact_one_value = function(col, group) {
   }
 }
 
-// Fact - for columns that have less than 10 values, show in a table
+// Fact - for columns with few values, or with some very common values (>5% of
+// rows) show the grouped values in a table
 var fact_simple_groups = function(col, group) {
   var html = '<table class="table table-striped">'
   html += '<tr><th>' + col + '</th><th>count</th></tr>'
+
+  // if we have less than 10, we always show
+  if (group.length > 10) {
+    // otherwise, only show if the most common value is at least 5%
+    if (group[0].c / total < 0.05) {
+      return
+    }
+  }
+
   var gotten = 0
   $.each(group, function(ix, value) {
-    // for long lists, only show items accounting for 5% of rows
-    if (group.length > 10) {
-      if (value.c / total < 0.05) {
-        html += '<tr class="' + cls + '">'
-        html += '<td>&hellip;</td>'
-        html += '<td>&nbsp;</td>'
-        html += '</tr>'
-        return false
-      }
+    // for long lists, only show first 10
+    if (gotten >= 10) {
+      html += '<tr class="' + cls + '">'
+      html += '<td>&hellip;</td>'
+      html += '<td>&nbsp;</td>'
+      html += '</tr>'
+      return false
     }
 
     var cls = ''
@@ -87,9 +100,6 @@ var fact_simple_groups = function(col, group) {
 
     gotten++
   })
-  if (gotten == 0) {
-    return
-  }
   html += '</table>'
   add_fact(col, html)
 }
@@ -119,6 +129,7 @@ var make_tab = function(cb) {
     getTotal: [ function(cb) {
       scraperwiki.sql("select count(*) as c from " + table, function(data) {
         total = data[0].c
+        fact_total_rows()
         cb()
       }, handle_error)
     } ],
