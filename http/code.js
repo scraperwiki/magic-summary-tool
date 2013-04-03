@@ -33,14 +33,12 @@ var add_fact = function(name, score, html, col) {
   current_score = fact_scores[col] || 0
   current_dom = fact_doms[col]
 
-  console.log("adding fact:", name, "current_score", current_score, "current_dom", current_dom, "score", score, "col", col)
+  //console.log("adding fact:", name, "current_score", current_score, "current_dom", current_dom, "score", score, "col", col)
 
   var dom = $('<div class="item" score="' + score + '">')
 
   // if the existing item is replaced by new, or new one is always show, show new one
   if (current_score < score || score >= 100) {
-    console.log("appending new", typeof(html))
-
     if (typeof(html) == "function") {
       tab.find('.facts').append(dom)
       html(dom)
@@ -53,7 +51,6 @@ var add_fact = function(name, score, html, col) {
   // if current item is replaceable (score < 100), replace it
   if (current_score < 100 && current_score < score ) {
     if (current_dom != null) {
-      console.log("removing old")
       current_dom.remove()
     }
     fact_scores[col] = score
@@ -133,7 +130,6 @@ var fact_groups_pie = function(col, group) {
     data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
   })
 
-  console.log("make_pie", data)
   add_fact("groups_pie", 90, make_pie(col, data), col)
 }
 
@@ -174,8 +170,14 @@ var make_tab = function(cb) {
   }
   $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="facts"></div></div>')
   tab = $("#" + tab_id)
+  tab.find('.facts').masonry({ itemSelector : '.item' })
   tab.append('<p class="loading item">Summarising&hellip;</p>')
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
+
+  var localTab = tab
+  $(".nav a").on("shown", function (e) {
+    localTab.find('.facts').masonry('reload')
+  })
 
   async.auto({
     // Get total number of rows
@@ -203,10 +205,8 @@ var make_tab = function(cb) {
     } ]
   }, function() {
     console.log("async.auto done", table)
+    tab.find('.facts').masonry('reload')
     tab.find('p.loading').remove()
-    tab.find('.facts').masonry({
-      itemSelector : '.item'
-    })
     cb()
   })
 }
