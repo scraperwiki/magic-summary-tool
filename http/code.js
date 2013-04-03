@@ -46,14 +46,14 @@ var handle_error = function(err) {
   console.log("err", err)
 }
 
-// for columns that have less than 10 values, show in a table
-var simple_groups = function(col, group) {
+// For columns that have less than 10 values, show in a table
+var fact_simple_groups = function(col, group) {
   var html = '<div class="item">'
 
   if (group.length == 1) {
     html += '<p><b>' + col + '</b> is always <b>' + group[0].val + '</b></p>'
     html += '</div>'
-    tab.find('.simple_groups').append(html)
+    tab.find('.facts').append(html)
     return
   }
 
@@ -87,7 +87,7 @@ var simple_groups = function(col, group) {
     return
   }
   html += '</table></div>'
-  tab.find('.simple_groups').append(html)
+  tab.find('.facts').append(html)
 }
 
 // Construct one table's summary - make the tab in the user interface, and set
@@ -98,12 +98,12 @@ var make_tab = function(cb) {
   if (table_ix == 1) {
     nav_cls = "active"
   }
-  $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="simple_groups"></div></div>')
+  $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="facts"></div></div>')
   tab = $("#" + tab_id)
   tab.append('<p class="loading item">Summarising&hellip;</p>')
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="pill">' + table + '</a> </li>')
   $(".nav a").on("shown", function (e) {
-    tab.find('.simple_groups').masonry({
+    tab.find('.facts').masonry({
       // options
       itemSelector : '.item',
       columnWidth : 240
@@ -123,7 +123,7 @@ var make_tab = function(cb) {
       async.forEach(meta.columnNames, function(col, cb2) {
         scraperwiki.sql("select " + col + " as val, count(*) as c from " + table + " group by " + col + " order by c desc", function(group) {
           groups[col] = group
-          simple_groups(col, group)
+          fact_simple_groups(col, group)
           cb2()
         }, handle_error)
       }, function() {
