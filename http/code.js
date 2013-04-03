@@ -175,7 +175,12 @@ var make_tab = function(cb) {
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
 
   var localTab = tab
+  var local_table_ix = table_ix
+  chart_redrawers[table_ix] = []
   $(".nav a").on("shown", function (e) {
+    $.each(chart_redrawers[local_table_ix], function(ix, value) {
+      value()
+    })
     localTab.find('.facts').masonry('reload')
   })
 

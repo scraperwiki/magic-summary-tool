@@ -1,4 +1,4 @@
-// From https://gist.github.com/enjalot/1203641
+var chart_redrawers = {}
 var make_pie = function(title, data) {
   return function(el) {
     var googleData = google.visualization.arrayToDataTable(data)
@@ -12,10 +12,14 @@ var make_pie = function(title, data) {
         pieSliceText: 'label'
     }
 
-    var chart = new google.visualization.PieChart(el[0])
-    chart.draw(googleData, options)
-
-    el.prepend("<h1>" + title + "</h1>")
+    var remake = function() {
+      console.log("redrawing", data)
+      var chart = new google.visualization.PieChart(el[0])
+      chart.draw(googleData, options)
+      el.prepend("<h1>" + title + "</h1>")
+    }
+    chart_redrawers[table_ix].push(remake)
+    remake()
    }
 }
 

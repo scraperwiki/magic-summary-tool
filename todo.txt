@@ -1,6 +1,7 @@
 Write blog post about it
 
 Show blank strings and null better in the tables
+Remember last tab on reload
 
 Don't show pie chart if one value dominates too much - how do we detect that?
 Show less stuff
