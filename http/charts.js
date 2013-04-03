@@ -1,7 +1,7 @@
 // From https://gist.github.com/enjalot/1203641
 var make_pie = function(title, data) {
   return function(el) {
-   var w = 300, h = 300, r = 100;
+   var w = 280, h = 280, r = 140;
    var color = d3.scale.category10();
    
    console.log("make_pie hi", d3.select(el))

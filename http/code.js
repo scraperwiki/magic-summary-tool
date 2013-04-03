@@ -17,6 +17,8 @@ var handle_error = function(err) {
 var fact_scores = {}
 var fact_doms = {}
 var add_fact = function(name, score, html, col) {
+  // score = 999 // always add
+
   current_score = fact_scores[col] || 0
   current_dom = fact_doms[col]
 
@@ -145,8 +147,8 @@ var fact_mostly_one_offs = function(col, group) {
     html = '<h1>' + col+ '</h1>'
     html += '<p class="lead">is empty <b>' + not_equal_one.c + '</b> times </p>'
   } else {
-    html = '<h1>' + not_equal_one.val + '</h1>'
-    html += '<p class="lead">appears <b>' + not_equal_one.c + '</b> times as <b>' + col + '</b> </p>'
+    html = '<h1>' + col + '</h1>'
+    html += '<p class="lead">is <b>' + not_equal_one.val + '</b>, <b>' + not_equal_one.c + '</b> times</p>'
   }
   html += '<p>&mdash; every other ' + col + ' appears only once<p>'
   add_fact("mostly_one_offs", 75, html, col)

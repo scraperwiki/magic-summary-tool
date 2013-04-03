@@ -1,7 +1,9 @@
 .item {
   float: left;
   width: 280px;
-  margin: 10px;
+  margin: 20px;
+  overflow: hidden;
+  text-align: center;
 }
 div.tab {
   display: none;
@@ -16,9 +18,6 @@ p.loading {
   background: transparent url('tool-loader.gif') center top no-repeat;
   color: #666;
   font-size: 20px;
-}
-.pull-center {
-  text-align: center;
 }
 b {
   font-weight: inherit;
