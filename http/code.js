@@ -9,21 +9,47 @@ var handle_error = function(err) {
   console.log("err", err)
 }
 
-var add_fact = function(col, html) {
-  html = '<div class="item">' + html + '</div>'
-  tab.find('.facts').append(html)
+// Scores for facts are:
+// <100 show only highest which has same col value
+// >=100 show multiple ones with score more than 100
+var fact_scores = {}
+var fact_doms = {}
+var add_fact = function(name, score, html, col) {
+  current_score = fact_scores[col] || 0
+  current_dom = fact_doms[col]
+
+  console.log("adding fact:", name, "current_score", current_score, "current_dom", current_dom, "score", score, "col", col)
+
+  html = '<div class="item" score="' + score + '">' + html + '</div>'
+  dom = $(html)
+
+  // if the existing item is replaced by new, or new one is always show, show new one
+  if (current_score < score || score >= 100) {
+    console.log("appending new")
+    tab.find('.facts').append(dom)
+  }
+
+  // if current item is replaceable (score < 100), replace it
+  if (current_score < 100 && current_score < score ) {
+    if (current_dom != null) {
+      console.log("removing old")
+      current_dom.remove()
+    }
+    fact_scores[col] = score
+    fact_doms[col] = dom
+  }
 }
 
 // Show total number of rows
 var fact_total_rows = function() {
-  add_fact(null, '<h1>total</h1><p class="lead"><b>' + total + '</b> rows</p>')
+  add_fact("total_rows", 500, '<h1>total</h1><p class="lead"><b>' + total + '</b> rows</p>')
 }
 
 // Fact - if every value in the columns is the same, say that clearly
 var fact_one_value = function(col, group) {
   if (group.length == 1) {
     html = '<h1>' + col + '</h1><p class="lead">is always <b>' + group[0].val + '</b></p>'
-    add_fact(col, html)
+    add_fact("one_value", 200, html, col)
   }
 }
 
@@ -64,29 +90,25 @@ var fact_simple_groups = function(col, group) {
     gotten++
   })
   html += '</table>'
-  add_fact(col, html)
+
+  var score = 50
+  if (group.length <= 10) {
+    score = 90
+  }
+  add_fact("simple_groups", score, html, col)
 }
 
 // Fact - cases when only one value appears more than once,
 // everything else appears only once
 var fact_mostly_one_offs = function(col, group) {
-  if (group.length < 10) {
-    return 
-  }
-
-  console.log("fact_mostly_one_offs", col)
   var not_equal_one = null
   $.each(group, function(ix, value) {
-    console.log("value", value, "not_equal_one", not_equal_one)
     if (value.c != 1) {
-      console.log("value.c != 1")
       if (not_equal_one != null) {
-        console.log("not_equal_one != null")
         // more than one value not equal one, give up
         not_equal_one = null
         return false
       }
-      console.log("changed it!!")
       not_equal_one = value
     }
   })
@@ -103,7 +125,7 @@ var fact_mostly_one_offs = function(col, group) {
     html += '<p class="lead">appears <b>' + not_equal_one.c + '</b> times as <b>' + col + '</b> </p>'
   }
   html += '<p>&mdash; every other ' + col + ' appears only once<p>'
-  add_fact(col, html)
+  add_fact("mostly_one_offs", 75, html, col)
 }
 
 
