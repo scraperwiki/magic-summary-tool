@@ -9,6 +9,10 @@ var handle_error = function(err) {
   console.log("err", err)
 }
 
+var percent = function(val, tot) {
+  return Math.round(100.0 * val / tot) + '%'
+}
+
 // Scores for facts are:
 // <100 show only highest which has same col value
 // >=100 show multiple ones with score more than 100
@@ -95,7 +99,7 @@ var fact_groups_table = function(col, group) {
     html += '<tr class="' + cls + '">'
     html += '<td>' + value.val + '</td>'
     //html += '<td>' + value.c + '</td>'
-    html += '<td><span title="Value: ' + value.c + '">' + Math.round(100.0 * value.c / total) + '%</td>'
+    html += '<td><span title="Value: ' + value.c + '">' + percent(value.c, total) + '</td>'
     html += '</tr>'
 
     gotten++
@@ -115,9 +119,12 @@ var fact_groups_pie = function(col, group) {
     return
   }
 
-  var data = []
+  var data = [['value', 'count']]
   $.each(group, function(ix, value) {
-    data.push({'label': value.val, 'value':  /*Math.round(100.0 * value.c / total)*/ value.c})
+    if (value.val == null || value.val == "") {
+      value.val = "(empty)"
+    }
+    data.push([value.val, /*Math.round(100.0 * value.c / total)*/ value.c])
   })
 
   console.log("make_pie", data)
@@ -144,13 +151,11 @@ var fact_mostly_one_offs = function(col, group) {
   
   // we have exactly one value not equal to one
   if (not_equal_one.val == "" || not_equal_one.val == null) {
-    html = '<h1>' + col+ '</h1>'
-    html += '<p class="lead">is empty <b>' + not_equal_one.c + '</b> times </p>'
-  } else {
-    html = '<h1>' + col + '</h1>'
-    html += '<p class="lead">is <b>' + not_equal_one.val + '</b>, <b>' + not_equal_one.c + '</b> times</p>'
+    not_equal_one.val = "empty"
   }
-  html += '<p>&mdash; every other ' + col + ' appears only once<p>'
+  html = '<h1>' + col + '</h1>'
+  html += '<p class="lead"><b>' + percent(not_equal_one.c, total) + '</b> of rows are <b>' + not_equal_one.val + '</b> </p>'
+  html += '<p>all other rows differ<p>'
   add_fact("mostly_one_offs", 75, html, col)
 }
 
