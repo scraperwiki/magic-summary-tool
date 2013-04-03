@@ -8,6 +8,7 @@
 // Show total number of rows (Ian) e.g. in comparison to total.
 // Maybe show % (Zarino)
 // JASL station list should show top 10 countries (David)
+// Show blank strings and null the same somehow?
 //
 // Total number of rows as its own fact
 // Total size of database as its own fact
@@ -45,18 +46,22 @@ var handle_error = function(err) {
   console.log("err", err)
 }
 
-// For columns that have less than 10 values, show in a table
-var fact_simple_groups = function(col, group) {
-  var html = '<div class="item">'
+var add_fact = function(col, html) {
+  html = '<div class="item">' + html + '</div>'
+  tab.find('.facts').append(html)
+}
 
+// Fact - if every value in the columns is the same, say that clearly
+var fact_one_value = function(col, group) {
   if (group.length == 1) {
-    html += '<p><b>' + col + '</b> is always <b>' + group[0].val + '</b></p>'
-    html += '</div>'
-    tab.find('.facts').append(html)
-    return
+    html = '<p><b>' + col + '</b> is always <b>' + group[0].val + '</b></p>'
+    add_fact(col, html)
   }
+}
 
-  html += '<table class="table table-striped">'
+// Fact - for columns that have less than 10 values, show in a table
+var fact_simple_groups = function(col, group) {
+  var html = '<table class="table table-striped">'
   html += '<tr><th>' + col + '</th><th>count</th></tr>'
   var gotten = 0
   $.each(group, function(ix, value) {
@@ -85,8 +90,8 @@ var fact_simple_groups = function(col, group) {
   if (gotten == 0) {
     return
   }
-  html += '</table></div>'
-  tab.find('.facts').append(html)
+  html += '</table>'
+  add_fact(col, html)
 }
 
 // Construct one table's summary - make the tab in the user interface, and set
@@ -122,6 +127,7 @@ var make_tab = function(cb) {
       async.forEach(meta.columnNames, function(col, cb2) {
         scraperwiki.sql("select " + col + " as val, count(*) as c from " + table + " group by " + col + " order by c desc", function(group) {
           groups[col] = group
+          fact_one_value(col, group)
           fact_simple_groups(col, group)
           cb2()
         }, handle_error)
