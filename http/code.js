@@ -13,6 +13,13 @@ var percent = function(val, tot) {
   return Math.round(100.0 * val / tot) + '%'
 }
 
+var add_empty = function(val) {
+  if (val === null || val === "") {
+    val = "(empty)"
+  }
+  return val
+}
+
 // Scores for facts are:
 // <100 show only highest which has same col value
 // >=100 show multiple ones with score more than 100
@@ -73,8 +80,8 @@ var fact_groups_table = function(col, group) {
   var html = '<h1>' + col + '</h1>'
   html += '<table class="table table-striped">'
 
-  // if we have less than 10, we always show
-  if (group.length > 10) {
+  // if we have less than 8, we always show
+  if (group.length > 8) {
     // otherwise, only show if the most common value is at least 5%
     if (group[0].c / total < 0.05) {
       return
@@ -82,12 +89,13 @@ var fact_groups_table = function(col, group) {
   }
 
   var gotten = 0
+  var so_far = 0
   $.each(group, function(ix, value) {
-    // for long lists, only show first 10
-    if (gotten >= 10) {
-      html += '<tr class="' + cls + '">'
-      html += '<td>&hellip;</td>'
-      html += '<td>&nbsp;</td>'
+    // for long lists, only show first 8
+    if (gotten >= 8) {
+      html += '<tr class="muted ' + cls + '">'
+      html += '<td>Other</td>'
+      html += '<td><span title="' + (total - so_far) + ' rows">' + percent(total - so_far, total) + '</td>'
       html += '</tr>'
       return false
     }
@@ -97,17 +105,18 @@ var fact_groups_table = function(col, group) {
       cls = 'error'
     }
     html += '<tr class="' + cls + '">'
-    html += '<td>' + value.val + '</td>'
+    html += '<td>' + add_empty(value.val) + '</td>'
     //html += '<td>' + value.c + '</td>'
     html += '<td><span title="' + value.c + ' rows">' + percent(value.c, total) + '</td>'
     html += '</tr>'
 
+    so_far += value.c
     gotten++
   })
   html += '</table>'
 
   var score = 50
-  if (group.length <= 10) {
+  if (group.length <= 8) {
     score = 80
   }
   add_fact("groups_table", score, html, col)
@@ -115,16 +124,13 @@ var fact_groups_table = function(col, group) {
 
 // Fact - like fact_groups_table only makes a pie
 var fact_groups_pie = function(col, group) {
-  if (group.length > 5) {
+  if (group.length > 10) {
     return
   }
 
   var data = [['value', 'count']]
   $.each(group, function(ix, value) {
-    if (value.c == null || value.c == "") {
-      value.c = "(empty)"
-    }
-    data.push([String(value.val), /*Math.round(100.0 * value.c / total)*/ value.c])
+    data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
   })
 
   console.log("make_pie", data)
@@ -150,9 +156,7 @@ var fact_mostly_one_offs = function(col, group) {
   }
   
   // we have exactly one value not equal to one
-  if (not_equal_one.val == "" || not_equal_one.val == null) {
-    not_equal_one.val = "empty"
-  }
+  not_equal_one.val = add_empty(not_equal_one.val)
   html = '<h1>' + col + '</h1>'
   html += '<p class="lead"><b>' + percent(not_equal_one.c, total) + '</b> of rows are <b>' + not_equal_one.val + '</b> </p>'
   html += '<p>all other rows differ<p>'
