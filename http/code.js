@@ -12,6 +12,8 @@ var handle_error = function(err) {
 // Scores for facts are:
 // <100 show only highest which has same col value
 // >=100 show multiple ones with score more than 100
+// html can either be the html for the fact, or a function which takes
+// an empty DOM element as a parameter and inserts itself into it.
 var fact_scores = {}
 var fact_doms = {}
 var add_fact = function(name, score, html, col) {
@@ -20,13 +22,19 @@ var add_fact = function(name, score, html, col) {
 
   console.log("adding fact:", name, "current_score", current_score, "current_dom", current_dom, "score", score, "col", col)
 
-  html = '<div class="item" score="' + score + '">' + html + '</div>'
-  dom = $(html)
+  var dom = $('<div class="item" score="' + score + '">')
 
   // if the existing item is replaced by new, or new one is always show, show new one
   if (current_score < score || score >= 100) {
-    console.log("appending new")
-    tab.find('.facts').append(dom)
+    console.log("appending new", typeof(html))
+
+    if (typeof(html) == "function") {
+      tab.find('.facts').append(dom)
+      html(dom[0])
+    } else {
+      dom.html(html)
+      tab.find('.facts').append(dom)
+    }
   }
 
   // if current item is replaceable (score < 100), replace it
@@ -55,7 +63,7 @@ var fact_one_value = function(col, group) {
 
 // Fact - for columns with few values, or with some very common values (>5% of
 // rows) show the grouped values in a table
-var fact_simple_groups = function(col, group) {
+var fact_groups_table = function(col, group) {
   var html = '<h1>' + col + '</h1>'
   html += '<table class="table table-striped">'
 
@@ -94,9 +102,24 @@ var fact_simple_groups = function(col, group) {
 
   var score = 50
   if (group.length <= 10) {
-    score = 90
+    score = 80
   }
-  add_fact("simple_groups", score, html, col)
+  add_fact("groups_table", score, html, col)
+}
+
+// Fact - like fact_groups_table only makes a pie
+var fact_groups_pie = function(col, group) {
+  if (group.length > 5) {
+    return
+  }
+
+  var data = []
+  $.each(group, function(ix, value) {
+    data.push({'label': value.val, 'value':  /*Math.round(100.0 * value.c / total)*/ value.c})
+  })
+
+  console.log("make_pie", data)
+  add_fact("groups_pie", 90, make_pie(data), col)
 }
 
 // Fact - cases when only one value appears more than once,
@@ -165,7 +188,8 @@ var make_tab = function(cb) {
         scraperwiki.sql("select " + col + " as val, count(*) as c from " + table + " group by " + col + " order by c desc", function(group) {
           groups[col] = group
           fact_one_value(col, group)
-          fact_simple_groups(col, group)
+          fact_groups_table(col, group)
+          fact_groups_pie(col, group)
           fact_mostly_one_offs(col, group)
           cb2()
         }, handle_error)
