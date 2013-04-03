@@ -121,7 +121,7 @@ var fact_groups_table = function(col, group) {
 
 // Fact - like fact_groups_table only makes a pie
 var fact_groups_pie = function(col, group) {
-  if (group.length > 10) {
+  if (group.length > 8) {
     return
   }
 
