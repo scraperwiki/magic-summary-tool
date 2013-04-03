@@ -56,8 +56,8 @@ var fact_one_value = function(col, group) {
 // Fact - for columns with few values, or with some very common values (>5% of
 // rows) show the grouped values in a table
 var fact_simple_groups = function(col, group) {
-  var html = '<table class="table table-striped">'
-  html += '<tr><th>' + col + '</th><th>count</th></tr>'
+  var html = '<h1>' + col + '</h1>'
+  html += '<table class="table table-striped">'
 
   // if we have less than 10, we always show
   if (group.length > 10) {
@@ -84,7 +84,8 @@ var fact_simple_groups = function(col, group) {
     }
     html += '<tr class="' + cls + '">'
     html += '<td>' + value.val + '</td>'
-    html += '<td>' + value.c + '</td>'
+    //html += '<td>' + value.c + '</td>'
+    html += '<td><span title="Value: ' + value.c + '">' + Math.round(100.0 * value.c / total) + '%</td>'
     html += '</tr>'
 
     gotten++
@@ -194,6 +195,7 @@ $(function() {
       console.log("meta", meta)
       make_tab(cb)
     }, function () {
+      $('[title]').tooltip({ 'placement': 'right' })
     })
   })
 })
