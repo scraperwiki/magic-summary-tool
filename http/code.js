@@ -90,6 +90,8 @@ var simple_groups = function(col, group) {
   tab.find('.simple_groups').append(html)
 }
 
+// Construct one table's summary - make the tab in the user interface, and set
+// off all the queries of the database necessary to make the summary.
 var make_tab = function(cb) {
   var tab_id = 'tab_' + table_ix
   var nav_cls = ""
@@ -135,12 +137,14 @@ var make_tab = function(cb) {
   })
 }
 
+// Main entry point
 $(function() {
   // Get schema of SQL database
   scraperwiki.sql.meta(function(lmeta) {
-    // Make each table
+    // Make each table in series - 'table' and others are 
+    // global variables for now
+    var tables = Object.keys(lmeta['table'])
     table_ix = 0
-    tables = Object.keys(lmeta['table'])
     async.forEachSeries(tables, function (key, cb) {
       table = key
       table_ix++
