@@ -21,7 +21,7 @@ Detect type of columns:
    date/time - show density map, or in JASL station list show just limited number
    lat/lng - show a statically generated basic map of the area covered with some shading? country boundary maps?
    percentage - guess it is e.g. inventory.ci in JASL station list
-   country codes / names - detect them and show flags magically
+   country codes / names - detect them and show flags magically or show chloropleth map (there is Google API to draw it)
    x/y coordinates, spot them and plot on a square
 Look at the table / column names and guess what kind of data it is, e.g. geogaphical, music
 
