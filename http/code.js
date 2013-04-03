@@ -80,8 +80,8 @@ var fact_groups_table = function(col, group) {
   var html = '<h1>' + col + '</h1>'
   html += '<table class="table table-striped">'
 
-  // if we have less than 10, we always show
-  if (group.length > 10) {
+  // if we have less than 8, we always show
+  if (group.length > 8) {
     // otherwise, only show if the most common value is at least 5%
     if (group[0].c / total < 0.05) {
       return
@@ -89,12 +89,13 @@ var fact_groups_table = function(col, group) {
   }
 
   var gotten = 0
+  var so_far = 0
   $.each(group, function(ix, value) {
-    // for long lists, only show first 10
-    if (gotten >= 10) {
-      html += '<tr class="' + cls + '">'
-      html += '<td>&hellip;</td>'
-      html += '<td>&nbsp;</td>'
+    // for long lists, only show first 8
+    if (gotten >= 8) {
+      html += '<tr class="muted ' + cls + '">'
+      html += '<td>Other</td>'
+      html += '<td><span title="' + (total - so_far) + ' rows">' + percent(total - so_far, total) + '</td>'
       html += '</tr>'
       return false
     }
@@ -109,12 +110,13 @@ var fact_groups_table = function(col, group) {
     html += '<td><span title="' + value.c + ' rows">' + percent(value.c, total) + '</td>'
     html += '</tr>'
 
+    so_far += value.c
     gotten++
   })
   html += '</table>'
 
   var score = 50
-  if (group.length <= 10) {
+  if (group.length <= 8) {
     score = 80
   }
   add_fact("groups_table", score, html, col)
@@ -122,7 +124,7 @@ var fact_groups_table = function(col, group) {
 
 // Fact - like fact_groups_table only makes a pie
 var fact_groups_pie = function(col, group) {
-  if (group.length > 5) {
+  if (group.length > 10) {
     return
   }
 
