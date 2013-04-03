@@ -10,3 +10,11 @@ div.tab {
 div.active {
   display: block;
 }
+p.loading {
+  margin-top: 20px;
+  padding-top: 50px;
+  text-align: center;
+  background: transparent url('tool-loader.gif') center top no-repeat;
+  color: #666;
+  font-size: 20px;
+}

@@ -1,7 +1,6 @@
 // TODO:
 // Write blog post about it
 //
-// Loading spinner
 // Tabs don't look like tabs, change to just normal tabs
 // Change it to generate "fact" boxes with a score weighting and show the top ones / top one per column (scroll for more facts!)
 // 
@@ -99,6 +98,7 @@ var make_tab = function(cb) {
   }
   $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="simple_groups"></div></div>')
   tab = $("#" + tab_id)
+  tab.append('<p class="loading item">Summarising&hellip;</p>')
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="pill">' + table + '</a> </li>')
   $(".nav a").on("shown", function (e) {
     tab.find('.simple_groups').masonry({
@@ -130,6 +130,7 @@ var make_tab = function(cb) {
     } ]
   }, function() {
     console.log("async.auto done", table)
+    tab.find('p.loading').remove()
     cb()
   })
 }
@@ -139,13 +140,14 @@ $(function() {
   scraperwiki.sql.meta(function(lmeta) {
     // Make each table
     table_ix = 0
-    async.forEachSeries(Object.keys(lmeta['table']), function (key, cb) {
+    tables = Object.keys(lmeta['table'])
+    async.forEachSeries(tables, function (key, cb) {
       table = key
       table_ix++
       meta = lmeta['table'][table]
       console.log("meta", meta)
       make_tab(cb)
-    }, function (err) {
+    }, function () {
     })
   })
 })
