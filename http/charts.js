@@ -13,7 +13,6 @@ var make_pie = function(title, data) {
     }
 
     var remake = function() {
-      console.log("redrawing", data)
       var chart = new google.visualization.PieChart(el[0])
       chart.draw(googleData, options)
       el.prepend("<h1>" + title + "</h1>")

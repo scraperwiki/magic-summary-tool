@@ -33,7 +33,7 @@ var add_fact = function(name, score, html, col) {
   current_score = fact_scores[col] || 0
   current_dom = fact_doms[col]
 
-  //console.log("adding fact:", name, "current_score", current_score, "current_dom", current_dom, "score", score, "col", col)
+  console.log("col:", col, " adding fact:", name, "score:", score, "current_score:", current_score, "current_dom:", current_dom)
 
   var dom = $('<div class="item" score="' + score + '">')
 
@@ -67,7 +67,7 @@ var fact_total_rows = function() {
 var fact_one_value = function(col, group) {
   if (group.length == 1) {
     html = '<h1>' + col + '</h1><p class="lead">is always <b>' + group[0].val + '</b></p>'
-    add_fact("one_value", 200, html, col)
+    add_fact("one_value", 99, html, col)
   }
 }
 
@@ -90,18 +90,14 @@ var fact_groups_table = function(col, group) {
   $.each(group, function(ix, value) {
     // for long lists, show first 5 items, or any more than that that have more than 5%
     if (value.c / total < 0.05 && gotten >= 5) {
-      html += '<tr class="muted ' + cls + '">'
+      html += '<tr class="muted">'
       html += '<td>Other</td>'
       html += '<td><span title="' + (total - so_far) + ' rows">' + percent(total - so_far, total) + '</td>'
       html += '</tr>'
       return false
     }
 
-    var cls = ''
-    if (value.val == null) {
-      cls = 'error'
-    }
-    html += '<tr class="' + cls + '">'
+    html += '<tr>'
     html += '<td>' + add_empty(value.val) + '</td>'
     //html += '<td>' + value.c + '</td>'
     html += '<td><span title="' + value.c + ' rows">' + percent(value.c, total) + '</td>'
@@ -112,11 +108,11 @@ var fact_groups_table = function(col, group) {
   })
   html += '</table>'
 
-  var score = 50
   if (group.length <= 5) {
-    score = 80
+    add_fact("groups_table_short", 25, html, col)
+  } else {
+    add_fact("groups_table_significant", 10, html, col)
   }
-  add_fact("groups_table", score, html, col)
 }
 
 // Fact - like fact_groups_table only makes a pie
@@ -130,7 +126,7 @@ var fact_groups_pie = function(col, group) {
     data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
   })
 
-  add_fact("groups_pie", 90, make_pie(col, data), col)
+  add_fact("groups_pie", 60, make_pie(col, data), col)
 }
 
 // Fact - cases when only one value appears more than once,
@@ -156,8 +152,24 @@ var fact_mostly_one_offs = function(col, group) {
   html = '<h1>' + col + '</h1>'
   html += '<p class="lead"><b>' + percent(not_equal_one.c, total) + '</b> of rows are <b>' + not_equal_one.val + '</b> </p>'
   html += '<p>all other rows differ<p>'
-  add_fact("mostly_one_offs", 75, html, col)
+  add_fact("mostly_one_offs", 90, html, col)
 }
+
+// Fact - cases when one value has more than 95%
+var fact_only_one_significant = function(col, group) {
+  if (group.length < 3) {
+    return
+  }
+
+  if (group[0].c / total < 0.95) {
+    return
+  }
+
+  // we have exactly one value not equal to one
+  html = '<h1>' + col + '</h1><p class="lead">is <span title="' + percent(group[0].c, total) + ' of the time">nearly always</span> <b>' + group[0].val + '</b></p>'
+  add_fact("only_one_significant", 95, html, col)
+}
+
 
 
 // Construct one table's summary - make the tab in the user interface, and set
@@ -202,6 +214,7 @@ var make_tab = function(cb) {
           fact_groups_table(col, group)
           fact_groups_pie(col, group)
           fact_mostly_one_offs(col, group)
+          fact_only_one_significant(col, group)
           cb2()
         }, handle_error)
       }, function() {
