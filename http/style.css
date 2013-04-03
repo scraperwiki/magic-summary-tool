@@ -1,6 +1,7 @@
 .item {
   margin: 10px;
   float: left;
+  text-align: center;
 }
 div.tab {
   display: none;
@@ -16,3 +17,12 @@ p.loading {
   color: #666;
   font-size: 20px;
 }
+.pull-center {
+  text-align: center;
+}
+p.lead b {
+  font-weight: inherit;
+  background-color: #ff9;
+  padding: 3px 6px;
+}
+

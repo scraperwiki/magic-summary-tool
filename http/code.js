@@ -3,12 +3,12 @@
 //
 // Change it to generate "fact" boxes with a score weighting and show the top ones / top one per column (scroll for more facts!)
 // 
-// Never show one row - e.g. Zarino's Zero 7 is confusing
 // Let you click the ... to show more (Zarino)
 // Show total number of rows (Ian) e.g. in comparison to total.
 // Maybe show % (Zarino)
-// JASL station list should show top 10 countries (David)
 // Show blank strings and null the same somehow?
+// picture_url in my linked in Jerry data - there are 4 blank rows, rest are
+//      all different. Special case only one row having > 1? Show fact that all rows have value 1?
 //
 // Total number of rows as its own fact
 // Total size of database as its own fact
@@ -53,13 +53,13 @@ var add_fact = function(col, html) {
 
 // Show total number of rows
 var fact_total_rows = function() {
-  add_fact(null, 'There are <b>' + total + '</b> rows')
+  add_fact(null, '<h1>total</h1><p class="lead"><b>' + total + '</b> rows</p>')
 }
 
 // Fact - if every value in the columns is the same, say that clearly
 var fact_one_value = function(col, group) {
   if (group.length == 1) {
-    html = '<p><b>' + col + '</b> is always <b>' + group[0].val + '</b></p>'
+    html = '<h1>' + col + '</h1><p class="lead">is always <b>' + group[0].val + '</b></p>'
     add_fact(col, html)
   }
 }
