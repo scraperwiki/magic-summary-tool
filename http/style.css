@@ -2,8 +2,11 @@
   float: left;
   width: 280px;
   margin: 20px;
-  overflow: hidden;
   text-align: center;
+}
+.item h1 {
+  width: 280px;
+  overflow: hidden;
 }
 div.tab {
   display: none;

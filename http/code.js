@@ -99,7 +99,7 @@ var fact_groups_table = function(col, group) {
     html += '<tr class="' + cls + '">'
     html += '<td>' + value.val + '</td>'
     //html += '<td>' + value.c + '</td>'
-    html += '<td><span title="Value: ' + value.c + '">' + percent(value.c, total) + '</td>'
+    html += '<td><span title="' + value.c + ' rows">' + percent(value.c, total) + '</td>'
     html += '</tr>'
 
     gotten++
