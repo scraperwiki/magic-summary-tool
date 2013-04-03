@@ -121,10 +121,10 @@ var fact_groups_pie = function(col, group) {
 
   var data = [['value', 'count']]
   $.each(group, function(ix, value) {
-    if (value.val == null || value.val == "") {
-      value.val = "(empty)"
+    if (value.c == null || value.c == "") {
+      value.c = "(empty)"
     }
-    data.push([value.val, /*Math.round(100.0 * value.c / total)*/ value.c])
+    data.push([String(value.val), /*Math.round(100.0 * value.c / total)*/ value.c])
   })
 
   console.log("make_pie", data)
