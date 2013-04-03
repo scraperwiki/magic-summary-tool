@@ -2,6 +2,9 @@ Write blog post about it
 
 Show blank strings and null better in the tables
 
+Don't show pie chart if one value dominates too much - how do we detect that?
+Show less stuff
+
 Unique columns - ones where every key is different, show that as a fact
 Detect type of columns: 
    integer - give the range, show a mini histogram
