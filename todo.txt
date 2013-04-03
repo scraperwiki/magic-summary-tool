@@ -1,7 +1,5 @@
 Write blog post about it
 
-Change it to generate "fact" boxes with a score weighting and show the top ones / top one per column (scroll for more facts!)
-
 Let you click the ... to show more (Zarino)
 Show total number of rows (Ian) e.g. in comparison to total.
 Maybe show % (Zarino)
