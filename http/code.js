@@ -77,10 +77,10 @@ var fact_groups_table = function(col, group) {
   var html = '<h1>' + col + '</h1>'
   html += '<table class="table table-striped">'
 
-  // if we have less than 8, we always show
-  if (group.length > 8) {
-    // otherwise, only show if the most common value is at least 5%
-    if (group[0].c / total < 0.05) {
+  // if we have less than 5, we always show
+  if (group.length > 5) {
+    // otherwise, only show if the second most common value is at least 5%
+    if (group[1].c / total < 0.05) {
       return
     }
   }
@@ -88,8 +88,8 @@ var fact_groups_table = function(col, group) {
   var gotten = 0
   var so_far = 0
   $.each(group, function(ix, value) {
-    // for long lists, only show first 8
-    if (gotten >= 8) {
+    // for long lists, show first 5 items, or any more than that that have more than 5%
+    if (value.c / total < 0.05 && gotten >= 5) {
       html += '<tr class="muted ' + cls + '">'
       html += '<td>Other</td>'
       html += '<td><span title="' + (total - so_far) + ' rows">' + percent(total - so_far, total) + '</td>'
@@ -113,7 +113,7 @@ var fact_groups_table = function(col, group) {
   html += '</table>'
 
   var score = 50
-  if (group.length <= 8) {
+  if (group.length <= 5) {
     score = 80
   }
   add_fact("groups_table", score, html, col)
