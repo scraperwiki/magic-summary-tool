@@ -1,40 +1,3 @@
-// TODO:
-// Write blog post about it
-//
-// Change it to generate "fact" boxes with a score weighting and show the top ones / top one per column (scroll for more facts!)
-// 
-// Let you click the ... to show more (Zarino)
-// Show total number of rows (Ian) e.g. in comparison to total.
-// Maybe show % (Zarino)
-// Show blank strings and null the same somehow?
-// picture_url in my linked in Jerry data - there are 4 blank rows, rest are
-//      all different. Special case only one row having > 1? Show fact that all rows have value 1?
-//
-// Total number of rows as its own fact
-// Total size of database as its own fact
-// Pie charts of small group data http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
-// Histogram bar chart of data when larger groups, esp. ones with an order
-// Detect type of columns: 
-//    integer - give the range, show a mini histogram
-//    ids (e.g. twitter id long number) vs. integers that are quantities - cross reference between columns
-//    float 
-//    option
-//    free text - make a wordle
-//    ids (e.g. 12d432a3-feb0-49b1-a107-d20751880764 in last.fm data) vs. human language text (can autodetect?)
-//    url - pull out domain names and show frequency of them, or if all same pull out path, all same pull out query etc.
-//    images - highlight the most common image, or do a little mosaic of random images
-//    date/time - show density map, or in JASL station list show just limited number
-//    lat/lng - show a statically generated basic map of the area covered with some shading? country boundary maps?
-//    percentage - guess it is e.g. inventory.ci in JASL station list
-//    country codes / names - detect them and show flags magically
-//    x/y coordinates, spot them and plot on a square
-// Unique columns - ones where every key is different, show that as a fact
-// Improve look of fact which shows every key is the same
-// Look at the table / column names and guess what kind of data it is, e.g. geogaphical, music
-// 
-// Anscombe quartet (Ian)
-// Regression correlation between every pair of columns (what Zarino does on Stata)
-
 var meta
 var table
 var table_ix
@@ -104,6 +67,16 @@ var fact_simple_groups = function(col, group) {
   add_fact(col, html)
 }
 
+// Fact - cases when only one value appears more than once
+var fact_mostly_one_offs = function(col, group) {
+  var not_equal_one = null
+  $.each(group, function(ix, value) {
+  
+  })
+  //add_fact(col, html)
+}
+
+
 // Construct one table's summary - make the tab in the user interface, and set
 // off all the queries of the database necessary to make the summary.
 var make_tab = function(cb) {
@@ -140,6 +113,7 @@ var make_tab = function(cb) {
           groups[col] = group
           fact_one_value(col, group)
           fact_simple_groups(col, group)
+          fact_mostly_one_offs(col, group)
           cb2()
         }, handle_error)
       }, function() {

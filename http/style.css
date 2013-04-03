@@ -20,7 +20,7 @@ p.loading {
 .pull-center {
   text-align: center;
 }
-p.lead b {
+b {
   font-weight: inherit;
   background-color: #ff9;
   padding: 3px 6px;
