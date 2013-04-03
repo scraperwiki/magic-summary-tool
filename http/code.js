@@ -1,7 +1,6 @@
 // TODO:
 // Write blog post about it
 //
-// Tabs don't look like tabs, change to just normal tabs
 // Change it to generate "fact" boxes with a score weighting and show the top ones / top one per column (scroll for more facts!)
 // 
 // Never show one row - e.g. Zarino's Zero 7 is confusing
@@ -101,7 +100,7 @@ var make_tab = function(cb) {
   $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="facts"></div></div>')
   tab = $("#" + tab_id)
   tab.append('<p class="loading item">Summarising&hellip;</p>')
-  $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="pill">' + table + '</a> </li>')
+  $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
   $(".nav a").on("shown", function (e) {
     tab.find('.facts').masonry({
       // options

@@ -1,8 +1,6 @@
 .item {
-  /* width: 220px; */
   margin: 10px;
   float: left;
-  /* background-color: #eeeeee; */
 }
 div.tab {
   display: none;
