@@ -58,7 +58,7 @@ var simple_groups = function(col, group) {
     return
   }
 
-  html += '<table class="table table-striped table-hover">'
+  html += '<table class="table table-striped">'
   html += '<tr><th>' + col + '</th><th>count</th></tr>'
   var gotten = 0
   $.each(group, function(ix, value) {
