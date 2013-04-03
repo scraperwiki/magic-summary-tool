@@ -1,13 +1,8 @@
 Write blog post about it
 
-Show total number of rows (Ian) e.g. in comparison to total.
-Maybe show % (Zarino)
-Show blank strings and null the same somehow?
-picture_url in my linked in Jerry data - there are 4 blank rows, rest are
-     all different. Special case only one row having > 1? Show fact that all rows have value 1?
+Show blank strings and null better in the tables
 
-Total number of rows as its own fact
-Total size of database as its own fact
+Unique columns - ones where every key is different, show that as a fact
 Pie charts of small group data http://blog.stephenboak.com/2011/08/07/easy-as-a-pie.html
 Histogram bar chart of data when larger groups, esp. ones with an order
 Detect type of columns: 
@@ -24,11 +19,10 @@ Detect type of columns:
    percentage - guess it is e.g. inventory.ci in JASL station list
    country codes / names - detect them and show flags magically
    x/y coordinates, spot them and plot on a square
-Unique columns - ones where every key is different, show that as a fact
-Improve look of fact which shows every key is the same
 Look at the table / column names and guess what kind of data it is, e.g. geogaphical, music
 
 Anscombe quartet (Ian)
 Regression correlation between every pair of columns (what Zarino does on Stata)
 
 
+Total size of database as its own fact
