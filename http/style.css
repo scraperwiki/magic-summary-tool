@@ -1,7 +1,7 @@
 .item {
-  margin: 10px;
   float: left;
-  text-align: center;
+  width: 280px;
+  margin: 10px;
 }
 div.tab {
   display: none;

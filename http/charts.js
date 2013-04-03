@@ -1,12 +1,14 @@
 // From https://gist.github.com/enjalot/1203641
-var make_pie = function(data) {
+var make_pie = function(title, data) {
   return function(el) {
    var w = 300, h = 300, r = 100;
    var color = d3.scale.category10();
    
    console.log("make_pie hi", d3.select(el))
+
+   el.append("<h1>" + title + "</h1>")
   
-   var vis = d3.select(el)
+   var vis = d3.select(el[0])
        .append("svg:svg")              //create the SVG element inside the <body>
        .data([data])                   //associate our data with the document
            .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag

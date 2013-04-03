@@ -30,7 +30,7 @@ var add_fact = function(name, score, html, col) {
 
     if (typeof(html) == "function") {
       tab.find('.facts').append(dom)
-      html(dom[0])
+      html(dom)
     } else {
       dom.html(html)
       tab.find('.facts').append(dom)
@@ -119,7 +119,7 @@ var fact_groups_pie = function(col, group) {
   })
 
   console.log("make_pie", data)
-  add_fact("groups_pie", 90, make_pie(data), col)
+  add_fact("groups_pie", 90, make_pie(col, data), col)
 }
 
 // Fact - cases when only one value appears more than once,
@@ -165,13 +165,6 @@ var make_tab = function(cb) {
   tab = $("#" + tab_id)
   tab.append('<p class="loading item">Summarising&hellip;</p>')
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
-  $(".nav a").on("shown", function (e) {
-    tab.find('.facts').masonry({
-      // options
-      itemSelector : '.item',
-      columnWidth : 240
-    })
-  })
 
   async.auto({
     // Get total number of rows
@@ -200,6 +193,9 @@ var make_tab = function(cb) {
   }, function() {
     console.log("async.auto done", table)
     tab.find('p.loading').remove()
+    tab.find('.facts').masonry({
+      itemSelector : '.item'
+    })
     cb()
   })
 }
