@@ -25,4 +25,6 @@ b {
   background-color: #ff9;
   padding: 3px 6px;
 }
-
+.lead {
+  margin-bottom: 14px;
+}

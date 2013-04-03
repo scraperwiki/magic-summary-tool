@@ -67,13 +67,43 @@ var fact_simple_groups = function(col, group) {
   add_fact(col, html)
 }
 
-// Fact - cases when only one value appears more than once
+// Fact - cases when only one value appears more than once,
+// everything else appears only once
 var fact_mostly_one_offs = function(col, group) {
+  if (group.length < 10) {
+    return 
+  }
+
+  console.log("fact_mostly_one_offs", col)
   var not_equal_one = null
   $.each(group, function(ix, value) {
-  
+    console.log("value", value, "not_equal_one", not_equal_one)
+    if (value.c != 1) {
+      console.log("value.c != 1")
+      if (not_equal_one != null) {
+        console.log("not_equal_one != null")
+        // more than one value not equal one, give up
+        not_equal_one = null
+        return false
+      }
+      console.log("changed it!!")
+      not_equal_one = value
+    }
   })
-  //add_fact(col, html)
+  if (not_equal_one == null) {
+    return
+  }
+  
+  // we have exactly one value not equal to one
+  if (not_equal_one.val == "" || not_equal_one.val == null) {
+    html = '<h1>' + col+ '</h1>'
+    html += '<p class="lead">is empty <b>' + not_equal_one.c + '</b> times </p>'
+  } else {
+    html = '<h1>' + not_equal_one.val + '</h1>'
+    html += '<p class="lead">appears <b>' + not_equal_one.c + '</b> times as <b>' + col + '</b> </p>'
+  }
+  html += '<p>&mdash; every other ' + col + ' appears only once<p>'
+  add_fact(col, html)
 }
 
 
