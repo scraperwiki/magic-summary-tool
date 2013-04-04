@@ -151,8 +151,8 @@ var fact_mostly_one_offs = function(col, group) {
   // we have exactly one value not equal to one
   not_equal_one.val = add_empty(not_equal_one.val)
   html = '<h1>' + col + '</h1>'
-  html += '<p>every row is different except<p>'
-  html += '<p class="lead"><b class="tip-bottom" title="' + not_equal_one.c + ' rows">' + 
+  html += '<p class="lead">every value is different except<br>'
+  html += '<b class="tip-bottom" title="' + not_equal_one.c + ' rows">' + 
         percent(not_equal_one.c, total) + '</b> of rows are <b>' + not_equal_one.val + '</b> </p>'
   add_fact("mostly_one_offs", 90, html, col)
 }

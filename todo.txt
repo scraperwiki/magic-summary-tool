@@ -1,11 +1,9 @@
-Write blog post about it
+Write second blog post about it
 
-Show blank strings and null better in the tables
 Remember last tab on reload
 
-Don't show pie chart if one value dominates too much - how do we detect that?
-Show less stuff
-
+Show less stuff - it's a bit cluttered
+Make the order consistent somehow - what should be at the top of the page?
 
 Unique columns - ones where every key is different, show that as a fact
 Detect type of columns: 
