@@ -95,7 +95,7 @@ var fact_mostly_one_offs = function(col, group) {
   html += '<p class="lead">every value is different except<br>'
   html += '<b class="tip-bottom" title="' + not_equal_one.c + ' rows">' + 
         percent(not_equal_one.c, total) + '</b> of rows are <b>' + not_equal_one.val + '</b> </p>'
-  add_fact("mostly_one_offs", 90, html, col)
+  add_fact("mostly_one_offs", 80, html, col)
 }
 
 // Fact - cases when one value has more than 95%
@@ -111,6 +111,45 @@ var fact_only_one_significant = function(col, group) {
   // we have exactly one value not equal to one
   html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + percent(group[0].c, total) + ' of the time">nearly always</span> <b>' + group[0].val + '</b></p>'
   add_fact("only_one_significant", 95, html, col)
+}
+
+// Fact - images to be shown in collages
+var fact_image_collage = function(col, group) {
+  // See if we have enough images
+  var image_count = 0
+  $.each(group, function(ix, value) {
+    if (is_image_url(String(value.val))) {
+      image_count ++
+    }
+  })
+  console.log("image_count", col, image_count)
+  console.log(group)
+  if (image_count < 3) {
+    return
+  }
+
+  // If so, show a random sample of them
+  var count = 0
+  var html = '<h1>' + col + '</h1><div class="collage">'
+  if (image_count > 32) {
+    group = _.shuffle(group)
+  }
+  $.each(group, function(ix, value) {
+    if (is_image_url(String(value.val))) {
+      html += '<img src="' + value.val + '" style="width: 52px">'
+      count = count + 1
+      if (count >= 32) {
+        return false
+      }
+    }
+  })
+  html += "</div>"
+  if (count == image_count) {
+    html += '<p>All the images</p>'
+  } else {
+    html += '<p>A sample of some of the images</p>'
+  }
+  add_fact("image_collage", 90, html, col)
 }
 
 

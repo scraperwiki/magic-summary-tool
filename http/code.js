@@ -7,23 +7,6 @@ var total
 var groups = {}
 var tab
 
-// Helpers
-
-var handle_error = function(err) {
-  console.log("err", err)
-}
-
-var percent = function(val, tot) {
-  return Math.round(100.0 * val / tot) + '%'
-}
-
-var add_empty = function(val) {
-  if (val === null || val === "") {
-    val = "(empty)"
-  }
-  return val
-}
-
 // Scores for facts are:
 // <100 show only highest which has same col value
 // >=100 show multiple ones with score more than 100
@@ -106,6 +89,7 @@ var make_tab = function(cb) {
           fact_groups_pie(col, group)
           fact_mostly_one_offs(col, group)
           fact_only_one_significant(col, group)
+          fact_image_collage(col, group)
           cb2()
         }, handle_error)
       }, function() {
