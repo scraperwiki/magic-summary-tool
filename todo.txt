@@ -6,7 +6,6 @@ Remember last tab on reload
 Don't show pie chart if one value dominates too much - how do we detect that?
 Show less stuff
 
-Only show 5 things in tables - and have button to show more
 
 Unique columns - ones where every key is different, show that as a fact
 Detect type of columns: 
@@ -28,5 +27,5 @@ Look at the table / column names and guess what kind of data it is, e.g. geogaph
 Anscombe quartet (Ian)
 Regression correlation between every pair of columns (what Zarino does on Stata)
 
-
+Make charts again with "empty" removed - or is that misleading?
 Total size of database as its own fact
