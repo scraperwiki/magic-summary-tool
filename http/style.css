@@ -33,3 +33,6 @@ b {
 .collage {
   padding-bottom: 10px;
 }
+.collage img {
+  width: 84px;
+}

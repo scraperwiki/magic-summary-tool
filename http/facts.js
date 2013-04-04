@@ -122,23 +122,18 @@ var fact_image_collage = function(col, group) {
       image_count ++
     }
   })
-  console.log("image_count", col, image_count)
-  console.log(group)
   if (image_count < 3) {
     return
   }
 
-  // If so, show a random sample of them
+  // If so, show the first few
   var count = 0
   var html = '<h1>' + col + '</h1><div class="collage">'
-  if (image_count > 32) {
-    group = _.shuffle(group)
-  }
   $.each(group, function(ix, value) {
     if (is_image_url(String(value.val))) {
-      html += '<img src="' + value.val + '" style="width: 52px">'
+      html += '<img class="tip-bottom" title="' + percent(value.c, total) + ', ' + value.c + ' rows" src="' + value.val + '">'
       count = count + 1
-      if (count >= 32) {
+      if (count >= 20) {
         return false
       }
     }
@@ -147,7 +142,7 @@ var fact_image_collage = function(col, group) {
   if (count == image_count) {
     html += '<p>All the images</p>'
   } else {
-    html += '<p>A sample of some of the images</p>'
+    html += '<p>Some of the images, in order of frequency</p>'
   }
   add_fact("image_collage", 90, html, col)
 }
