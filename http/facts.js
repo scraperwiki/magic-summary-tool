@@ -122,7 +122,7 @@ var fact_image_collage = function(col, group) {
       image_count ++
     }
   })
-  if (image_count < 3) {
+  if (image_count < 4 && image_count != group.length) {
     return
   }
 
@@ -146,6 +146,46 @@ var fact_image_collage = function(col, group) {
   }
   add_fact("image_collage", 90, html, col)
 }
+
+// Fact - date times
+var fact_time_chart = function(col, group) {
+  // See if we have enough images
+  var time_count = 0
+  $.each(group, function(ix, value) {
+    var unixDate = Date.parse(value.val)
+    if (!jQuery.isNumeric(value.val) && !isNaN(unixDate)) {
+      time_count++
+    }
+  })
+  // if at least half are times
+  if (time_count < (group.length / 2)) {
+    return
+  }
+
+  // If so, show the first few
+  var html = '<h1>' + col + '</h1>'
+  var months = {}
+  $.each(group, function(ix, value) {
+    var unixDate = Date.parse(value.val)
+    if (!isNaN(unixDate)) {
+      var d = new Date(unixDate)
+      var month = d.getFullYear() + "-" + padLeft(d.getMonth() + 1, 2) 
+      if (!(month in months)) {
+        months[month] = 0
+      }
+      months[month] += value.c
+    }
+  })
+  var data = []
+  $.each(months, function(ix, value) {
+    data.push([ix, value])
+  })
+  data.sort(function(a,b) { return a[0].localeCompare(b[0]) })
+  data.unshift(['month', 'count'])
+
+  add_fact("time_chart", 90, make_bar(col, data), col)
+}
+
 
 
 

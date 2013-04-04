@@ -25,3 +25,7 @@ var is_image_url = function (val) {
   return false
 }
 
+// http://stackoverflow.com/questions/5366849/convert-1-to-0001-in-javascript
+function padLeft(nr, n, str){
+    return Array(n-String(nr).length+1).join(str||'0')+nr;
+}

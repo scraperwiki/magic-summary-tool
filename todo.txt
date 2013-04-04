@@ -7,18 +7,18 @@ Make the order consistent somehow - what should be at the top of the page?
 
 Unique columns - ones where every key is different, show that as a fact
 Detect type of columns: 
-   integer - give the range, show a mini histogram
+   integer / float - give the range, show a mini histogram
+   percentage - guess it is one e.g. inventory.ci in JASL station list
    ids (e.g. twitter id long number) vs. integers that are quantities - cross reference between columns
-   float 
-   option
    free text - make a wordle
    ids (e.g. 12d432a3-feb0-49b1-a107-d20751880764 in last.fm data) vs. human language text (can autodetect?)
    url - pull out domain names and show frequency of them, or if all same pull out path, all same pull out query etc.
-   images - highlight the most common image, or do a little mosaic of random images
-   date/time - show density map, or in JASL station list show just limited number
+   date/time - show density map, or 
+      in JASL station list show just limited number
+      punchcard https://github.com/jeyb/d3.punchcard
    lat/lng - show a statically generated basic map of the area covered with some shading? country boundary maps?
-   percentage - guess it is e.g. inventory.ci in JASL station list
    country codes / names - detect them and show flags magically or show chloropleth map (there is Google API to draw it)
+	see https://developers.google.com/chart/interactive/docs/gallery/geochart
    x/y coordinates, spot them and plot on a square
 Look at the table / column names and guess what kind of data it is, e.g. geogaphical, music
 
