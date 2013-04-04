@@ -6,8 +6,8 @@ var make_pie = function(title, data) {
     var options = { 
         legend: { position: "none" },
         chartArea:{left:"5%",top:"5%",width:"90%",height:"90%"},
-        width: 280,
-        height: 280,
+        width: 420,
+        height: 420,
         fontSize: 16,
         pieSliceText: 'label'
     }

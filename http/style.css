@@ -1,11 +1,11 @@
 .item {
   float: left;
-  width: 280px;
+  width: 420px;
   margin: 20px;
   text-align: center;
 }
 .item h1 {
-  width: 280px;
+  width: 420px;
   overflow: hidden;
 }
 div.tab {
