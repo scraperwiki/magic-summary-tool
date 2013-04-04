@@ -52,6 +52,7 @@ var add_fact = function(name, score, html, col) {
   if (current_score < 100 && current_score < score ) {
     if (current_dom != null) {
       current_dom.remove()
+      delete current_dom
     }
     fact_scores[col] = score
     fact_doms[col] = dom
@@ -92,7 +93,7 @@ var fact_groups_table = function(col, group) {
     if (value.c / total < 0.05 && gotten >= 5) {
       html += '<tr class="muted">'
       html += '<td>Other</td>'
-      html += '<td><span title="' + (total - so_far) + ' rows">' + percent(total - so_far, total) + '</td>'
+      html += '<td><span class="tip-right" title="' + (total - so_far) + ' rows">' + percent(total - so_far, total) + '</td>'
       html += '</tr>'
       return false
     }
@@ -100,7 +101,7 @@ var fact_groups_table = function(col, group) {
     html += '<tr>'
     html += '<td>' + add_empty(value.val) + '</td>'
     //html += '<td>' + value.c + '</td>'
-    html += '<td><span title="' + value.c + ' rows">' + percent(value.c, total) + '</td>'
+    html += '<td><span class="tip-right" title="' + value.c + ' rows">' + percent(value.c, total) + '</td>'
     html += '</tr>'
 
     so_far += value.c
@@ -150,8 +151,9 @@ var fact_mostly_one_offs = function(col, group) {
   // we have exactly one value not equal to one
   not_equal_one.val = add_empty(not_equal_one.val)
   html = '<h1>' + col + '</h1>'
-  html += '<p class="lead"><b>' + percent(not_equal_one.c, total) + '</b> of rows are <b>' + not_equal_one.val + '</b> </p>'
-  html += '<p>all other rows differ<p>'
+  html += '<p>every row is different except<p>'
+  html += '<p class="lead"><b class="tip-bottom" title="' + not_equal_one.c + ' rows">' + 
+        percent(not_equal_one.c, total) + '</b> of rows are <b>' + not_equal_one.val + '</b> </p>'
   add_fact("mostly_one_offs", 90, html, col)
 }
 
@@ -166,7 +168,7 @@ var fact_only_one_significant = function(col, group) {
   }
 
   // we have exactly one value not equal to one
-  html = '<h1>' + col + '</h1><p class="lead">is <span title="' + percent(group[0].c, total) + ' of the time">nearly always</span> <b>' + group[0].val + '</b></p>'
+  html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + percent(group[0].c, total) + ' of the time">nearly always</span> <b>' + group[0].val + '</b></p>'
   add_fact("only_one_significant", 95, html, col)
 }
 
@@ -244,7 +246,8 @@ $(function() {
       console.log("meta", meta)
       make_tab(cb)
     }, function () {
-      $('[title]').tooltip({ 'placement': 'right' })
+      $('.tip-right').tooltip({ 'placement': 'right' })
+      $('.tip-bottom').tooltip({ 'placement': 'bottom' })
     })
   })
 })
