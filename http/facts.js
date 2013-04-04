@@ -181,6 +181,9 @@ var fact_time_chart = function(col, group) {
     data.push([ix, value])
   })
   data.sort(function(a,b) { return a[0].localeCompare(b[0]) })
+  if (data.length < 3) {
+    return
+  }
   data.unshift(['month', 'count'])
 
   add_fact("time_chart", 90, make_bar(col, data), col)
