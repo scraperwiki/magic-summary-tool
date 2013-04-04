@@ -1,3 +1,5 @@
+// Main code of ScraperWiki "Summarise automatically" tool
+
 var meta
 var table
 var table_ix

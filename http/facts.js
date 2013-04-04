@@ -1,3 +1,5 @@
+// Code to generate particular candidate facts for display.
+
 // Show total number of rows
 var fact_total_rows = function() {
   add_fact("total_rows", 500, '<h1>total</h1><p class="lead"><b>' + total + '</b> rows</p>')
