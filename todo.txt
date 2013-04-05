@@ -7,8 +7,6 @@ Make the order consistent somehow - what should be at the top of the page?
 Pocket info page - there is only one row, so show all the info better somehow
 Show percentage in tooltip on the area charts
 
-Unique columns - ones where every key is different, show that as a fact
-   Maybe cope with case where just one row appears multiple times (e.g. empty)
 Detect type of columns: 
    ids (e.g. twitter id long number) vs. integers that are quantities - cross reference between columns
    free text - make a wordle

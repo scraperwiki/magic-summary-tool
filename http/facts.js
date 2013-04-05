@@ -239,10 +239,9 @@ var fact_numbers_chart = function(col, group) {
     }
   })
   data.sort(function(a, b) { return a[0] - b[0] })
-  console.log("***", data)
   data.unshift(['value', 'count'])
 
-  add_fact("numbers_chart", 90, make_scatter(col, data), col)
+  add_fact("numbers_chart", 40, make_scatter(col, data), col)
 }
 
 
