@@ -4,6 +4,7 @@ Remember last tab on reload
 
 Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
+Pocket info page - there is only one row, so show all the info better somehow
 Show percentage in tooltip on the area charts
 
 Unique columns - ones where every key is different, show that as a fact
