@@ -6,11 +6,12 @@ var table_ix
 var total
 var groups = {}
 var tab
+var saved_table_ix
 
 // Blacklist some columns because they are useless
 var blacklisted_column = function(col) {
   // Things that end _id are foreign keys - skip for now
-  if (col.match(/_id$/))
+  if (col.match(/_id$/) || col == "id" || col == "id_str")
     return true
   // MusicBrainz identifiers (e.g. in Last.fm data)
   if (col.match(/_mbid$/))
@@ -31,7 +32,7 @@ var add_fact = function(name, score, html, col) {
   current_score = fact_scores[col] || 0
   current_dom = fact_doms[col]
 
-  console.log("col:", col, " adding fact:", name, "score:", score, "current_score:", current_score, "current_dom:", current_dom)
+  console.log("  col:", col, "found fact:", name, "score:", score, "current_score:", current_score)
 
   var dom = $('<div class="item" score="' + score + '">')
 
@@ -60,25 +61,36 @@ var add_fact = function(name, score, html, col) {
 // Construct one table's summary - make the tab in the user interface, and set
 // off all the queries of the database necessary to make the summary.
 var make_tab = function(cb) {
+  console.log("table:", table, "meta:", meta)
+
   var tab_id = 'tab_' + table_ix
   var nav_cls = ""
-  if (table_ix == 1) {
+  if (table_ix == saved_table_ix) {
     nav_cls = "active"
   }
+
   $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="facts"></div></div>')
   tab = $("#" + tab_id)
   tab.find('.facts').masonry({ itemSelector : '.item' })
   tab.append('<p class="loading item">Summarising&hellip;</p>')
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
 
-  var localTab = tab
+  var local_tab = tab
+  var local_tab_id = tab_id
   var local_table_ix = table_ix
   chart_redrawers[table_ix] = []
   $(".nav a").on("shown", function (e) {
-    $.each(chart_redrawers[local_table_ix], function(ix, value) {
-      value()
-    })
-    localTab.find('.facts').masonry('reload')
+    console.log("tab shown", e.target, e.relatedTarget, "#" + local_tab_id)
+    console.log("target href", $(e.target).attr('href'))
+    // shown is global for all tabs - this detects we mean this tab activated
+    if ($(e.target).attr('href') == "#" + local_tab_id) {
+      $.each(chart_redrawers[local_table_ix], function(ix, value) {
+        value()
+      })
+      local_tab.find('.facts').masonry('reload')
+      // save tab as default for first time load
+      scraperwiki.exec("echo " + local_table_ix + " > saved_table_ix")
+    }
   })
 
   async.auto({
@@ -87,7 +99,11 @@ var make_tab = function(cb) {
       scraperwiki.sql("select count(*) as c from " + table, function(data) {
         total = data[0].c
         fact_total_rows()
-        cb()
+        // finish early if only one row - nothing else is interesting
+        if (total == 1) 
+         cb("onerow")
+        else
+         cb()
       }, handle_error)
     } ],
     // For every column, count the number of meta groupings
@@ -115,7 +131,7 @@ var make_tab = function(cb) {
       })
     } ]
   }, function() {
-    console.log("async.auto done", table)
+    console.log("table done:", table)
     tab.find('.facts').masonry('reload')
     tab.find('p.loading').remove()
     cb()
@@ -126,19 +142,27 @@ var make_tab = function(cb) {
 $(function() {
   // Get schema of SQL database
   scraperwiki.sql.meta(function(lmeta) {
-    // Make each table in series - 'table' and others are 
-    // global variables for now
     var tables = Object.keys(lmeta['table'])
-    table_ix = 0
-    async.forEachSeries(tables, function (key, cb) {
-      table = key
-      table_ix++
-      meta = lmeta['table'][table]
-      console.log("meta", meta)
-      make_tab(cb)
-    }, function () {
-      $('.tip-right').tooltip({ 'placement': 'right' })
-      $('.tip-bottom').tooltip({ 'placement': 'bottom' })
+    // Load last tab to show
+    scraperwiki.exec("cat saved_table_ix", function(new_saved_table_ix) {
+      saved_table_ix = Number(new_saved_table_ix)
+      if (saved_table_ix < 1 || isNaN(saved_table_ix))
+        saved_table_ix = 1
+      if (saved_table_ix > tables.length)
+        saved_table_ix = tables.length
+
+      // Make each table in series - 'table' and others are 
+      // global variables for now
+      table_ix = 0
+      async.forEachSeries(tables, function (key, cb) {
+        table = key
+        table_ix++
+        meta = lmeta['table'][table]
+        make_tab(cb)
+      }, function () {
+        $('.tip-right').tooltip({ 'placement': 'right' })
+        $('.tip-bottom').tooltip({ 'placement': 'bottom' })
+      })
     })
   })
 })
