@@ -74,5 +74,29 @@ var make_geo_countries = function(title, data) {
    }
 }
 
+var make_area = function(title, data) {
+  return function(el) {
+    var googleData = google.visualization.arrayToDataTable(data)
+
+    var options = { 
+        legend: { position: "none" },
+        chartArea:{left:"8%",top:"0%",width:"92%",height:"84%"},
+        width: 420,
+        height: 420,
+        fontSize: 16,
+        hAxis:{title: title},
+        vAxis:{title: "count"}
+    }
+
+    var remake = function() {
+      var chart = new google.visualization.AreaChart(el[0])
+      chart.draw(googleData, options)
+      el.prepend("<h1>" + title + "</h1>")
+    }
+    chart_redrawers[table_ix].push(remake)
+    remake()
+   }
+}
+
 
 

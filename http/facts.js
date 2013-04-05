@@ -233,7 +233,7 @@ var fact_countries_chart = function(col, group) {
     }
   })
   // if less than three or less than 10% are countries, give up
-  if (countries_count < 3 || (countries_count / total < 0.1)) {
+  if (countries_count < 3 || (countries_count / group.length < 0.1)) {
     return
   }
 
@@ -244,6 +244,32 @@ var fact_countries_chart = function(col, group) {
   })
 
   add_fact("countries_chart", 90, make_geo_countries(col, data), col)
+}
+
+// Fact - make a scatter diagram
+var fact_numbers_chart = function(col, group) {
+  // Enough numbers?
+  var count = 0
+  $.each(group, function(ix, value) {
+    if (!isNaN(value.val)) {
+      count ++
+    }
+  })
+  if (count < (group.length / 2)) {
+    return
+  }
+
+  var data = []
+  $.each(group, function(ix, value) {
+    if (!isNaN(value.val)) {
+      data.push([Number(value.val), value.c])
+    }
+  })
+  data.sort(function(a, b) { return a[0] - b[0] })
+  console.log("***", data)
+  data.unshift(['value', 'count'])
+
+  add_fact("numbers_chart", 999, make_area(col, data), col)
 }
 
 
