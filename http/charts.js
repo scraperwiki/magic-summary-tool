@@ -48,4 +48,28 @@ var make_bar = function(title, data) {
    }
 }
 
+var make_geo_countries = function(title, data) {
+  return function(el) {
+    var googleData = google.visualization.arrayToDataTable(data)
+
+    var options = { 
+        legend: { position: "none" },
+        chartArea:{left:"120",top:"0",width:"100%",height:"100%"},
+        width: 420,
+        fontSize: 16,
+        region: 'world',
+        displayMode: 'regions'
+    }
+
+    var remake = function() {
+      var chart = new google.visualization.GeoChart(el[0])
+      chart.draw(googleData, options)
+      el.prepend("<h1>" + title + "</h1>")
+    }
+    chart_redrawers[table_ix].push(remake)
+    remake()
+   }
+}
+
+
 

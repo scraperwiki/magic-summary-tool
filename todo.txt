@@ -13,14 +13,10 @@ Detect type of columns:
    free text - make a wordle
    ids (e.g. 12d432a3-feb0-49b1-a107-d20751880764 in last.fm data) vs. human language text (can autodetect?)
    url - pull out domain names and show frequency of them, or if all same pull out path, all same pull out query etc.
-   date/time - show density map, or 
-      in JASL station list show just limited number
-      punchcard https://github.com/jeyb/d3.punchcard
-   lat/lng - show a statically generated basic map of the area covered with some shading? country boundary maps?
-   country codes / names - detect them and show flags magically or show chloropleth map (there is Google API to draw it)
-	see https://developers.google.com/chart/interactive/docs/gallery/geochart
+   lat/lng - show a Google charts marker map probably
    x/y coordinates, spot them and plot on a square
 Look at the table / column names and guess what kind of data it is, e.g. geogaphical, music
+Date/time punchcards https://github.com/jeyb/d3.punchcard
 
 Anscombe quartet (Ian)
 Regression correlation between every pair of columns (what Zarino does on Stata)

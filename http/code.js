@@ -91,6 +91,7 @@ var make_tab = function(cb) {
           fact_only_one_significant(col, group)
           fact_image_collage(col, group)
           fact_time_charts(col, group)
+          fact_countries_chart(col, group)
           cb2()
         }, handle_error)
       }, function() {
