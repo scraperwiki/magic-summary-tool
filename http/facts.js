@@ -265,7 +265,7 @@ var fact_word_cloud = function(col, group) {
   })
   // an average of four words per value seems to mean we have some real text
   var avg = total_wordings / count
-  console.log(col, "average words per group is", avg)
+  //console.log(col, "average words per group is", avg)
   if (avg < 4) {
     return
   }

@@ -31,7 +31,7 @@ var add_fact = function(name, score, html, col) {
   current_score = fact_scores[col] || 0
   current_dom = fact_doms[col]
 
-  console.log("col:", col, " adding fact:", name, "score:", score, "current_score:", current_score, "current_dom:", current_dom)
+  console.log("  col:", col, "found fact:", name, "score:", score, "current_score:", current_score)
 
   var dom = $('<div class="item" score="' + score + '">')
 
@@ -60,6 +60,8 @@ var add_fact = function(name, score, html, col) {
 // Construct one table's summary - make the tab in the user interface, and set
 // off all the queries of the database necessary to make the summary.
 var make_tab = function(cb) {
+  console.log("table:", table, "meta:", meta)
+
   var tab_id = 'tab_' + table_ix
   var nav_cls = ""
   if (table_ix == 1) {
@@ -115,7 +117,7 @@ var make_tab = function(cb) {
       })
     } ]
   }, function() {
-    console.log("async.auto done", table)
+    console.log("table done:", table)
     tab.find('.facts').masonry('reload')
     tab.find('p.loading').remove()
     cb()
@@ -134,7 +136,6 @@ $(function() {
       table = key
       table_ix++
       meta = lmeta['table'][table]
-      console.log("meta", meta)
       make_tab(cb)
     }, function () {
       $('.tip-right').tooltip({ 'placement': 'right' })
