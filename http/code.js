@@ -7,6 +7,14 @@ var total
 var groups = {}
 var tab
 
+// Blacklist some columns because they are useless
+var blacklisted_column = function(col) {
+  // MusicBrainz identifiers (e.g. in Last.fm data)
+  if (col.match(/_mbid$/))
+    return true
+  return false
+}
+
 // Scores for facts are:
 // <100 show only highest which has same col value
 // >=100 show multiple ones with score more than 100
@@ -82,6 +90,10 @@ var make_tab = function(cb) {
     // For every column, count the number of meta groupings
     getGroups: [ 'getTotal', function(cb1) {
       async.forEach(meta.columnNames, function(col, cb2) {
+        if (blacklisted_column(col)) {
+          cb2()
+	  return
+        }
         scraperwiki.sql("select " + col + " as val, count(*) as c from " + table + " group by " + col + " order by c desc", function(group) {
           groups[col] = group
           fact_one_value(col, group)
