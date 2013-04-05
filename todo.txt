@@ -2,6 +2,8 @@ Write second blog post about it
 
 Remember last tab on reload
 
+10,100 is a bogus range on the wordle - see my followers vs. rob's
+
 Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
 Pocket info page - there is only one row, so show all the info better somehow
@@ -9,8 +11,6 @@ Show percentage in tooltip on the area charts
 
 Detect type of columns: 
    ids (e.g. twitter id long number) vs. integers that are quantities - cross reference between columns
-   free text - make a wordle
-   ids (e.g. 12d432a3-feb0-49b1-a107-d20751880764 in last.fm data) vs. human language text (can autodetect?)
    url - pull out domain names and show frequency of them, or if all same pull out path, all same pull out query etc.
    lat/lng - show a Google charts marker map probably
    x/y coordinates, spot them and plot on a square
