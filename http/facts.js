@@ -163,15 +163,17 @@ var fact_time_charts = function(col, group) {
   }
 
   // try grouping into buckets at various granularities
-  _bucket_time_chart(col, group, "YYYY", "years", "time_chart_year")
-  _bucket_time_chart(col, group, "YYYY-MM", "months", "time_chart_month")
-  //_bucket_time_chart(col, group, "YYYY-MM-DD", "days", "time_chart_day")
+  _bucket_time_chart(col, group, "YYYY", "years", "YYYY", "time_chart_year", 90)
+  _bucket_time_chart(col, group, "YYYY-MM", "months", "MMM YYYY", "time_chart_month", 91)
+  _bucket_time_chart(col, group, "YYYY-MM-DD", "days", "D MMM YYYY", "time_chart_day", 92)
 }
 
-var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, name) {
-  // If so, show the first few
+var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanFormat, name, score) {
+  // Count number of items in each bucket (e.g. each month)
   var html = '<h1>' + col + '</h1>'
   var buckets = {}
+  var earliest = moment("9999-12-31").format(bucketFormat)
+  var latest = moment("0001-01-01").format(bucketFormat)
   $.each(group, function(ix, value) {
     var m = moment(value.val)
     if (!jQuery.isNumeric(value.val) && m && m.isValid()) {
@@ -180,19 +182,32 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, name) 
         buckets[bucket] = 0
       }
       buckets[bucket] += value.c
+      if (bucket < earliest) {
+   	earliest = bucket
+      }
+      if (bucket > latest) {
+   	latest = bucket
+      }
     }
   })
+  // Loop through every bucket in the range earliest to latest (e.g. each month)
   var data = []
-  $.each(buckets, function(bucket, count) {
-    data.push([bucket, count])
-  })
-  data.sort(function(a,b) { return a[0].localeCompare(b[0]) })
-  if (data.length < 3) {
+  for (var i = moment(earliest); i <= moment(latest); i.add(bucketOffset, 1)) {
+    var bucket = i.format(bucketFormat) 
+    var human = i.format(humanFormat)
+    if (bucket in buckets) {
+      data.push([human, buckets[bucket]])
+    } else {
+      data.push([human, 0])
+    }
+  }
+  // See if we right amount of data
+  if (data.length < 2 || data.length > 31) {
     return
   }
   data.unshift(['bucket', 'count'])
 
-  add_fact(name, 190, make_bar(col, data), col)
+  add_fact(name, score, make_bar(col, data), col)
 }
 
 
