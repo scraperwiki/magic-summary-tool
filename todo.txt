@@ -1,6 +1,5 @@
 Write second blog post about it
 
-Remember last tab on reload
 Make chart_redrawers per page
 
 10,100 is a bogus range on the wordle - see my followers vs. rob's
