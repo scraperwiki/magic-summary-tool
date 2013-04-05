@@ -65,9 +65,7 @@ var make_tab = function(cb) {
 
   var tab_id = 'tab_' + table_ix
   var nav_cls = ""
-//  if (table_ix == 1) {
   if (table_ix == saved_table_ix) {
-    console.log(table_ix, saved_table_ix, "<<<")
     nav_cls = "active"
   }
 

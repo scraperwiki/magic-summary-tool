@@ -273,6 +273,7 @@ var fact_word_cloud = function(col, group) {
   tags = d3.entries(tags).sort(function(a, b) { return b.value - a.value; });
   tags.forEach(function(d) { d.key = cases[d.key]; });
   tags = tags.slice(0, 100)
+  //console.log(col, "word tags", tags)
   add_fact("word_cloud", 50, make_word_cloud(col, tags), col)
 }
 // From Jonathan Feinberg's cue.language, see lib/cue.language/license.txt.
