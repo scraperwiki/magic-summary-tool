@@ -228,12 +228,12 @@ var fact_countries_chart = function(col, group) {
   // See if we have enough countries
   var countries_count = 0
   $.each(group, function(ix, value) {
-    if (_.contains(countries, $.trim(value.val)) || _.contains(iso3166, $.trim(value.val))) {
+    if (_.contains(countries, $.trim(value.val)) || _.contains(iso3166, $.trim(value.val).toUpperCase())) {
       countries_count++
     }
   })
   // if less than three or less than 10% are countries, give up
-  if (countries_count < 3 || (countries_count / total < 0.1)) {
+  if (countries_count < 3 || (countries_count / groups.length < 0.1)) {
     return
   }
 
