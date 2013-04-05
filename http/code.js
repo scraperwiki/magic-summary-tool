@@ -87,11 +87,11 @@ var make_tab = function(cb) {
           fact_one_value(col, group)
           fact_groups_table(col, group)
           fact_groups_pie(col, group)
-          fact_mostly_one_offs(col, group)
           fact_only_one_significant(col, group)
           fact_image_collage(col, group)
           fact_time_charts(col, group)
           fact_countries_chart(col, group)
+          fact_numbers_chart(col, group)
           cb2()
         }, handle_error)
       }, function() {
