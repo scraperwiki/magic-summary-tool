@@ -74,7 +74,7 @@ var make_geo_countries = function(title, data) {
    }
 }
 
-var make_area = function(title, data) {
+var make_scatter = function(title, data) {
   return function(el) {
     var googleData = google.visualization.arrayToDataTable(data)
 
@@ -89,7 +89,7 @@ var make_area = function(title, data) {
     }
 
     var remake = function() {
-      var chart = new google.visualization.AreaChart(el[0])
+      var chart = new google.visualization.ScatterChart(el[0])
       chart.draw(googleData, options)
       el.prepend("<h1>" + title + "</h1>")
     }
