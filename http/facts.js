@@ -246,12 +246,10 @@ var fact_numbers_chart = function(col, group) {
 
 // Fact - text into a Wordle-like thing
 var fact_word_cloud = function(col, group) {
-  if (col != 'title') {
-     return
-  }
-
   tags = {};
   var cases = {};
+  var count = 0
+  var total_wordings = 0
   $.each(group, function(ix, value) {
     value.val.split(wordCloudSeparators).forEach(function(word) {
       if (wordCloudDiscard.test(word)) return;
@@ -260,9 +258,17 @@ var fact_word_cloud = function(col, group) {
       if (word.length < 3) return;
       word = word.substr(0, 30);
       cases[word.toLowerCase()] = word;
-      tags[word = word.toLowerCase()] = (tags[word] || 0) + 1;
+      tags[word = word.toLowerCase()] = (tags[word] || 0) + value.c;
+      total_wordings += 1
     });
+    count += 1
   })
+  var avg = total_wordings / count
+  console.log(col, "average words per group is", avg)
+  if (avg < 3) {
+    return
+  }
+
   tags = d3.entries(tags).sort(function(a, b) { return b.value - a.value; });
   tags.forEach(function(d) { d.key = cases[d.key]; });
   tags = tags.slice(0, 100)
