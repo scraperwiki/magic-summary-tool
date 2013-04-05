@@ -166,6 +166,7 @@ var fact_time_charts = function(col, group) {
   _bucket_time_chart(col, group, "YYYY", "years", "YYYY", "time_chart_year", 90)
   _bucket_time_chart(col, group, "YYYY-MM", "months", "MMM YYYY", "time_chart_month", 91)
   _bucket_time_chart(col, group, "YYYY-MM-DD", "days", "D MMM YYYY", "time_chart_day", 92)
+  _bucket_time_chart(col, group, "YYYY-MM-DD HH", "hours", "ha D MMM YYYY", "time_chart_hour", 93)
 }
 
 var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanFormat, name, score) {
@@ -200,9 +201,13 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
     } else {
       data.push([human, 0])
     }
+    // drop out early if too much to show
+    if (data.length > 31) {
+      return
+    }
   }
-  // See if we right amount of data
-  if (data.length < 2 || data.length > 31) {
+  // Give up if we have too little
+  if (data.length < 2) {
     return
   }
   data.unshift(['bucket', 'count'])
