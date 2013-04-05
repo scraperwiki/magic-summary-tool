@@ -6,6 +6,7 @@ var table_ix
 var total
 var groups = {}
 var tab
+var saved_table_ix
 
 // Blacklist some columns because they are useless
 var blacklisted_column = function(col) {
@@ -64,23 +65,34 @@ var make_tab = function(cb) {
 
   var tab_id = 'tab_' + table_ix
   var nav_cls = ""
-  if (table_ix == 1) {
+//  if (table_ix == 1) {
+  if (table_ix == saved_table_ix) {
+    console.log(table_ix, saved_table_ix, "<<<")
     nav_cls = "active"
   }
+
   $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="facts"></div></div>')
   tab = $("#" + tab_id)
   tab.find('.facts').masonry({ itemSelector : '.item' })
   tab.append('<p class="loading item">Summarising&hellip;</p>')
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
 
-  var localTab = tab
+  var local_tab = tab
+  var local_tab_id = tab_id
   var local_table_ix = table_ix
   chart_redrawers[table_ix] = []
   $(".nav a").on("shown", function (e) {
-    $.each(chart_redrawers[local_table_ix], function(ix, value) {
-      value()
-    })
-    localTab.find('.facts').masonry('reload')
+    console.log("tab shown", e.target, e.relatedTarget, "#" + local_tab_id)
+    console.log("target href", $(e.target).attr('href'))
+    // shown is global for all tabs - this detects we mean this tab activated
+    if ($(e.target).attr('href') == "#" + local_tab_id) {
+      $.each(chart_redrawers[local_table_ix], function(ix, value) {
+        value()
+      })
+      local_tab.find('.facts').masonry('reload')
+      // save tab as default for first time load
+      scraperwiki.exec("echo " + local_table_ix + " > saved_table_ix")
+    }
   })
 
   async.auto({
@@ -132,18 +144,27 @@ var make_tab = function(cb) {
 $(function() {
   // Get schema of SQL database
   scraperwiki.sql.meta(function(lmeta) {
-    // Make each table in series - 'table' and others are 
-    // global variables for now
     var tables = Object.keys(lmeta['table'])
-    table_ix = 0
-    async.forEachSeries(tables, function (key, cb) {
-      table = key
-      table_ix++
-      meta = lmeta['table'][table]
-      make_tab(cb)
-    }, function () {
-      $('.tip-right').tooltip({ 'placement': 'right' })
-      $('.tip-bottom').tooltip({ 'placement': 'bottom' })
+    // Load last tab to show
+    scraperwiki.exec("cat saved_table_ix", function(new_saved_table_ix) {
+      saved_table_ix = Number(new_saved_table_ix)
+      if (saved_table_ix < 1)
+        saved_table_ix = 1
+      if (saved_table_ix > tables.length)
+        saved_table_ix = tables.length
+
+      // Make each table in series - 'table' and others are 
+      // global variables for now
+      table_ix = 0
+      async.forEachSeries(tables, function (key, cb) {
+        table = key
+        table_ix++
+        meta = lmeta['table'][table]
+        make_tab(cb)
+      }, function () {
+        $('.tip-right').tooltip({ 'placement': 'right' })
+        $('.tip-bottom').tooltip({ 'placement': 'bottom' })
+      })
     })
   })
 })
