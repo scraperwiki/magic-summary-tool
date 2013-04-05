@@ -92,6 +92,7 @@ var make_tab = function(cb) {
           fact_image_collage(col, group)
           fact_time_charts(col, group)
           fact_countries_chart(col, group)
+          fact_word_cloud(col, group)
           cb2()
         }, handle_error)
       }, function() {
