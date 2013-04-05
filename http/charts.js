@@ -59,7 +59,10 @@ var make_geo_countries = function(title, data) {
         width: 420,
         fontSize: 16,
         region: 'world',
-        displayMode: 'regions'
+        displayMode: 'regions',
+        colorAxis: { minValue: 0,  colors: ['#EEFFEE', '#109618'] },
+        backgroundColor: { fill: '#FAFAFF', stroke: '#0000FF', strokeWidth: 0 },
+        datalessRegionColor: '#FFFFFF'
     }
 
     var remake = function() {
@@ -106,4 +109,29 @@ var make_word_cloud = function(title, words) {
     el.prepend("<h1>" + title + "</h1>")
   }
 }
+
+var make_scatter = function(title, data) {
+  return function(el) {
+    var googleData = google.visualization.arrayToDataTable(data)
+
+    var options = { 
+        legend: { position: "none" },
+        chartArea:{left:"8%",top:"0%",width:"92%",height:"84%"},
+        width: 420,
+        // height: // let it work it out
+        fontSize: 16,
+        hAxis:{title: title},
+        vAxis:{title: "count"}
+    }
+
+    var remake = function() {
+      var chart = new google.visualization.ScatterChart(el[0])
+      chart.draw(googleData, options)
+      el.prepend("<h1>" + title + "</h1>")
+    }
+    chart_redrawers[table_ix].push(remake)
+    remake()
+   }
+}
+
 

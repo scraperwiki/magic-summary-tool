@@ -4,11 +4,10 @@ Remember last tab on reload
 
 Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
+Pocket info page - there is only one row, so show all the info better somehow
+Show percentage in tooltip on the area charts
 
-Unique columns - ones where every key is different, show that as a fact
 Detect type of columns: 
-   integer / float - give the range, show a mini histogram
-   percentage - guess it is one e.g. inventory.ci in JASL station list
    ids (e.g. twitter id long number) vs. integers that are quantities - cross reference between columns
    free text - make a wordle
    ids (e.g. 12d432a3-feb0-49b1-a107-d20751880764 in last.fm data) vs. human language text (can autodetect?)
@@ -20,6 +19,7 @@ Date/time punchcards https://github.com/jeyb/d3.punchcard
 
 Anscombe quartet (Ian)
 Regression correlation between every pair of columns (what Zarino does on Stata)
+Scatter chart for pairs of numbers?
 
 Make charts again with "empty" removed - or is that misleading?
 Total size of database as its own fact

@@ -7,6 +7,17 @@ var total
 var groups = {}
 var tab
 
+// Blacklist some columns because they are useless
+var blacklisted_column = function(col) {
+  // Things that end _id are foreign keys - skip for now
+  if (col.match(/_id$/))
+    return true
+  // MusicBrainz identifiers (e.g. in Last.fm data)
+  if (col.match(/_mbid$/))
+    return true
+  return false
+}
+
 // Scores for facts are:
 // <100 show only highest which has same col value
 // >=100 show multiple ones with score more than 100
@@ -82,17 +93,21 @@ var make_tab = function(cb) {
     // For every column, count the number of meta groupings
     getGroups: [ 'getTotal', function(cb1) {
       async.forEach(meta.columnNames, function(col, cb2) {
+        if (blacklisted_column(col)) {
+          cb2()
+	  return
+        }
         scraperwiki.sql("select " + col + " as val, count(*) as c from " + table + " group by " + col + " order by c desc", function(group) {
           groups[col] = group
           fact_one_value(col, group)
           fact_groups_table(col, group)
           fact_groups_pie(col, group)
-          fact_mostly_one_offs(col, group)
           fact_only_one_significant(col, group)
           fact_image_collage(col, group)
           fact_time_charts(col, group)
           fact_countries_chart(col, group)
           fact_word_cloud(col, group)
+          fact_numbers_chart(col, group)
           cb2()
         }, handle_error)
       }, function() {
