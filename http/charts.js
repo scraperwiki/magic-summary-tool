@@ -58,7 +58,10 @@ var make_geo_countries = function(title, data) {
         width: 420,
         fontSize: 16,
         region: 'world',
-        displayMode: 'regions'
+        displayMode: 'regions',
+        colorAxis: { minValue: 0,  colors: ['#EEFFEE', '#109618'] },
+        backgroundColor: { fill: '#FAFAFF', stroke: '#0000FF', strokeWidth: 0 },
+        datalessRegionColor: '#FFFFFF'
     }
 
     var remake = function() {
