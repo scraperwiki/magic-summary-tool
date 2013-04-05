@@ -148,7 +148,7 @@ $(function() {
     // Load last tab to show
     scraperwiki.exec("cat saved_table_ix", function(new_saved_table_ix) {
       saved_table_ix = Number(new_saved_table_ix)
-      if (saved_table_ix < 1)
+      if (saved_table_ix < 1 || isNaN(saved_table_ix))
         saved_table_ix = 1
       if (saved_table_ix > tables.length)
         saved_table_ix = tables.length
