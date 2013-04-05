@@ -75,6 +75,30 @@ var make_geo_countries = function(title, data) {
    }
 }
 
+var make_scatter = function(title, data) {
+  return function(el) {
+    var googleData = google.visualization.arrayToDataTable(data)
+
+    var options = { 
+        legend: { position: "none" },
+        chartArea:{left:"8%",top:"0%",width:"92%",height:"84%"},
+        width: 420,
+        // height: // let it work it out
+        fontSize: 16,
+        hAxis:{title: title},
+        vAxis:{title: "count"}
+    }
+
+    var remake = function() {
+      var chart = new google.visualization.ScatterChart(el[0])
+      chart.draw(googleData, options)
+      el.prepend("<h1>" + title + "</h1>")
+    }
+    chart_redrawers[table_ix].push(remake)
+    remake()
+   }
+}
+
 var make_word_cloud = function(title, words) {
   return function(el) {
     var fontSize = d3.scale["sqrt"]().range([10, 20])
@@ -108,30 +132,6 @@ var make_word_cloud = function(title, words) {
     }
     el.prepend("<h1>" + title + "</h1>")
   }
-}
-
-var make_scatter = function(title, data) {
-  return function(el) {
-    var googleData = google.visualization.arrayToDataTable(data)
-
-    var options = { 
-        legend: { position: "none" },
-        chartArea:{left:"8%",top:"0%",width:"92%",height:"84%"},
-        width: 420,
-        // height: // let it work it out
-        fontSize: 16,
-        hAxis:{title: title},
-        vAxis:{title: "count"}
-    }
-
-    var remake = function() {
-      var chart = new google.visualization.ScatterChart(el[0])
-      chart.draw(googleData, options)
-      el.prepend("<h1>" + title + "</h1>")
-    }
-    chart_redrawers[table_ix].push(remake)
-    remake()
-   }
 }
 
 

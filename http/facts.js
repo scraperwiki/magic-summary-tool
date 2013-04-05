@@ -219,6 +219,31 @@ var fact_countries_chart = function(col, group) {
   add_fact("countries_chart", 90, make_geo_countries(col, data), col)
 }
 
+// Fact - make a scatter diagram
+var fact_numbers_chart = function(col, group) {
+  // Enough numbers?
+  var count = 0
+  $.each(group, function(ix, value) {
+    if (!isNaN(value.val)) {
+      count ++
+    }
+  })
+  if (count < (group.length / 2)) {
+    return
+  }
+
+  var data = []
+  $.each(group, function(ix, value) {
+    if (!isNaN(value.val)) {
+      data.push([Number(value.val), value.c])
+    }
+  })
+  data.sort(function(a, b) { return a[0] - b[0] })
+  data.unshift(['value', 'count'])
+
+  add_fact("numbers_chart", 40, make_scatter(col, data), col)
+}
+
 // Fact - text into a Wordle-like thing
 var fact_word_cloud = function(col, group) {
   if (col != 'title') {
@@ -248,33 +273,4 @@ var wordCloudStops = /^(i|me|my|myself|we|us|our|ours|ourselves|you|your|yours|y
 var wordCloudPunctuation = /[!"&()*+,-\.\/:;<=>?\[\\\]^`\{|\}~]+/g
 var wordCloudSeparators = /[\s\u3031-\u3035\u309b\u309c\u30a0\u30fc\uff70]+/g
 var wordCloudDiscard = /^(@|https?:)/
-
-// Fact - make a scatter diagram
-var fact_numbers_chart = function(col, group) {
-  // Enough numbers?
-  var count = 0
-  $.each(group, function(ix, value) {
-    if (!isNaN(value.val)) {
-      count ++
-    }
-  })
-  if (count < (group.length / 2)) {
-    return
-  }
-
-  var data = []
-  $.each(group, function(ix, value) {
-    if (!isNaN(value.val)) {
-      data.push([Number(value.val), value.c])
-    }
-  })
-  data.sort(function(a, b) { return a[0] - b[0] })
-  data.unshift(['value', 'count'])
-
-  add_fact("numbers_chart", 40, make_scatter(col, data), col)
-}
-
-
-
-
 
