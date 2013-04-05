@@ -6,6 +6,7 @@ Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
 
 Unique columns - ones where every key is different, show that as a fact
+   Maybe cope with case where just one row appears multiple times (e.g. empty)
 Detect type of columns: 
    integer / float - give the range, show a mini histogram
    percentage - guess it is one e.g. inventory.ci in JASL station list

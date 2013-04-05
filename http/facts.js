@@ -71,33 +71,6 @@ var fact_groups_pie = function(col, group) {
   add_fact("groups_pie", 60, make_pie(col, data), col)
 }
 
-// Fact - cases when only one value appears more than once,
-// everything else appears only once
-var fact_mostly_one_offs = function(col, group) {
-  var not_equal_one = null
-  $.each(group, function(ix, value) {
-    if (value.c != 1) {
-      if (not_equal_one != null) {
-        // more than one value not equal one, give up
-        not_equal_one = null
-        return false
-      }
-      not_equal_one = value
-    }
-  })
-  if (not_equal_one == null) {
-    return
-  }
-  
-  // we have exactly one value not equal to one
-  not_equal_one.val = add_empty(not_equal_one.val)
-  html = '<h1>' + col + '</h1>'
-  html += '<p class="lead">every value is different except<br>'
-  html += '<b class="tip-bottom" title="' + not_equal_one.c + ' rows">' + 
-        percent(not_equal_one.c, total) + '</b> of rows are <b>' + not_equal_one.val + '</b> </p>'
-  add_fact("mostly_one_offs", 80, html, col)
-}
-
 // Fact - cases when one value has more than 95%
 var fact_only_one_significant = function(col, group) {
   if (group.length < 3) {
