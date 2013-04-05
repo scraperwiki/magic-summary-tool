@@ -81,9 +81,9 @@ var make_scatter = function(title, data) {
 
     var options = { 
         legend: { position: "none" },
-        chartArea:{left:"8%",top:"0%",width:"92%",height:"84%"},
+        chartArea:{left:"16%",top:"4%",width:"84%",height:"74%"},
         width: 420,
-        // height: // let it work it out
+        height: 315,
         fontSize: 16,
         hAxis:{title: title},
         vAxis:{title: "count"}

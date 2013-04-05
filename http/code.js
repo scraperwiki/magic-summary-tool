@@ -10,7 +10,7 @@ var tab
 // Blacklist some columns because they are useless
 var blacklisted_column = function(col) {
   // Things that end _id are foreign keys - skip for now
-  if (col.match(/_id$/))
+  if (col.match(/_id$/) || col == "id" || col == "id_str")
     return true
   // MusicBrainz identifiers (e.g. in Last.fm data)
   if (col.match(/_mbid$/))
