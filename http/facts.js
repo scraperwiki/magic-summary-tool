@@ -148,45 +148,51 @@ var fact_image_collage = function(col, group) {
 }
 
 // Fact - date times
-var fact_time_chart = function(col, group) {
+var fact_time_charts = function(col, group) {
   // See if we have enough images
   var time_count = 0
   $.each(group, function(ix, value) {
-    var unixDate = Date.parse(value.val)
-    if (!jQuery.isNumeric(value.val) && !isNaN(unixDate)) {
+    var m = moment(value.val)
+    if (!jQuery.isNumeric(value.val) && m && m.isValid()) {
       time_count++
     }
   })
-  // if at least half are times
+  // if less than half are times, give up
   if (time_count < (group.length / 2)) {
     return
   }
 
+  // try grouping into buckets at various granularities
+  _bucket_time_chart(col, group, "YYYY", "years", "time_chart_year")
+  _bucket_time_chart(col, group, "YYYY-MM", "months", "time_chart_month")
+  //_bucket_time_chart(col, group, "YYYY-MM-DD", "days", "time_chart_day")
+}
+
+var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, name) {
   // If so, show the first few
   var html = '<h1>' + col + '</h1>'
-  var months = {}
+  var buckets = {}
   $.each(group, function(ix, value) {
-    var unixDate = Date.parse(value.val)
-    if (!isNaN(unixDate)) {
-      var d = new Date(unixDate)
-      var month = d.getFullYear() + "-" + padLeft(d.getMonth() + 1, 2) 
-      if (!(month in months)) {
-        months[month] = 0
+    var m = moment(value.val)
+    if (!jQuery.isNumeric(value.val) && m && m.isValid()) {
+      var bucket = m.format(bucketFormat)
+      if (!(bucket in buckets)) {
+        buckets[bucket] = 0
       }
-      months[month] += value.c
+      buckets[bucket] += value.c
     }
   })
   var data = []
-  $.each(months, function(ix, value) {
-    data.push([ix, value])
+  $.each(buckets, function(bucket, count) {
+    data.push([bucket, count])
   })
   data.sort(function(a,b) { return a[0].localeCompare(b[0]) })
   if (data.length < 3) {
     return
   }
-  data.unshift(['month', 'count'])
+  data.unshift(['bucket', 'count'])
 
-  add_fact("time_chart", 90, make_bar(col, data), col)
+  add_fact(name, 190, make_bar(col, data), col)
 }
 
 

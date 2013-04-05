@@ -90,7 +90,7 @@ var make_tab = function(cb) {
           fact_mostly_one_offs(col, group)
           fact_only_one_significant(col, group)
           fact_image_collage(col, group)
-          fact_time_chart(col, group)
+          fact_time_charts(col, group)
           cb2()
         }, handle_error)
       }, function() {

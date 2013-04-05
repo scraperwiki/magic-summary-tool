@@ -31,7 +31,7 @@ var make_bar = function(title, data) {
 
     var options = { 
         legend: { position: "none" },
-        chartArea:{left:"80",top:"0",width:"100%",height:"100%"},
+        chartArea:{left:"120",top:"0",width:"100%",height:"100%"},
         width: 420,
         height: (data.length - 1) * 20,
         fontSize: 16,
