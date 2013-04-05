@@ -5,6 +5,7 @@ Remember last tab on reload
 10,100 is a bogus range on the wordle - see my followers vs. rob's
 id_str is not a good numeric chart thing to use. c.f. blacklist of _id too
 Improve the number charts, e.g. on the Twitter followers example
+Why no "location" in rob's followers?
 
 Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
