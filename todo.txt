@@ -16,5 +16,6 @@ Scatter chart for pairs of numbers, e.g. twitter followers/following
    Regression correlation between every pair of columns (what Zarino does on Stata)
    Anscombe quartet (Ian)
 
+Deal with larger datasets - more than (say) 100,000 rows should take sample and make that clear
 Total size (in Gb!) of database as its own fact
 
