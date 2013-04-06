@@ -3,6 +3,8 @@ Write second blog post about it
 Show percentage in tooltip on the area charts
 Make chart_redrawers per page
 The number charts for twitter followers / status are pretty hard to understand - improve
+Heuristic to detect Unix dates? (see my Last.fm http://x.scraperwiki.com/dataset/bci56jy/view/hhct6kq)
+Make pictures in collage show full size when hovering over them
 
 Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
