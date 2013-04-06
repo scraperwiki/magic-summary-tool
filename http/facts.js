@@ -26,6 +26,9 @@ var fact_groups_table = function(col, group) {
       return
     }
   }
+  if (group.length < 2) {
+    return
+  }
 
   var gotten = 0
   var so_far = 0
@@ -59,7 +62,7 @@ var fact_groups_table = function(col, group) {
 
 // Fact - like fact_groups_table only makes a pie
 var fact_groups_pie = function(col, group) {
-  if (group.length > 8) {
+  if (group.length > 8 || group.length < 2) {
     return
   }
 
@@ -304,7 +307,6 @@ var fact_domain_table = function(col, group) {
   if (url_count < (group.length / 2)) {
     return
   }
-  console.log(col, "url_count", url_count, by_domain)
 
   // reconstruct a new group in same format as other fact functions take
   var new_group = []
@@ -312,14 +314,11 @@ var fact_domain_table = function(col, group) {
     new_group.push({ 'val': domain, 'c': count})
   })
   new_group = new_group.sort(function(a, b) { return b.c - a.c })
-  console.log(col, "new_group", new_group)
 
   // send it to some appropriate other fact functions
   var new_col = col + "'s website"
-  fact_one_value(new_col, new_group)
   fact_groups_table(new_col, new_group)
   fact_groups_pie(new_col, new_group)
-  fact_only_one_significant(new_col, new_group)
 }
 
 
