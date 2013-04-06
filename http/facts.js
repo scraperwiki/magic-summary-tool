@@ -106,8 +106,11 @@ var fact_image_collage = function(col, group) {
     if (is_image_url(String(value.val))) {
       html += '<img class="tip-bottom" title="' + percent(value.c, total) + ', ' + value.c + ' rows" src="' + value.val + '">'
       count = count + 1
-      if (count >= 20) {
+      if (count >= 16) {
         return false
+      }
+      if (count % 4 == 0) {
+        html += '<br>'
       }
     }
   })
