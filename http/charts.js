@@ -101,7 +101,7 @@ var make_scatter = function(title, data) {
 
 var make_word_cloud = function(title, words) {
   return function(el) {
-    var fontSize = d3.scale.linear().range([6, 100]).domain([0, words[0].value])
+    var fontSize = d3.scale.linear().range([21, 100]).domain([0, words[0].value])
     var fill = d3.scale.category20b()
     d3.layout.cloud().size([420, 420])
 	.words(words)
