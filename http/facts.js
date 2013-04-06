@@ -291,7 +291,7 @@ var fact_domain_table = function(col, group) {
   var url_count = 0
   var by_domain = {}
   $.each(group, function(ix, value) {
-    var m = value.val.match(/^(http|https|ftp):\/\/([a-zA-Z0-9-_\.]+)/i)
+    var m = String(value.val).match(/^(http|https|ftp):\/\/([a-zA-Z0-9-_\.]+)/i)
     if (m) {
       url_count ++
       var top_domain = get_top_domain(m[2])
