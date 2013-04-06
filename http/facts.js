@@ -86,43 +86,6 @@ var fact_only_one_significant = function(col, group) {
   add_fact("only_one_significant", 95, html, col)
 }
 
-// Fact - images to be shown in collages
-var fact_image_collage = function(col, group) {
-  // See if we have enough images
-  var image_count = 0
-  $.each(group, function(ix, value) {
-    if (is_image_url(String(value.val))) {
-      image_count ++
-    }
-  })
-  if (image_count < 4 && image_count != group.length) {
-    return
-  }
-
-  // If so, show the first few
-  var count = 0
-  var html = '<h1>' + col + '</h1><div class="collage">'
-  $.each(group, function(ix, value) {
-    if (is_image_url(String(value.val))) {
-      html += '<img class="tip-bottom" title="' + percent(value.c, total) + ', ' + value.c + ' rows" src="' + value.val + '">'
-      count = count + 1
-      if (count >= 16) {
-        return false
-      }
-      if (count % 4 == 0) {
-        html += '<br>'
-      }
-    }
-  })
-  html += "</div>"
-  if (count == image_count) {
-    html += '<p>All the images</p>'
-  } else {
-    html += '<p>Some of the images, in order of frequency</p>'
-  }
-  add_fact("image_collage", 90, html, col)
-}
-
 // Fact - date times
 var fact_time_charts = function(col, group) {
   // See if we have enough images
@@ -245,6 +208,43 @@ var fact_numbers_chart = function(col, group) {
   data.unshift(['value', 'count'])
 
   add_fact("numbers_chart", 40, make_scatter(col, data), col)
+}
+
+// Fact - images to be shown in collages
+var fact_image_collage = function(col, group) {
+  // See if we have enough images
+  var image_count = 0
+  $.each(group, function(ix, value) {
+    if (is_image_url(String(value.val))) {
+      image_count ++
+    }
+  })
+  if (image_count < 4 && image_count != group.length) {
+    return
+  }
+
+  // If so, show the first few
+  var count = 0
+  var html = '<h1>' + col + '</h1><div class="collage">'
+  $.each(group, function(ix, value) {
+    if (is_image_url(String(value.val))) {
+      html += '<img class="tip-bottom" title="' + percent(value.c, total) + ', ' + value.c + ' rows" src="' + value.val + '">'
+      count = count + 1
+      if (count >= 16) {
+        return false
+      }
+      if (count % 4 == 0) {
+        html += '<br>'
+      }
+    }
+  })
+  html += "</div>"
+  if (count == image_count) {
+    html += '<p>All the images</p>'
+  } else {
+    html += '<p>Some of the images, in order of frequency</p>'
+  }
+  add_fact("image_collage", 90, html, col)
 }
 
 // Fact - text into a Wordle-like thing

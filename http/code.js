@@ -115,15 +115,19 @@ var make_tab = function(cb) {
         }
         scraperwiki.sql("select " + col + " as val, count(*) as c from " + table + " group by " + col + " order by c desc", function(group) {
           groups[col] = group
+
           fact_one_value(col, group)
           fact_groups_table(col, group)
           fact_groups_pie(col, group)
           fact_only_one_significant(col, group)
-          fact_image_collage(col, group)
+
           fact_time_charts(col, group)
           fact_countries_chart(col, group)
-          fact_word_cloud(col, group)
           fact_numbers_chart(col, group)
+
+          fact_image_collage(col, group)
+          fact_word_cloud(col, group)
+
           cb2()
         }, handle_error)
       }, function() {
