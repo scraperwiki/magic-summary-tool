@@ -11,7 +11,7 @@ Show percentage in tooltip on the area charts
 
 Detect type of columns: 
    ids (e.g. twitter id long number) vs. integers that are quantities - cross reference between columns
-   url - pull out domain names and show frequency of them, or if all same pull out path, all same pull out query etc.
+   url - if domains all same pull out path, all same pull out query etc.
    lat/lng - show a Google charts marker map probably
    x/y coordinates, spot them and plot on a square
 Look at the table / column names and guess what kind of data it is, e.g. geogaphical, music

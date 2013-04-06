@@ -25,3 +25,10 @@ var is_image_url = function (val) {
   return false
 }
 
+// http://stackoverflow.com/a/11319865/284340
+function get_top_domain(input){
+  var m = input.match(/[-\w]+\.(?:[-\w]+\.xn--[-\w]+|[-\w]{3,}|[-\w]+\.[-\w]{2})$/i)
+  if (m)
+    return m[0]
+  return input
+}

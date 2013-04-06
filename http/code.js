@@ -127,6 +127,7 @@ var make_tab = function(cb) {
 
           fact_image_collage(col, group)
           fact_word_cloud(col, group)
+          fact_domain_table(col, group)
 
           cb2()
         }, handle_error)

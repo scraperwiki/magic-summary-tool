@@ -285,3 +285,41 @@ var wordCloudPunctuation = /[!"&()*+,-\.\/:;<=>?\[\\\]^`\{|\}~]+/g
 var wordCloudSeparators = /[\s\u3031-\u3035\u309b\u309c\u30a0\u30fc\uff70]+/g
 var wordCloudDiscard = /^(@|https?:)/
 
+// Fact - cluster URLs by domain
+var fact_domain_table = function(col, group) {
+  // count number of URLs, and regroup by domain
+  var url_count = 0
+  var by_domain = {}
+  $.each(group, function(ix, value) {
+    var m = value.val.match(/^(http|https|ftp):\/\/([a-zA-Z0-9-_\.]+)/i)
+    if (m) {
+      url_count ++
+      var top_domain = get_top_domain(m[2])
+      if (!(top_domain in by_domain)) {
+        by_domain[top_domain] = 0
+      }
+      by_domain[top_domain] += value.c
+    }
+  })
+  if (url_count < (group.length / 2)) {
+    return
+  }
+  console.log(col, "url_count", url_count, by_domain)
+
+  // reconstruct a new group in same format as other fact functions take
+  var new_group = []
+  $.each(by_domain, function(domain, count) {
+    new_group.push({ 'val': domain, 'c': count})
+  })
+  new_group = new_group.sort(function(a, b) { return b.c - a.c })
+  console.log(col, "new_group", new_group)
+
+  // send it to some appropriate other fact functions
+  var new_col = col + "'s website"
+  fact_one_value(new_col, new_group)
+  fact_groups_table(new_col, new_group)
+  fact_groups_pie(new_col, new_group)
+  fact_only_one_significant(new_col, new_group)
+}
+
+
