@@ -1,25 +1,20 @@
 Write second blog post about it
 
+Show percentage in tooltip on the area charts
 Make chart_redrawers per page
-
-10,100 is a bogus range on the wordle - see my followers vs. rob's
+The number charts for twitter followers / status are pretty hard to understand - improve
 
 Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
-Pocket info page - there is only one row, so show all the info better somehow
-Show percentage in tooltip on the area charts
 
-Detect type of columns: 
-   ids (e.g. twitter id long number) vs. integers that are quantities - cross reference between columns
-   url - if domains all same pull out path, all same pull out query etc.
+Type specific ideas
    lat/lng - show a Google charts marker map probably
-   x/y coordinates, spot them and plot on a square
-Look at the table / column names and guess what kind of data it is, e.g. geogaphical, music
-Date/time punchcards https://github.com/jeyb/d3.punchcard
+   foreign keys via ids (e.g. twitter id long number) - cross reference between columns
+   domains - pull out path if too many similar, all same pull out query...
+   date/time punchcards https://github.com/jeyb/d3.punchcard
+Scatter chart for pairs of numbers, e.g. twitter followers/following
+   Regression correlation between every pair of columns (what Zarino does on Stata)
+   Anscombe quartet (Ian)
 
-Anscombe quartet (Ian)
-Regression correlation between every pair of columns (what Zarino does on Stata)
-Scatter chart for pairs of numbers?
+Total size (in Gb!) of database as its own fact
 
-Make charts again with "empty" removed - or is that misleading?
-Total size of database as its own fact
