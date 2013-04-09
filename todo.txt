@@ -1,23 +1,22 @@
 Write second blog post about it
 
-Show percentage in tooltip on the area charts
+Show percentage in tooltip on the column charts
 Make chart_redrawers per page
 The number charts for twitter followers / status are pretty hard to understand - improve
-Heuristic to detect Unix dates? (see my Last.fm http://x.scraperwiki.com/dataset/bci56jy/view/hhct6kq)
+Heuristic to detect Epoch-style dates? (see my Last.fm http://x.scraperwiki.com/dataset/bci56jy/view/hhct6kq)
 Make pictures in collage show full size when hovering over them
 
 Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
+Deal with larger datasets - more than (say) 100,000 rows should take sample and make that clear
 
-Type specific ideas
+Type-specific fact ideas:
    lat/lng - show a Google charts marker map probably
    foreign keys via ids (e.g. twitter id long number) - cross reference between columns
-   domains - pull out path if too many similar, all same pull out query...
+   urls - use path chunks if domains are too similar
    date/time punchcards https://github.com/jeyb/d3.punchcard
 Scatter chart for pairs of numbers, e.g. twitter followers/following
    Regression correlation between every pair of columns (what Zarino does on Stata)
    Anscombe quartet (Ian)
-
-Deal with larger datasets - more than (say) 100,000 rows should take sample and make that clear
 Total size (in Gb!) of database as its own fact
 
