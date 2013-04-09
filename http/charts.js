@@ -75,23 +75,32 @@ var make_geo_countries = function(title, data) {
    }
 }
 
-var make_scatter = function(title, data) {
+var make_column = function(title, data, use_log) {
   return function(el) {
     var googleData = google.visualization.arrayToDataTable(data)
+    googleData.addColumn('string', title);
+    googleData.addColumn('number', 'frequency');
 
     var options = { 
         legend: { position: "none" },
         chartArea:{left:"16%",top:"4%",width:"84%",height:"74%"},
         width: 420,
-        height: 315,
+        height: 420,
         fontSize: 16,
-        hAxis:{title: title},
-        vAxis:{title: "count"}
+        hAxis:{slantedText: false, minValue: data[0][2], maxValue:data[data.length-1][3], maxAlternation: 1},
+        vAxis:{title: "frequency", logScale: use_log, minValue: 0},
+        /*bar:  {groupWidth:"95%"}*/
     }
 
     var remake = function() {
-      var chart = new google.visualization.ScatterChart(el[0])
-      chart.draw(googleData, options)
+      var chart = new google.visualization.ColumnChart(el[0])
+
+      var formatter = new google.visualization.PatternFormat(title + ': {2} - {3}')
+      formatter.format(googleData, [0, 1, 2, 3], 0) // Apply formatter and set the formatted value of the first column.
+
+      var view = new google.visualization.DataView(googleData)
+      view.setColumns([0, 1]) // Create a view with first two columns only
+      chart.draw(view, options)
       el.prepend("<h1>" + title + "</h1>")
     }
     chart_redrawers[table_ix].push(remake)

@@ -32,3 +32,8 @@ function get_top_domain(input){
     return m[0]
   return input
 }
+
+// http://stackoverflow.com/questions/3019278/any-way-to-specify-the-base-of-math-log-in-javascript
+function log10(val) {
+  return Math.log(val) / Math.LN10
+}

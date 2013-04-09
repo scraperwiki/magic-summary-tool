@@ -192,8 +192,14 @@ var fact_countries_chart = function(col, group) {
 var fact_numbers_chart = function(col, group) {
   // Enough numbers?
   var count = 0
+  var min = Number.MAX_VALUE
+  var max = -Number.MAX_VALUE
   $.each(group, function(ix, value) {
     if (!isNaN(value.val)) {
+      if (value.val < min)
+        min = value.val
+      if (value.val > max)
+        max = value.val
       count ++
     }
   })
@@ -201,16 +207,56 @@ var fact_numbers_chart = function(col, group) {
     return
   }
 
-  var data = []
+  // Decide on bin size
+  console.log("==>", col, "min", min, "max", max)
+  var rough_bins_step = (max - min) / 33
+  var log_rough_bins_step = Math.round(log10(rough_bins_step))
+  var bins_step = Math.pow(10, log_rough_bins_step)
+  console.log("rough_bins_step", rough_bins_step, "log_rough_bins_step", log_rough_bins_step, "bins_step", bins_step)
+  // ... step through buckets using integers for accuracy
+  var start = Math.floor(min / bins_step)
+  var end = Math.ceil(max / bins_step)
+  console.log("binning from", start, "to", end, "multiply by", bins_step)
+
+  // Put into buckets
+  var buckets = {}
   $.each(group, function(ix, value) {
     if (!isNaN(value.val)) {
-      data.push([Number(value.val), value.c])
+      var bucket = Math.floor(Number(value.val) / bins_step)
+      if (!(bucket in buckets)) {
+        buckets[bucket] = 0
+      }
+      buckets[bucket] += value.c
     }
   })
-  data.sort(function(a, b) { return a[0] - b[0] })
-  data.unshift(['value', 'count'])
+  
+  // Loop through every bucket 
+  var data = []
+  var highest = -Number.MAX_VALUE
+  var lowest = Number.MAX_VALUE // excluding zero, i.e. lowest visible
+  for (var i = start; i <= end; i++) {
+    var bucket = i
+    var human = (bucket * bins_step) + " - " + ((bucket + 1) * bins_step)
+    var bucket_val
+    if (bucket in buckets) {
+      bucket_val = buckets[bucket]
+    } else {
+      bucket_val = 0
+    }
+    data.push([((bucket + 0.5)* bins_step), bucket_val, ((bucket + 0) * bins_step), ((bucket + 1) * bins_step)])
+    if (bucket_val > highest)
+      highest = bucket_val
+    if (bucket_val > 0 && bucket_val < lowest)
+      lowest = bucket_val
+  }
+  // console.log(data)
+  data.unshift([col, 'frequency', 'start', 'end'])
 
-  add_fact("numbers_chart", 40, make_scatter(col, data), col)
+  // use logarithmic scale if highest is more than 250 (rough number of pixels) larger than lowest
+  var use_log = (highest / lowest > 250)
+  console.log("lowest", lowest, "highest", highest, "use_log", use_log)
+
+  add_fact("numbers_chart", 40, make_column(col, data, use_log), col)
 }
 
 // Fact - images to be shown in collages
