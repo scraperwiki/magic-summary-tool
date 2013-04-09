@@ -83,7 +83,7 @@ var make_column = function(title, data, use_log) {
 
     var options = { 
         legend: { position: "none" },
-        chartArea:{left:"16%",top:"4%",width:"84%",height:"74%"},
+        chartArea:{left:"20%",top:"4%",width:"84%",height:"74%"},
         width: 420,
         height: 420,
         fontSize: 16,
