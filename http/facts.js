@@ -195,15 +195,21 @@ var fact_numbers_chart = function(col, group) {
   var min = Number.MAX_VALUE
   var max = -Number.MAX_VALUE
   $.each(group, function(ix, value) {
-    if (!isNaN(value.val)) {
-      if (value.val < min)
-        min = value.val
-      if (value.val > max)
-        max = value.val
+    var n = Number(value.val)
+    if (!isNaN(n)) {
+      if (n < min) {
+        min = n
+      }
+      if (n > max) {
+        max = n
+      }
       count ++
     }
   })
   if (count < (group.length / 2)) {
+    return
+  }
+  if (min == max) {
     return
   }
 
@@ -221,8 +227,9 @@ var fact_numbers_chart = function(col, group) {
   // Put into buckets
   var buckets = {}
   $.each(group, function(ix, value) {
-    if (!isNaN(value.val)) {
-      var bucket = Math.floor(Number(value.val) / bins_step)
+    var n = Number(value.val)
+    if (!isNaN(n)) {
+      var bucket = Math.floor(Number(n) / bins_step)
       if (!(bucket in buckets)) {
         buckets[bucket] = 0
       }
@@ -253,9 +260,9 @@ var fact_numbers_chart = function(col, group) {
   data.unshift([col, 'frequency', 'start', 'end'])
 
   // use logarithmic scale if highest is more than 250 (rough number of pixels) larger than lowest
-  var use_log = (highest / lowest > 250)
-  use_log = false
-  // console.log("lowest", lowest, "highest", highest, "use_log", use_log)
+  //var use_log = (highest / lowest > 250)
+  var use_log = false
+  console.log("lowest", lowest, "highest", highest, "use_log", use_log)
 
   add_fact("numbers_chart", 40, make_column(col, data, use_log), col)
 }

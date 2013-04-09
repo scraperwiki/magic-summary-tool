@@ -78,8 +78,6 @@ var make_geo_countries = function(title, data) {
 var make_column = function(title, data, use_log) {
   return function(el) {
     var googleData = google.visualization.arrayToDataTable(data)
-    googleData.addColumn('string', title);
-    googleData.addColumn('number', 'frequency');
 
     var options = { 
         legend: { position: "none" },
