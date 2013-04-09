@@ -254,6 +254,7 @@ var fact_numbers_chart = function(col, group) {
 
   // use logarithmic scale if highest is more than 250 (rough number of pixels) larger than lowest
   var use_log = (highest / lowest > 250)
+  use_log = false
   // console.log("lowest", lowest, "highest", highest, "use_log", use_log)
 
   add_fact("numbers_chart", 40, make_column(col, data, use_log), col)
