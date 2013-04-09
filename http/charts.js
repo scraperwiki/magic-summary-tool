@@ -89,7 +89,7 @@ var make_column = function(title, data, use_log) {
         fontSize: 16,
         hAxis:{slantedText: false, minValue: data[0][2], maxValue:data[data.length-1][3], maxAlternation: 1},
         vAxis:{title: "frequency", logScale: use_log, minValue: 0},
-        /*bar:  {groupWidth:"95%"}*/
+        bar:  {groupWidth:"80%"}
     }
 
     var remake = function() {

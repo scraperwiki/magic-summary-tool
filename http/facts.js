@@ -208,15 +208,15 @@ var fact_numbers_chart = function(col, group) {
   }
 
   // Decide on bin size
-  console.log("==>", col, "min", min, "max", max)
-  var rough_bins_step = (max - min) / 33
+  // console.log("==>", col, "min", min, "max", max)
+  var rough_bins_step = (max - min) / 33 // tweak this number to alter how many columns it goes for
   var log_rough_bins_step = Math.round(log10(rough_bins_step))
   var bins_step = Math.pow(10, log_rough_bins_step)
-  console.log("rough_bins_step", rough_bins_step, "log_rough_bins_step", log_rough_bins_step, "bins_step", bins_step)
+  // console.log("rough_bins_step", rough_bins_step, "log_rough_bins_step", log_rough_bins_step, "bins_step", bins_step)
   // ... step through buckets using integers for accuracy
   var start = Math.floor(min / bins_step)
   var end = Math.ceil(max / bins_step)
-  console.log("binning from", start, "to", end, "multiply by", bins_step)
+  // console.log("binning from", start, "to", end, "multiply by", bins_step)
 
   // Put into buckets
   var buckets = {}
@@ -234,7 +234,7 @@ var fact_numbers_chart = function(col, group) {
   var data = []
   var highest = -Number.MAX_VALUE
   var lowest = Number.MAX_VALUE // excluding zero, i.e. lowest visible
-  for (var i = start; i <= end; i++) {
+  for (var i = start - 1; i <= end + 1; i++) {
     var bucket = i
     var human = (bucket * bins_step) + " - " + ((bucket + 1) * bins_step)
     var bucket_val
@@ -254,7 +254,7 @@ var fact_numbers_chart = function(col, group) {
 
   // use logarithmic scale if highest is more than 250 (rough number of pixels) larger than lowest
   var use_log = (highest / lowest > 250)
-  console.log("lowest", lowest, "highest", highest, "use_log", use_log)
+  // console.log("lowest", lowest, "highest", highest, "use_log", use_log)
 
   add_fact("numbers_chart", 40, make_column(col, data, use_log), col)
 }
