@@ -6,6 +6,7 @@ The number charts for twitter followers / status are pretty hard to understand -
 Heuristic to detect Epoch-style dates? (see my Last.fm http://x.scraperwiki.com/dataset/bci56jy/view/hhct6kq)
 Make pictures in collage show full size when hovering over them
 glos is an id in JASL station list - can we detect this? http://x.scraperwiki.com/dataset/ahcf7ma/view/b2ga7ha
+Show the number of columns as well as rows
 
 Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
