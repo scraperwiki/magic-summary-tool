@@ -26,7 +26,7 @@ var is_image_url = function (val) {
 }
 
 // http://stackoverflow.com/a/11319865/284340
-function get_top_domain(input){
+var get_top_domain = function(input) {
   var m = input.match(/[-\w]+\.(?:[-\w]+\.xn--[-\w]+|[-\w]{3,}|[-\w]+\.[-\w]{2})$/i)
   if (m)
     return m[0]
@@ -34,6 +34,17 @@ function get_top_domain(input){
 }
 
 // http://stackoverflow.com/questions/3019278/any-way-to-specify-the-base-of-math-log-in-javascript
-function log10(val) {
+var log10 = function(val) {
   return Math.log(val) / Math.LN10
 }
+
+// Returns a numeric conversion of val if it is a number, or null if not
+var numberise = function(val) {
+  if (String(val) == "null" || String(val) == "") 
+    return null
+  var n = Number(val)
+  if (isNaN(n))
+    return null
+  return n
+}
+
