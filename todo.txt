@@ -13,6 +13,7 @@ improve number histograms
     rca/share/value in Myanmar exports are too broad a histogram - maybe throw away edges? http://x.scraperwiki.com/dataset/alwgsvi/view/eflrgna
 year in Myanmar exports should perhaps be a date/time? http://x.scraperwiki.com/dataset/alwgsvi/view/eflrgna
 Twitter search data - http://x.scraperwiki.com/dataset/dhfrsqy/view/bty35ny - lang creates country map, which is wrong
+BR MPs data plots the states as if countries, tweak threshold https://beta.scraperwiki.com/dataset/cr6nx5y/view/cmwuoja
 
 Show less stuff - it's a bit cluttered
 Make the order consistent somehow - what should be at the top of the page?
