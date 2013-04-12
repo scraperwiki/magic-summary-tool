@@ -175,10 +175,10 @@ var fact_countries_chart = function(col, group) {
     }
   })
   // if less than three or less than 10% are countries, give up
-  if (countries_count < 3 || (countries_count / group.length < 0.1)) {
+  if (countries_count < 3 || (countries_count / group.length < 0.5)) {
     return
   }
-  console.log("  countries_count", countries_count, "group.length", group.length, "div", countries_count / group.length)
+  //console.log("  countries_count", countries_count, "group.length", group.length, "div", countries_count / group.length)
 
   // Hand the strings to Google to work out what countries they are...
   var data = [['country', 'count']]
