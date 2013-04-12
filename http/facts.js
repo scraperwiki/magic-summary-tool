@@ -188,15 +188,15 @@ var fact_countries_chart = function(col, group) {
   add_fact("countries_chart", 90, make_geo_countries(col, data), col)
 }
 
-// Fact - make a scatter diagram
+// Fact - make a histogram
 var fact_numbers_chart = function(col, group) {
   // Enough numbers?
   var count = 0
   var min = Number.MAX_VALUE
   var max = -Number.MAX_VALUE
   $.each(group, function(ix, value) {
-    var n = Number(value.val)
-    if (!isNaN(n)) {
+    var n = numberise(value.val)
+    if (n != null) {
       if (n < min) {
         min = n
       }
@@ -227,9 +227,9 @@ var fact_numbers_chart = function(col, group) {
   // Put into buckets
   var buckets = {}
   $.each(group, function(ix, value) {
-    var n = Number(value.val)
-    if (!isNaN(n)) {
-      var bucket = Math.floor(Number(n) / bins_step)
+    var n = numberise(value.val)
+    if (n != null) {
+      var bucket = Math.floor(n / bins_step)
       if (!(bucket in buckets)) {
         buckets[bucket] = 0
       }

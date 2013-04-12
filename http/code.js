@@ -96,7 +96,7 @@ var make_tab = function(cb) {
   async.auto({
     // Get total number of rows
     getTotal: [ function(cb) {
-      scraperwiki.sql("select count(*) as c from " + table, function(data) {
+      scraperwiki.sql("select count(*) as c from `" + table + "`", function(data) {
         total = data[0].c
         fact_total_rows()
         // finish early if only one row - nothing else is interesting
@@ -113,7 +113,7 @@ var make_tab = function(cb) {
           cb2()
 	  return
         }
-        scraperwiki.sql("select " + col + " as val, count(*) as c from " + table + " group by " + col + " order by c desc", function(group) {
+        scraperwiki.sql("select `" + col + "` as val, count(*) as c from `" + table + "` group by `" + col + "` order by c desc", function(group) {
           groups[col] = group
 
           fact_one_value(col, group)
