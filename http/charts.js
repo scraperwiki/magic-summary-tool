@@ -39,12 +39,12 @@ var make_bar = function(title, data) {
         /* bar:  {groupWidth:"19"} */
     }
 
+    // Render column 1 as a percentage as well as frequency
+    var formatter2 = new google.visualization.PatternFormat('{1} ({2})')
+    formatter2.format(googleData, [0, 1, 2], 1) 
+
     var remake = function() {
       var chart = new google.visualization.BarChart(el[0])
-
-      // Render column 1 as a percentage as well as frequency
-      var formatter2 = new google.visualization.PatternFormat('{1} ({2})')
-      formatter2.format(googleData, [0, 1, 2], 1) 
 
       var view = new google.visualization.DataView(googleData)
       view.setColumns([0, 1]) // Create a view with first two columns only
@@ -72,12 +72,12 @@ var make_geo_countries = function(title, data) {
         datalessRegionColor: '#FFFFFF'
     }
 
+    // Render column 1 as a percentage as well as frequency
+    var formatter2 = new google.visualization.PatternFormat('{1} ({2})')
+    formatter2.format(googleData, [0, 1, 2], 1) 
+
     var remake = function() {
       var chart = new google.visualization.GeoChart(el[0])
-
-      // Render column 1 as a percentage as well as frequency
-      var formatter2 = new google.visualization.PatternFormat('{1} ({2})')
-      formatter2.format(googleData, [0, 1, 2], 1) 
 
       var view = new google.visualization.DataView(googleData)
       view.setColumns([0, 1]) // Create a view with first two columns only
@@ -104,16 +104,16 @@ var make_column = function(title, data, use_log) {
         bar:  {groupWidth:"80%"}
     }
 
+    // Render column 0 as a range of the bar "start - end"
+    var formatter = new google.visualization.PatternFormat(title + ': {2} - {3}')
+    formatter.format(googleData, [0, 1, 2, 3, 4], 0) 
+    // Render column 1 as a percentage as well as frequency
+    var formatter2 = new google.visualization.PatternFormat('{1} ({4})')
+    formatter2.format(googleData, [0, 1, 2, 3, 4], 1) 
+
     var remake = function() {
       var chart = new google.visualization.ColumnChart(el[0])
  
-      // Render column 0 as a range of the bar "start - end"
-      var formatter = new google.visualization.PatternFormat(title + ': {2} - {3}')
-      formatter.format(googleData, [0, 1, 2, 3, 4], 0) 
-      // Render column 1 as a percentage as well as frequency
-      var formatter2 = new google.visualization.PatternFormat('{1} ({4})')
-      formatter2.format(googleData, [0, 1, 2, 3, 4], 1) 
-
       var view = new google.visualization.DataView(googleData)
       view.setColumns([0, 1]) // Create a view with first two columns only
       chart.draw(view, options)
