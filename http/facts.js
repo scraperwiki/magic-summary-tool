@@ -175,7 +175,7 @@ var fact_countries_chart = function(col, group) {
     }
   })
   // if less than three or less than 10% are countries, give up
-  if (countries_count < 3 || (countries_count / group.length < 0.6)) {
+  if (countries_count < 3 || (countries_count / group.length < 0.7)) {
     return
   }
   console.log("  countries_count", countries_count, "group.length", group.length, "div", countries_count / group.length)
