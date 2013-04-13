@@ -141,9 +141,9 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
     var bucket = i.format(bucketFormat) 
     var human = i.format(humanFormat)
     if (bucket in buckets) {
-      data.push([human, buckets[bucket]])
+      data.push([human, buckets[bucket], percent(buckets[bucket], total)])
     } else {
-      data.push([human, 0])
+      data.push([human, 0, "0%"])
     }
     // drop out early if too much to show
     if (data.length > 31) {
@@ -154,8 +154,9 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   if (data.length < 2) {
     return
   }
-  data.unshift(['bucket', 'count'])
+  data.unshift(['bucket', 'count', 'percent'])
 
+console.log(data)
   add_fact(name, score, make_bar(col, data), col)
 }
 
