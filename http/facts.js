@@ -2,7 +2,9 @@
 
 // Show total number of rows
 var fact_total_rows = function() {
-  add_fact("total_rows", 500, '<h1>total</h1><p class="lead"><b>' + total + '</b> rows</p>')
+  var html = '<h1>total</h1><p class="lead"><b>' + total + '</b> rows</p>'
+  html += '<p class="lead"><b>' + meta.columnNames.length + '</b> columns</p>'
+  add_fact("total_rows", 500, html)
 }
 
 // Fact - if every value in the columns is the same, say that clearly
