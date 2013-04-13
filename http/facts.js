@@ -68,7 +68,7 @@ var fact_groups_pie = function(col, group) {
     return
   }
 
-  var data = [['value', 'count']]
+  var data = [['value', 'frequency']]
   $.each(group, function(ix, value) {
     data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
   })
@@ -154,9 +154,8 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   if (data.length < 2) {
     return
   }
-  data.unshift(['bucket', 'count', 'percent'])
+  data.unshift(['bucket', 'frequency', 'percent'])
 
-console.log(data)
   add_fact(name, score, make_bar(col, data), col)
 }
 
@@ -184,9 +183,9 @@ var fact_countries_chart = function(col, group) {
   console.log("  countries_count", countries_count, "group.length", group.length, "div", countries_count / group.length)
 
   // Hand the strings to Google to work out what countries they are...
-  var data = [['country', 'count']]
+  var data = [['country', 'frequency', 'percent']]
   $.each(group, function(ix, value) {
-    data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
+    data.push([String(add_empty(value.val)), value.c, percent(value.c, total)])
   })
 
   add_fact("countries_chart", 90, make_geo_countries(col, data), col)
