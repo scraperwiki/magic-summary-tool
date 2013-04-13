@@ -253,14 +253,14 @@ var fact_numbers_chart = function(col, group) {
     } else {
       bucket_val = 0
     }
-    data.push([((bucket + 0.5)* bins_step), bucket_val, ((bucket + 0) * bins_step), ((bucket + 1) * bins_step)])
+    data.push([((bucket + 0.5)* bins_step), bucket_val, ((bucket + 0) * bins_step), ((bucket + 1) * bins_step), percent(bucket_val, total)])
     if (bucket_val > highest)
       highest = bucket_val
     if (bucket_val > 0 && bucket_val < lowest)
       lowest = bucket_val
   }
   // console.log(data)
-  data.unshift([col, 'frequency', 'start', 'end'])
+  data.unshift([col, 'frequency', 'start', 'end', 'percent'])
 
   // use logarithmic scale if highest is more than 250 (rough number of pixels) larger than lowest
   //var use_log = (highest / lowest > 250)
