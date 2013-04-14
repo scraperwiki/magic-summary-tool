@@ -73,7 +73,7 @@ var fact_groups_pie = function(col, group, score_delta) {
     data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
   })
 
-  add_fact("groups_pie", 60, make_pie(col, data), col)
+  add_fact("groups_pie", 60 + score_delta, make_pie(col, data), col)
 }
 
 // Fact - cases when one value has more than 95%
@@ -116,10 +116,10 @@ var fact_time_charts = function(col, group) {
   }
 
   // try grouping into buckets at various granularities
-  _bucket_time_chart(col, group, "YYYY", "years", "YYYY", "time_chart_year", 90 + score_delta)
-  _bucket_time_chart(col, group, "YYYY-MM", "months", "MMM YYYY", "time_chart_month", 91 + score_delta)
-  _bucket_time_chart(col, group, "YYYY-MM-DD", "days", "D MMM YYYY", "time_chart_day", 92 + score_delta)
-  _bucket_time_chart(col, group, "YYYY-MM-DD HH", "hours", "ha D MMM YYYY", "time_chart_hour", 93 + score_delta)
+  _bucket_time_chart(col, group, "YYYY", "years", "YYYY", "time_chart_year", 90)
+  _bucket_time_chart(col, group, "YYYY-MM", "months", "MMM YYYY", "time_chart_month", 91)
+  _bucket_time_chart(col, group, "YYYY-MM-DD", "days", "D MMM YYYY", "time_chart_day", 92)
+  _bucket_time_chart(col, group, "YYYY-MM-DD HH", "hours", "ha D MMM YYYY", "time_chart_hour", 93)
 }
 
 var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanFormat, name, score) {
