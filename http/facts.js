@@ -17,7 +17,7 @@ var fact_one_value = function(col, group) {
 
 // Fact - for columns with few values, or with some very common values (>5% of
 // rows) show the grouped values in a table
-var fact_groups_table = function(col, group) {
+var fact_groups_table = function(col, group, score_delta) {
   var html = '<h1>' + col + '</h1>'
   html += '<table class="table table-striped">'
 
@@ -56,14 +56,14 @@ var fact_groups_table = function(col, group) {
   html += '</table>'
 
   if (group.length <= 5) {
-    add_fact("groups_table_short", 25, html, col)
+    add_fact("groups_table_short", 25 + score_delta, html, col)
   } else {
-    add_fact("groups_table_significant", 10, html, col)
+    add_fact("groups_table_significant", 10 + score_delta, html, col)
   }
 }
 
 // Fact - like fact_groups_table only makes a pie
-var fact_groups_pie = function(col, group) {
+var fact_groups_pie = function(col, group, score_delta) {
   if (group.length > 8 || group.length < 2) {
     return
   }
@@ -73,7 +73,7 @@ var fact_groups_pie = function(col, group) {
     data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
   })
 
-  add_fact("groups_pie", 60, make_pie(col, data), col)
+  add_fact("groups_pie", 60 + score_delta, make_pie(col, data), col)
 }
 
 // Fact - cases when one value has more than 95%
@@ -102,16 +102,13 @@ var fact_time_charts = function(col, group) {
   // See if we have enough images
   var time_count = 0
   $.each(group, function(ix, value) {
-    var m = moment(value.val)
-    if (m && m.isValid()) {
-      // only count pure years in range 1900-2100 as being valid integer dates
-      if (!jQuery.isNumeric(value.val) || (value.val > 1900 && value.val < 2100)) {
-        time_count++
-      }
+    var m = _to_moment(value.val)
+    if (m) {
+      time_count++
     }
   })
-  // if less than half are times, give up
-  if (time_count < (group.length / 2)) {
+  // if less than a quarter are times, give up
+  if (time_count / group.length < 0.25) {
     return
   }
 
@@ -122,6 +119,29 @@ var fact_time_charts = function(col, group) {
   _bucket_time_chart(col, group, "YYYY-MM-DD HH", "hours", "ha D MMM YYYY", "time_chart_hour", 93)
 }
 
+var _to_moment = function(val) {
+  var m
+  if (jQuery.isNumeric(val)) {
+    // it looks like an epoch date - between 1st January 1990 and 2100
+    if (val > 631152000 && val < 4102444800) {
+      m = moment.unix(Number(val))
+    // it looks like a year - between 1900 and 2100
+    } else if (val >= 1900 & val <= 2100) {
+      m = moment(String(val))
+    } else {
+      // it's just some number, not a date
+      return
+    }
+  }
+  if (!m) {
+    m = moment(val)
+  }
+  if (!m || !m.isValid()) {
+    return null
+  }
+  return m
+}
+
 var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanFormat, name, score) {
   // Count number of items in each bucket (e.g. each month)
   var html = '<h1>' + col + '</h1>'
@@ -129,20 +149,18 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   var earliest = moment("9999-12-31").format(bucketFormat)
   var latest = moment("0001-01-01").format(bucketFormat)
   $.each(group, function(ix, value) {
-    var m = moment(String(value.val))
-    if (m && m.isValid()) {
-      if (!jQuery.isNumeric(value.val) || (value.val > 1900 && value.val < 2100)) {
-        var bucket = m.format(bucketFormat)
-        if (!(bucket in buckets)) {
-          buckets[bucket] = 0
-        }
-        buckets[bucket] += value.c
-        if (bucket < earliest) {
-     	  earliest = bucket
-        }
-        if (bucket > latest) {
-       	  latest = bucket
-        }
+    var m = _to_moment(value.val)
+    if (m) {
+      var bucket = m.format(bucketFormat)
+      if (!(bucket in buckets)) {
+        buckets[bucket] = 0
+      }
+      buckets[bucket] += value.c
+      if (bucket < earliest) {
+        earliest = bucket
+      }
+      if (bucket > latest) {
+        latest = bucket
       }
     }
   })
@@ -383,9 +401,9 @@ var fact_domain_table = function(col, group) {
   new_group = new_group.sort(function(a, b) { return b.c - a.c })
 
   // send it to some appropriate other fact functions
-  var new_col = col + "'s website"
-  fact_groups_table(new_col, new_group)
-  fact_groups_pie(new_col, new_group)
+  // ... reduce score slightly, as better to show full URLs if we've a choice
+  fact_groups_table(col, new_group, -1)
+  fact_groups_pie(col, new_group, -1)
 }
 
 
