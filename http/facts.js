@@ -97,10 +97,14 @@ var fact_time_charts = function(col, group) {
   var time_count = 0
   $.each(group, function(ix, value) {
     var m = moment(value.val)
-    if (!jQuery.isNumeric(value.val) && m && m.isValid()) {
-      time_count++
+    if (m && m.isValid()) {
+      // only count pure years in range 1900-2100 as being valid integer dates
+      if (!jQuery.isNumeric(value.val) || (value.val > 1900 && value.val < 2100)) {
+        time_count++
+      }
     }
   })
+console.log("time_count", time_count, "group.length", group.length)
   // if less than half are times, give up
   if (time_count < (group.length / 2)) {
     return
@@ -120,18 +124,20 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   var earliest = moment("9999-12-31").format(bucketFormat)
   var latest = moment("0001-01-01").format(bucketFormat)
   $.each(group, function(ix, value) {
-    var m = moment(value.val)
-    if (!jQuery.isNumeric(value.val) && m && m.isValid()) {
-      var bucket = m.format(bucketFormat)
-      if (!(bucket in buckets)) {
-        buckets[bucket] = 0
-      }
-      buckets[bucket] += value.c
-      if (bucket < earliest) {
-   	earliest = bucket
-      }
-      if (bucket > latest) {
-   	latest = bucket
+    var m = moment(String(value.val))
+    if (m && m.isValid()) {
+      if (!jQuery.isNumeric(value.val) || (value.val > 1900 && value.val < 2100)) {
+        var bucket = m.format(bucketFormat)
+        if (!(bucket in buckets)) {
+          buckets[bucket] = 0
+        }
+        buckets[bucket] += value.c
+        if (bucket < earliest) {
+     	  earliest = bucket
+        }
+        if (bucket > latest) {
+       	  latest = bucket
+        }
       }
     }
   })
@@ -147,11 +153,13 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
     }
     // drop out early if too much to show
     if (data.length > 31) {
+console.log("XXX", humanFormat, "more than 31")
       return
     }
   }
   // Give up if we have too little
   if (data.length < 2) {
+console.log("XXX", humanFormat, "less than 2", data, earliest, latest)
     return
   }
   data.unshift(['bucket', 'frequency', 'percent'])
