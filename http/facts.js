@@ -120,12 +120,22 @@ var fact_time_charts = function(col, group) {
 }
 
 var _to_moment = function(val) {
+  var m
   if (jQuery.isNumeric(val)) {
-    if (val < 1900 || val > 2100) {
-      return null
+    // it looks like an epoch date - between 1st January 1990 and 2100
+    if (val > 631152000 && val < 4102444800) {
+      m = moment.unix(val)
+    // it looks like a year - between 1900 and 2100
+    } else if (val >= 1900 & val <= 2100) {
+      m = moment(val)
+    } else {
+      // it's just some number, not a date
+      return
     }
   }
-  var m = moment(val)
+  if (!m) {
+    m = moment(val)
+  }
   if (!m || !m.isValid()) {
     return null
   }
