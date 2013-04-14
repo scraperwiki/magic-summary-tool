@@ -93,7 +93,7 @@ var fact_only_one_significant = function(col, group) {
 
   // we have exactly one value not equal to one
   html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + percent(group[0].c, total) + 
-    ' of the time">' + phrase + ' </span> <b>' + group[0].val + '</b></p>'
+    ' of the time">' + phrase + ' </span> <b>' + add_empty(group[0].val) + '</b></p>'
   add_fact("only_one_significant", 95, html, col)
 }
 
