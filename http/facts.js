@@ -102,16 +102,13 @@ var fact_time_charts = function(col, group) {
   // See if we have enough images
   var time_count = 0
   $.each(group, function(ix, value) {
-    var m = moment(value.val)
-    if (m && m.isValid()) {
-      // only count pure years in range 1900-2100 as being valid integer dates
-      if (!jQuery.isNumeric(value.val) || (value.val > 1900 && value.val < 2100)) {
-        time_count++
-      }
+    var m = _to_moment(value.val)
+    if (m) {
+      time_count++
     }
   })
-  // if less than half are times, give up
-  if (time_count < (group.length / 2)) {
+  // if less than a quarter are times, give up
+  if (time_count / group.length < 0.25) {
     return
   }
 
@@ -122,6 +119,19 @@ var fact_time_charts = function(col, group) {
   _bucket_time_chart(col, group, "YYYY-MM-DD HH", "hours", "ha D MMM YYYY", "time_chart_hour", 93)
 }
 
+var _to_moment = function(val) {
+  if (jQuery.isNumeric(val)) {
+    if (val < 1900 || val > 2100) {
+      return null
+    }
+  }
+  var m = moment(val)
+  if (!m || !m.isValid()) {
+    return null
+  }
+  return m
+}
+
 var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanFormat, name, score) {
   // Count number of items in each bucket (e.g. each month)
   var html = '<h1>' + col + '</h1>'
@@ -129,20 +139,18 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   var earliest = moment("9999-12-31").format(bucketFormat)
   var latest = moment("0001-01-01").format(bucketFormat)
   $.each(group, function(ix, value) {
-    var m = moment(String(value.val))
-    if (m && m.isValid()) {
-      if (!jQuery.isNumeric(value.val) || (value.val > 1900 && value.val < 2100)) {
-        var bucket = m.format(bucketFormat)
-        if (!(bucket in buckets)) {
-          buckets[bucket] = 0
-        }
-        buckets[bucket] += value.c
-        if (bucket < earliest) {
-     	  earliest = bucket
-        }
-        if (bucket > latest) {
-       	  latest = bucket
-        }
+    var m = _to_moment(value.val)
+    if (m) {
+      var bucket = m.format(bucketFormat)
+      if (!(bucket in buckets)) {
+        buckets[bucket] = 0
+      }
+      buckets[bucket] += value.c
+      if (bucket < earliest) {
+        earliest = bucket
+      }
+      if (bucket > latest) {
+        latest = bucket
       }
     }
   })
