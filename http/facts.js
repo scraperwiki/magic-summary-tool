@@ -80,12 +80,18 @@ var fact_only_one_significant = function(col, group) {
     return
   }
 
-  if (group[0].c / total < 0.95) {
+  var phrase
+  if (group[0].c / total >= 0.95) {
+    phrase = "nearly always"
+  } else if (group[0].c / total >= 0.90) {
+    phrase = "almost always"
+  } else {
     return
   }
 
   // we have exactly one value not equal to one
-  html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + percent(group[0].c, total) + ' of the time">nearly always</span> <b>' + group[0].val + '</b></p>'
+  html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + percent(group[0].c, total) + 
+    ' of the time">' + phrase + ' </span> <b>' + group[0].val + '</b></p>'
   add_fact("only_one_significant", 95, html, col)
 }
 
