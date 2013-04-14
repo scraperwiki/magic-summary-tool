@@ -70,7 +70,7 @@ var fact_groups_pie = function(col, group, score_delta) {
 
   var data = [['value', 'frequency']]
   $.each(group, function(ix, value) {
-    data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
+    data.push([String(add_empty(value.val)), value.c])
   })
 
   add_fact("groups_pie", 60 + score_delta, make_pie(col, data), col)
