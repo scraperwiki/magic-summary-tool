@@ -174,4 +174,10 @@ $(function() {
       })
     })
   })
+
+  $('#bugs').on('click', function() {
+    window.open("https://github.com/frabcus/magic-summary-tool/issues", "_blank")
+  }
+
+      )
 })

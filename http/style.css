@@ -36,3 +36,8 @@ b {
 .collage img {
   width: 84px;
 }
+#bugs {
+  position: absolute;
+  right: 20px;
+  top: 12px;
+}
