@@ -124,10 +124,10 @@ var _to_moment = function(val) {
   if (jQuery.isNumeric(val)) {
     // it looks like an epoch date - between 1st January 1990 and 2100
     if (val > 631152000 && val < 4102444800) {
-      m = moment.unix(val)
+      m = moment.unix(Number(val))
     // it looks like a year - between 1900 and 2100
     } else if (val >= 1900 & val <= 2100) {
-      m = moment(val)
+      m = moment(String(val))
     } else {
       // it's just some number, not a date
       return
