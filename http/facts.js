@@ -2,7 +2,9 @@
 
 // Show total number of rows
 var fact_total_rows = function() {
-  add_fact("total_rows", 500, '<h1>total</h1><p class="lead"><b>' + total + '</b> rows</p>')
+  var html = '<h1>total</h1><p class="lead"><b>' + total + '</b> rows</p>'
+  html += '<p class="lead"><b>' + meta.columnNames.length + '</b> columns</p>'
+  add_fact("total_rows", 500, html)
 }
 
 // Fact - if every value in the columns is the same, say that clearly
@@ -66,7 +68,7 @@ var fact_groups_pie = function(col, group) {
     return
   }
 
-  var data = [['value', 'count']]
+  var data = [['value', 'frequency']]
   $.each(group, function(ix, value) {
     data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
   })
@@ -80,12 +82,18 @@ var fact_only_one_significant = function(col, group) {
     return
   }
 
-  if (group[0].c / total < 0.95) {
+  var phrase
+  if (group[0].c / total >= 0.95) {
+    phrase = "nearly always"
+  } else if (group[0].c / total >= 0.90) {
+    phrase = "almost always"
+  } else {
     return
   }
 
   // we have exactly one value not equal to one
-  html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + percent(group[0].c, total) + ' of the time">nearly always</span> <b>' + group[0].val + '</b></p>'
+  html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + percent(group[0].c, total) + 
+    ' of the time">' + phrase + ' </span> <b>' + group[0].val + '</b></p>'
   add_fact("only_one_significant", 95, html, col)
 }
 
@@ -95,8 +103,11 @@ var fact_time_charts = function(col, group) {
   var time_count = 0
   $.each(group, function(ix, value) {
     var m = moment(value.val)
-    if (!jQuery.isNumeric(value.val) && m && m.isValid()) {
-      time_count++
+    if (m && m.isValid()) {
+      // only count pure years in range 1900-2100 as being valid integer dates
+      if (!jQuery.isNumeric(value.val) || (value.val > 1900 && value.val < 2100)) {
+        time_count++
+      }
     }
   })
   // if less than half are times, give up
@@ -118,18 +129,20 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   var earliest = moment("9999-12-31").format(bucketFormat)
   var latest = moment("0001-01-01").format(bucketFormat)
   $.each(group, function(ix, value) {
-    var m = moment(value.val)
-    if (!jQuery.isNumeric(value.val) && m && m.isValid()) {
-      var bucket = m.format(bucketFormat)
-      if (!(bucket in buckets)) {
-        buckets[bucket] = 0
-      }
-      buckets[bucket] += value.c
-      if (bucket < earliest) {
-   	earliest = bucket
-      }
-      if (bucket > latest) {
-   	latest = bucket
+    var m = moment(String(value.val))
+    if (m && m.isValid()) {
+      if (!jQuery.isNumeric(value.val) || (value.val > 1900 && value.val < 2100)) {
+        var bucket = m.format(bucketFormat)
+        if (!(bucket in buckets)) {
+          buckets[bucket] = 0
+        }
+        buckets[bucket] += value.c
+        if (bucket < earliest) {
+     	  earliest = bucket
+        }
+        if (bucket > latest) {
+       	  latest = bucket
+        }
       }
     }
   })
@@ -139,9 +152,9 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
     var bucket = i.format(bucketFormat) 
     var human = i.format(humanFormat)
     if (bucket in buckets) {
-      data.push([human, buckets[bucket]])
+      data.push([human, buckets[bucket], percent(buckets[bucket], total)])
     } else {
-      data.push([human, 0])
+      data.push([human, 0, "0%"])
     }
     // drop out early if too much to show
     if (data.length > 31) {
@@ -152,7 +165,7 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   if (data.length < 2) {
     return
   }
-  data.unshift(['bucket', 'count'])
+  data.unshift(['bucket', 'frequency', 'percent'])
 
   add_fact(name, score, make_bar(col, data), col)
 }
@@ -178,12 +191,11 @@ var fact_countries_chart = function(col, group) {
   if (countries_count < 3 || (countries_count / group.length < 0.7)) {
     return
   }
-  console.log("  countries_count", countries_count, "group.length", group.length, "div", countries_count / group.length)
 
   // Hand the strings to Google to work out what countries they are...
-  var data = [['country', 'count']]
+  var data = [['country', 'frequency', 'percent']]
   $.each(group, function(ix, value) {
-    data.push([String(add_empty(value.val)), /*Math.round(100.0 * value.c / total)*/ value.c])
+    data.push([String(add_empty(value.val)), value.c, percent(value.c, total)])
   })
 
   add_fact("countries_chart", 90, make_geo_countries(col, data), col)
@@ -251,19 +263,19 @@ var fact_numbers_chart = function(col, group) {
     } else {
       bucket_val = 0
     }
-    data.push([((bucket + 0.5)* bins_step), bucket_val, ((bucket + 0) * bins_step), ((bucket + 1) * bins_step)])
+    data.push([((bucket + 0.5)* bins_step), bucket_val, ((bucket + 0) * bins_step), ((bucket + 1) * bins_step), percent(bucket_val, total)])
     if (bucket_val > highest)
       highest = bucket_val
     if (bucket_val > 0 && bucket_val < lowest)
       lowest = bucket_val
   }
-  // console.log(data)
-  data.unshift([col, 'frequency', 'start', 'end'])
+  data.unshift([col, 'frequency', 'start', 'end', 'percent'])
 
   // use logarithmic scale if highest is more than 250 (rough number of pixels) larger than lowest
   //var use_log = (highest / lowest > 250)
+  // .. the log is confusing, disable for now
   var use_log = false
-  console.log("lowest", lowest, "highest", highest, "use_log", use_log)
+  // console.log("lowest", lowest, "highest", highest, "use_log", use_log)
 
   add_fact("numbers_chart", 40, make_column(col, data, use_log), col)
 }

@@ -8,6 +8,10 @@ var groups = {}
 var tab
 var saved_table_ix
 
+// Google Charts have to be late-rendered when the page is visible - this
+// stores functions to run for each tab when it is shown
+var chart_redrawers = {}
+
 // Blacklist some columns because they are useless
 var blacklisted_column = function(col) {
   // Things that end _id are foreign keys - skip for now
