@@ -39,7 +39,7 @@ var fact_groups_table = function(col, group, score_delta) {
     if (value.c / total < 0.05 && gotten >= 5) {
       html += '<tr class="muted">'
       html += '<td>Other</td>'
-      html += '<td><span class="tip-right" title="' + (total - so_far) + ' rows">' + percent(total - so_far, total) + '</td>'
+      html += '<td>' + (total - so_far) + '</td><td>' + percent(total - so_far, total) + '</td>'
       html += '</tr>'
       return false
     }
@@ -47,7 +47,7 @@ var fact_groups_table = function(col, group, score_delta) {
     html += '<tr>'
     html += '<td>' + add_empty(value.val) + '</td>'
     //html += '<td>' + value.c + '</td>'
-    html += '<td><span class="tip-right" title="' + value.c + ' rows">' + percent(value.c, total) + '</td>'
+    html += '<td>' + value.c + '</td><td>' + percent(value.c, total) + '</td>'
     html += '</tr>'
 
     so_far += value.c
@@ -92,8 +92,8 @@ var fact_only_one_significant = function(col, group) {
   }
 
   // we have exactly one value not equal to one
-  html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + percent(group[0].c, total) + 
-    ' of the time">' + phrase + ' </span> <b>' + group[0].val + '</b></p>'
+  html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + group[0].c + " (" + percent(group[0].c, total) + ")" + 
+    '">' + phrase + ' </span> <b>' + add_empty(group[0].val) + '</b></p>'
   add_fact("only_one_significant", 95, html, col)
 }
 
