@@ -1,7 +1,5 @@
 // Make charts and similar
 
-var chart_redrawers = {}
-
 var make_pie = function(title, data) {
   return function(el) {
     var googleData = google.visualization.arrayToDataTable(data)
