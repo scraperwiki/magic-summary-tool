@@ -104,7 +104,6 @@ var fact_time_charts = function(col, group) {
       }
     }
   })
-console.log("time_count", time_count, "group.length", group.length)
   // if less than half are times, give up
   if (time_count < (group.length / 2)) {
     return
@@ -153,13 +152,11 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
     }
     // drop out early if too much to show
     if (data.length > 31) {
-console.log("XXX", humanFormat, "more than 31")
       return
     }
   }
   // Give up if we have too little
   if (data.length < 2) {
-console.log("XXX", humanFormat, "less than 2", data, earliest, latest)
     return
   }
   data.unshift(['bucket', 'frequency', 'percent'])
@@ -188,7 +185,6 @@ var fact_countries_chart = function(col, group) {
   if (countries_count < 3 || (countries_count / group.length < 0.7)) {
     return
   }
-  console.log("  countries_count", countries_count, "group.length", group.length, "div", countries_count / group.length)
 
   // Hand the strings to Google to work out what countries they are...
   var data = [['country', 'frequency', 'percent']]
@@ -267,13 +263,13 @@ var fact_numbers_chart = function(col, group) {
     if (bucket_val > 0 && bucket_val < lowest)
       lowest = bucket_val
   }
-  // console.log(data)
   data.unshift([col, 'frequency', 'start', 'end', 'percent'])
 
   // use logarithmic scale if highest is more than 250 (rough number of pixels) larger than lowest
   //var use_log = (highest / lowest > 250)
+  // .. the log is confusing, disable for now
   var use_log = false
-  console.log("lowest", lowest, "highest", highest, "use_log", use_log)
+  // console.log("lowest", lowest, "highest", highest, "use_log", use_log)
 
   add_fact("numbers_chart", 40, make_column(col, data, use_log), col)
 }
