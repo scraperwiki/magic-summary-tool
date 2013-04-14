@@ -121,8 +121,8 @@ var make_tab = function(cb) {
           groups[col] = group
 
           fact_one_value(col, group)
-          fact_groups_table(col, group)
-          fact_groups_pie(col, group)
+          fact_groups_table(col, group, 0)
+          fact_groups_pie(col, group, 0)
           fact_only_one_significant(col, group)
 
           fact_time_charts(col, group)
