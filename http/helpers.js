@@ -52,3 +52,9 @@ var numberise = function(val) {
 var add_commas = function(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+// http://blog.magnetiq.com/post/497605344/rounding-to-a-certain-significant-figures-in-javascript
+var round_sig_figs = function(n, sig) {
+   return Number(n.toPrecision(sig))
+}
+

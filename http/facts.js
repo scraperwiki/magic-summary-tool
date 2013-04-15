@@ -326,6 +326,7 @@ var fact_numbers_range = function(col, group) {
   var min = Number.MAX_VALUE
   var max = -Number.MAX_VALUE
   var passed = 0
+  var total_not_nulls = 0
   $.each(group, function(ix, value) {
     var n = numberise(value.val)
     if (n != null) {
@@ -341,6 +342,7 @@ var fact_numbers_range = function(col, group) {
       new_value.val = n
       new_value.c = value.c
       in_order.push(value)
+      total_not_nulls += value.c
     }
   })
   // at least half have to *look* like numbers
@@ -354,20 +356,20 @@ var fact_numbers_range = function(col, group) {
 
   // sort so we can work out the median
   in_order.sort(function(a,b) { return a.val - b.val } )
-  console.log("  in_order", col, in_order)
+  // console.log("  in_order", col, in_order)
   var so_far = 0
   var median = null
   $.each(group, function(ix, value) {
     so_far += value.c 
-    if (so_far > total / 2) {
+    if (so_far > total_not_nulls / 2) {
       median = value.val
       return false
     }
   })
 
   var html = '<h1>' + col + '</h1>'
-  html += '<p class="lead">Between <b>' + add_commas(min) + '</b> and <b>' + add_commas(max) + '</b>'
-  html += '<br><span class="tip-bottom" title="i.e. the median value">Typically</span> it\'s  <b>' + add_commas(median) + '</b></p>'
+  html += '<p class="lead">Between ~ <b>' + add_commas(round_sig_figs(min, 2)) + '</b> and <b>' + add_commas(round_sig_figs(max, 2)) + '</b>'
+  html += '<br><span class="tip-bottom" title="i.e. the median value">Typically</span> it\'s ~ <b>' + add_commas(round_sig_figs(median, 2)) + '</b></p>'
   html += '</p>'
 
   add_fact("numbers_range", 35, html, col)
