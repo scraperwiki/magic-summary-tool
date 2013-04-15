@@ -23,8 +23,9 @@ var make_pie = function(title, data) {
    }
 }
 
-var make_bar = function(title, data) {
+var make_time_bar = function(title, data) {
   return function(el) {
+    console.log("make_bar", title, data)
     var googleData = google.visualization.arrayToDataTable(data)
 
     var options = { 
@@ -34,6 +35,7 @@ var make_bar = function(title, data) {
         height: (data.length - 1) * 20,
         fontSize: 16,
 	titlePosition: 'none',
+        hAxis:{minValue: 0},
         /* bar:  {groupWidth:"19"} */
     }
 
