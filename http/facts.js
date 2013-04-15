@@ -28,7 +28,7 @@ var fact_groups_table = function(col, group, score_delta) {
 
   // if we have less than 5, we always show
   if (group.length > 5) {
-    console.log("  ", col, ": second most common value, percent:", group[1].c / total, "value:", group[1].c, "root total:", Math.sqrt(total) )
+    //console.log("  ", col, ": second most common value, percent:", group[1].c / total, "value:", group[1].c, "root total:", Math.sqrt(total) )
     // otherwise, only show if the second most common value is at least 5%... or
     if (group[1].c / total < 0.05) {
       // if the second most common value is at least the sqrt of the number of rows
@@ -319,6 +319,8 @@ var fact_numbers_chart = function(col, group) {
 
 // Fact show min/median/max
 var fact_numbers_range = function(col, group) {
+  var in_order = []
+
   // Enough numbers?
   var count = 0
   var min = Number.MAX_VALUE
@@ -333,7 +335,12 @@ var fact_numbers_range = function(col, group) {
       if (n > max) {
         max = n
       }
-      count ++
+      count++
+
+      new_value = {}
+      new_value.val = n
+      new_value.c = value.c
+      in_order.push(value)
     }
   })
   // at least half have to *look* like numbers
@@ -345,8 +352,23 @@ var fact_numbers_range = function(col, group) {
     return
   }
 
+  // sort so we can work out the median
+  in_order.sort(function(a,b) { return a.val - b.val } )
+  console.log("  in_order", col, in_order)
+  var so_far = 0
+  var median = null
+  $.each(group, function(ix, value) {
+    so_far += value.c 
+    if (so_far > total / 2) {
+      median = value.val
+      return false
+    }
+  })
+
   var html = '<h1>' + col + '</h1>'
-  html += '<p class="lead">Ranges from <b>' + add_commas(min) + '</b> to <b>' + add_commas(max) + '</b></p>'
+  html += '<p class="lead">Between <b>' + add_commas(min) + '</b> and <b>' + add_commas(max) + '</b>'
+  html += '<br><span class="tip-bottom" title="i.e. the median value">Typically</span> it\'s  <b>' + add_commas(median) + '</b></p>'
+  html += '</p>'
 
   add_fact("numbers_range", 35, html, col)
 }
