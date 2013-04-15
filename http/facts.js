@@ -237,7 +237,7 @@ var fact_numbers_chart = function(col, group) {
       }
       count ++
       // if there is more than one, or we're in floats, we have some density
-      if (value.c > 1 || (value.c % 1 != 0) {
+      if (value.c > 1 || (value.c % 1 != 0)) {
         more_than_one_same++
       }
     }
@@ -348,21 +348,21 @@ var fact_image_collage = function(col, group) {
 
 // Fact - text into a Wordle-like thing
 var fact_word_cloud = function(col, group) {
-  tags = {};
-  var cases = {};
+  tags = {}
+  var cases = {}
   var count = 0
   var total_wordings = 0
   $.each(group, function(ix, value) {
     String(value.val).split(wordCloudSeparators).forEach(function(word) {
-      if (wordCloudDiscard.test(word)) return;
-      word = word.replace(wordCloudPunctuation, "");
-      if (wordCloudStops.test(word.toLowerCase())) return;
-      if (word.length < 3) return;
-      word = word.substr(0, 30);
-      cases[word.toLowerCase()] = word;
+      if (wordCloudDiscard.test(word)) return
+      word = word.replace(wordCloudPunctuation, "")
+      if (wordCloudStops.test(word.toLowerCase())) return
+      if (word.length < 3) return
+      word = word.substr(0, 30)
+      cases[word.toLowerCase()] = word
       tags[word = word.toLowerCase()] = (tags[word] || 0) + 1 //value.c
       total_wordings += 1
-    });
+    })
     count += 1
   })
   // an average of four words per value seems to mean we have some real text
@@ -372,8 +372,8 @@ var fact_word_cloud = function(col, group) {
     return
   }
 
-  tags = d3.entries(tags).sort(function(a, b) { return b.value - a.value; });
-  tags.forEach(function(d) { d.key = cases[d.key]; });
+  tags = d3.entries(tags).sort(function(a, b) { return b.value - a.value; })
+  tags.forEach(function(d) { d.key = cases[d.key]; })
   tags = tags.slice(0, 100)
   //console.log(col, "word tags", tags)
   add_fact("word_cloud", 50, make_word_cloud(col, tags), col)
