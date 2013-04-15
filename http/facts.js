@@ -279,6 +279,7 @@ var fact_numbers_chart = function(col, group) {
   // Loop through every bucket 
   var data = []
   var highest = -Number.MAX_VALUE
+  var second_highest = -Number.MAX_VALUE
   var lowest = Number.MAX_VALUE // excluding zero, i.e. lowest visible
   for (var i = start - 1; i <= end + 1; i++) {
     var bucket = i
@@ -290,18 +291,28 @@ var fact_numbers_chart = function(col, group) {
       bucket_val = 0
     }
     data.push([((bucket + 0.5)* bins_step), bucket_val, ((bucket + 0) * bins_step), ((bucket + 1) * bins_step), percent(bucket_val, total)])
-    if (bucket_val > highest)
+    if (bucket_val > highest) {
+      second_highest = highest
       highest = bucket_val
+    }
+    if (bucket_val > second_highest && bucket_val < highest) {
+      second_highest = bucket_val
+    }
     if (bucket_val > 0 && bucket_val < lowest)
       lowest = bucket_val
   }
   data.unshift([col, 'frequency', 'start', 'end', 'percent'])
+  console.log("  ", col, "lowest", lowest, "highest", highest, "second_highest", second_highest)
+
+  // the second highest column needs to be at least 5% of data to have pretty charts
+  if ((second_highest / total) < 0.05) {
+    return
+  }
 
   // use logarithmic scale if highest is more than 250 (rough number of pixels) larger than lowest
   //var use_log = (highest / lowest > 250)
   // .. the log is confusing, disable for now
   var use_log = false
-  // console.log("lowest", lowest, "highest", highest, "use_log", use_log)
 
   add_fact("numbers_chart", 40, make_column(col, data, use_log), col)
 }
