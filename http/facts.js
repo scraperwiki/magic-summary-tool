@@ -185,7 +185,7 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   }
   data.unshift(['bucket', 'frequency', 'percent'])
 
-  add_fact(name, score, make_bar(col, data), col)
+  add_fact(name, score, make_time_bar(col, data), col)
 }
 
 // Fact - countries on a world map
