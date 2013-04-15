@@ -341,7 +341,7 @@ var fact_numbers_range = function(col, group) {
       new_value = {}
       new_value.val = n
       new_value.c = value.c
-      in_order.push(value)
+      in_order.push(new_value)
       total_not_nulls += value.c
     }
   })
@@ -366,6 +366,9 @@ var fact_numbers_range = function(col, group) {
       return false
     }
   })
+
+  //console.log(in_order)
+  //console.log("  col", col, "min", min, "max", max, "median", median)
 
   var html = '<h1>' + col + '</h1>'
   html += '<p class="lead">Between ~ <b>' + add_commas(round_sig_figs(min, 2)) + '</b> and <b>' + add_commas(round_sig_figs(max, 2)) + '</b>'
