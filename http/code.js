@@ -175,6 +175,9 @@ $(function() {
         $('.tip-bottom').tooltip({ 'placement': 'bottom' })
       })
     })
+  }, function(err) {
+    console.log(err)
+    scraperwiki.alert(err.responseText, "", true)
   })
 
   $('#bugs').on('click', function() {
