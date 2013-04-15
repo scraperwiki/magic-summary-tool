@@ -24,8 +24,9 @@ var fact_groups_table = function(col, group, score_delta) {
   // if we have less than 5, we always show
   if (group.length > 5) {
     // otherwise, only show if the second most common value is at least 5%
+    console.log("  ", col, ": second most common value, percent:", group[1].c / total, "value:", group[1].c, "root total:", Math.sqrt(total) )
     if (group[1].c / total < 0.05) {
-      return
+//      return
     }
   }
   if (group.length < 2) {
