@@ -117,7 +117,8 @@ var make_tab = function(cb) {
           cb2()
 	  return
         }
-        scraperwiki.sql("select `" + col + "` as val, count(*) as c from `" + table + "` group by `" + col + "` order by c desc", function(group) {
+        // the nullif here converts empty strings to nulls, to simplify stuff
+        scraperwiki.sql("select nullif(`" + col + "`, '') as val, count(*) as c from `" + table + "` group by val order by c desc", function(group) {
           groups[col] = group
 
           fact_one_value(col, group)
