@@ -317,6 +317,40 @@ var fact_numbers_chart = function(col, group) {
   add_fact("numbers_chart", 40, make_column(col, data, use_log), col)
 }
 
+// Fact show min/median/max
+var fact_numbers_range = function(col, group) {
+  // Enough numbers?
+  var count = 0
+  var min = Number.MAX_VALUE
+  var max = -Number.MAX_VALUE
+  var passed = 0
+  $.each(group, function(ix, value) {
+    var n = numberise(value.val)
+    if (n != null) {
+      if (n < min) {
+        min = n
+      }
+      if (n > max) {
+        max = n
+      }
+      count ++
+    }
+  })
+  // at least half have to *look* like numbers
+  if (count < (group.length / 2)) {
+    return
+  }
+  // the numbers have to vary
+  if (min == max) {
+    return
+  }
+
+  var html = '<h1>' + col + '</h1>'
+  html += '<p class="lead">Ranges from <b>' + add_commas(min) + '</b> to <b>' + add_commas(max) + '</b></p>'
+
+  add_fact("numbers_range", 35, html, col)
+}
+
 // Fact - images to be shown in collages
 var fact_image_collage = function(col, group) {
   // See if we have enough images
