@@ -236,8 +236,8 @@ var fact_numbers_chart = function(col, group) {
         max = n
       }
       count ++
-      if (value.c > 1) {
-        console.log("***", col, value.val, value.c)
+      // if there is more than one, or we're in floats, we have some density
+      if (value.c > 1 || (value.c % 1 != 0) {
         more_than_one_same++
       }
     }
@@ -250,7 +250,7 @@ var fact_numbers_chart = function(col, group) {
   if (min == max) {
     return
   }
-  // at least one (non-null) number has to appear twice
+  // at least one (non-null) number has to appear twice (or we're all floats)
   if (more_than_one_same < 1) {
     return
   }
