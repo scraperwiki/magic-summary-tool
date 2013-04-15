@@ -348,6 +348,12 @@ var fact_image_collage = function(col, group) {
 
 // Fact - text into a Wordle-like thing
 var fact_word_cloud = function(col, group) {
+  // is it mainly nulls (which includes empty strings given the nullif in the SQL query in code.js)?
+  if (group[0].val == null && (group[0].c / total > 0.90)) {
+    return
+  }
+
+  // get the words and count how many per row
   tags = {}
   var cases = {}
   var count = 0
