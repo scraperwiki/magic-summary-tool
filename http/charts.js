@@ -25,7 +25,6 @@ var make_pie = function(title, data) {
 
 var make_time_bar = function(title, data) {
   return function(el) {
-    console.log("make_bar", title, data)
     var googleData = google.visualization.arrayToDataTable(data)
 
     var options = { 

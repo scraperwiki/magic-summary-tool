@@ -359,7 +359,7 @@ var fact_numbers_range = function(col, group) {
   // console.log("  in_order", col, in_order)
   var so_far = 0
   var median = null
-  $.each(group, function(ix, value) {
+  $.each(in_order, function(ix, value) {
     so_far += value.c 
     if (so_far > total_not_nulls / 2) {
       median = value.val
