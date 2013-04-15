@@ -231,7 +231,6 @@ var fact_numbers_chart = function(col, group) {
   var count = 0
   var min = Number.MAX_VALUE
   var max = -Number.MAX_VALUE
-  var more_than_one_same = 0
   $.each(group, function(ix, value) {
     var n = numberise(value.val)
     if (n != null) {
@@ -242,10 +241,6 @@ var fact_numbers_chart = function(col, group) {
         max = n
       }
       count ++
-      // if there is more than one, or we're in floats, we have some density
-      if (value.c > 1 || (value.c % 1 != 0)) {
-        more_than_one_same++
-      }
     }
   })
   // at least half have to *look* like numbers
@@ -254,10 +249,6 @@ var fact_numbers_chart = function(col, group) {
   }
   // the numbers have to vary
   if (min == max) {
-    return
-  }
-  // at least one (non-null) number has to appear twice (or we're all floats)
-  if (more_than_one_same < 1) {
     return
   }
 
