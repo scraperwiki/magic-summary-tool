@@ -7,6 +7,7 @@ var total
 var groups = {}
 var tab
 var saved_table_ix
+var nltk_stop_words
 
 // Google Charts have to be late-rendered when the page is visible - this
 // stores functions to run for each tab when it is shown
@@ -98,6 +99,14 @@ var make_tab = function(cb) {
   })
 
   async.auto({
+    // Get stopwords
+    stopWords: [ function(cb) {
+	scraperwiki.exec("./tool/stopwords.py", function(data) {
+           nltk_stop_words = JSON.parse(data)
+           // console.log("stopwords", nltk_stop_words)
+           cb()
+        }, handle_error)
+    } ],
     // Get total number of rows
     getTotal: [ function(cb) {
       scraperwiki.sql("select count(*) as c from `" + table + "`", function(data) {
@@ -111,7 +120,7 @@ var make_tab = function(cb) {
       }, handle_error)
     } ],
     // For every column, count the number of meta groupings
-    getGroups: [ 'getTotal', function(cb1) {
+    getGroups: [ 'stopWords', 'getTotal', function(cb1) {
       async.forEach(meta.columnNames, function(col, cb2) {
         if (blacklisted_column(col)) {
           cb2()
