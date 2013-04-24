@@ -433,7 +433,9 @@ var fact_word_cloud = function(col, group) {
     String(value.val).split(wordCloudSeparators).forEach(function(word) {
       if (wordCloudDiscard.test(word)) return
       word = word.replace(wordCloudPunctuation, "")
-      if (wordCloudStops.test(word.toLowerCase())) return
+      var word_lower = word.toLowerCase()
+      if (wordCloudStops.test(word_lower)) return
+      if (word_lower in nltk_stop_words) return
       if (word.length < 3) return
       word = word.substr(0, 30)
       cases[word.toLowerCase()] = word
