@@ -103,8 +103,8 @@ var make_tab = function(cb) {
       scraperwiki.sql("select count(*) as c from `" + table + "`", function(data) {
         total = data[0].c
         fact_total_rows()
-        // finish early if only one row - nothing else is interesting
-        if (total == 1) 
+        // finish early if one or zero rows - nothing else is interesting
+        if (total <= 1) 
          cb("onerow")
         else
          cb()
