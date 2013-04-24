@@ -319,6 +319,10 @@ var fact_numbers_chart = function(col, group) {
 
 // Fact show min/median/max
 var fact_numbers_range = function(col, group) {
+  if (group.length < 2) {
+    return
+  }
+
   var in_order = []
 
   // Enough numbers?
@@ -387,6 +391,9 @@ var fact_image_collage = function(col, group) {
       image_count ++
     }
   })
+  if (image_count < 1) {
+    return
+  }
   if (image_count < 4 && image_count != group.length) {
     return
   }
