@@ -118,11 +118,13 @@ var fact_time_charts = function(col, group) {
     return
   }
 
-  // try grouping into buckets at various granularities
-  _bucket_time_chart(col, group, "YYYY", "years", "YYYY", "time_chart_year", 90)
-  _bucket_time_chart(col, group, "YYYY-MM", "months", "MMM YYYY", "time_chart_month", 91)
-  _bucket_time_chart(col, group, "YYYY-MM-DD", "days", "D MMM YYYY", "time_chart_day", 92)
-  _bucket_time_chart(col, group, "YYYY-MM-DD HH", "hours", "ha D MMM YYYY", "time_chart_hour", 93)
+  // try grouping into buckets at various granularities - do in this order, so
+  // we get the most compact (years) by default, unless one of the others produces more information
+  // in the chart (see the score used inside _bucket_time_chart's called to add_fact)
+  _bucket_time_chart(col, group, "YYYY", "years", "YYYY", "time_chart_year")
+  _bucket_time_chart(col, group, "YYYY-MM", "months", "MMM YYYY", "time_chart_month")
+  _bucket_time_chart(col, group, "YYYY-MM-DD", "days", "D MMM YYYY", "time_chart_day")
+  _bucket_time_chart(col, group, "YYYY-MM-DD HH", "hours", "ha D MMM YYYY", "time_chart_hour")
 }
 
 var _to_moment = function(val) {
@@ -148,7 +150,7 @@ var _to_moment = function(val) {
   return m
 }
 
-var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanFormat, name, score) {
+var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanFormat, name) {
   // Count number of items in each bucket (e.g. each month)
   var html = '<h1>' + col + '</h1>'
   var buckets = {}
@@ -172,11 +174,13 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   })
   // Loop through every bucket in the range earliest to latest (e.g. each month)
   var data = []
+  var bars_count = 0
   for (var i = moment(earliest); i <= moment(latest); i.add(bucketOffset, 1)) {
     var bucket = i.format(bucketFormat) 
     var human = i.format(humanFormat)
     if (bucket in buckets) {
       data.push([human, buckets[bucket], percent(buckets[bucket], total)])
+      bars_count++
     } else {
       data.push([human, 0, "0%"])
     }
@@ -191,7 +195,8 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   }
   data.unshift(['bucket', 'frequency', 'percent'])
 
-  add_fact(name, score, make_time_bar(col, data), col)
+  // we score slightly more, the more filled in bars there are in the histogram.
+  add_fact(name, 90 + (bars_count / 100), make_time_bar(col, data), col)
 }
 
 // Fact - countries on a world map
@@ -301,7 +306,7 @@ var fact_numbers_chart = function(col, group) {
       lowest = bucket_val
   }
   data.unshift([col, 'frequency', 'start', 'end', 'percent'])
-  console.log("  ", col, "lowest", lowest, "highest", highest, "second_highest", second_highest)
+  //console.log("  ", col, "lowest", lowest, "highest", highest, "second_highest", second_highest)
 
   // the second highest column needs to be at least 5% of data to have pretty charts
   if ((second_highest / total) < 0.05) {
