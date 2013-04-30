@@ -40,6 +40,7 @@ var add_fact = function(name, score, html, col) {
   console.log("  col:", col, "found fact:", name, "score:", score, "current_score:", current_score)
 
   var dom = $('<div class="item" score="' + score + '">')
+  var changed = false
 
   // if the existing item is replaced by new, or new one is always show, show new one
   if (current_score < score || score >= 100) {
@@ -50,6 +51,7 @@ var add_fact = function(name, score, html, col) {
       dom.html(html)
       tab.find('.facts').append(dom)
     }
+    changed = true
   }
 
   // if current item is replaceable (score < 100), replace it
@@ -57,9 +59,15 @@ var add_fact = function(name, score, html, col) {
     if (current_dom != null) {
       current_dom.remove()
       delete current_dom
+      changed = true
     }
     fact_scores[col] = score
     fact_doms[col] = dom
+  }
+
+  // rebuild the layout
+  if (changed) {
+    tab.find('.facts').masonry('reload')
   }
 }
 
@@ -153,7 +161,6 @@ var make_tab = function(cb) {
     } ]
   }, function() {
     console.log("table done:", table)
-    tab.find('.facts').masonry('reload')
     tab.find('p.loading').remove()
     cb()
   })
