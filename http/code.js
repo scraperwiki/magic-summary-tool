@@ -45,11 +45,11 @@ var add_fact = function(name, score, html, col) {
   // if the existing item is replaced by new, or new one is always show, show new one
   if (current_score < score || score >= 100) {
     if (typeof(html) == "function") {
-      tab.find('.facts').append(dom)
+      tab.find('.facts .loading').before(dom)
       html(dom)
     } else {
       dom.html(html)
-      tab.find('.facts').append(dom)
+      tab.find('.facts .loading').before(dom)
     }
     changed = true
   }
@@ -85,7 +85,7 @@ var make_tab = function(cb) {
   $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="facts"></div></div>')
   tab = $("#" + tab_id)
   tab.find('.facts').masonry({ itemSelector : '.item' })
-  tab.append('<p class="loading item">Summarising&hellip;</p>')
+  tab.find('.facts').append('<p class="loading item">Summarising&hellip;</p>')
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
   $(".nav").show()
 
