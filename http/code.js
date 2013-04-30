@@ -79,6 +79,7 @@ var make_tab = function(cb) {
   tab.find('.facts').masonry({ itemSelector : '.item' })
   tab.append('<p class="loading item">Summarising&hellip;</p>')
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
+  $(".nav").show()
 
   var local_tab = tab
   var local_tab_id = tab_id
