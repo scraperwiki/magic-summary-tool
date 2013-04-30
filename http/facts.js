@@ -283,7 +283,6 @@ var fact_numbers_chart = function(col, group) {
   var lowest = Number.MAX_VALUE // excluding zero, i.e. lowest visible
   for (var i = start - 1; i <= end + 1; i++) {
     var bucket = i
-    var human = (bucket * bins_step) + " - " + ((bucket + 1) * bins_step)
     var bucket_val
     if (bucket in buckets) {
       bucket_val = buckets[bucket]
