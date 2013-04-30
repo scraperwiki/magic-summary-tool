@@ -88,7 +88,7 @@ var make_geo_countries = function(title, data) {
    }
 }
 
-var make_column = function(title, data, use_log) {
+var make_column = function(title, data, use_log, step_of_one) {
   return function(el) {
     var googleData = google.visualization.arrayToDataTable(data)
 
@@ -104,7 +104,11 @@ var make_column = function(title, data, use_log) {
     }
 
     // Render column 0 as a range of the bar "start - end"
-    var formatter = new google.visualization.PatternFormat(title + ': {2} - {3}')
+    var formatter 
+    if (step_of_one) 
+      formatter = new google.visualization.PatternFormat(title + ': {2}')
+    else
+      formatter = new google.visualization.PatternFormat(title + ': {2} - {3}')
     formatter.format(googleData, [0, 1, 2, 3, 4], 0) 
     // Render column 1 as a percentage as well as frequency
     var formatter2 = new google.visualization.PatternFormat('{1} ({4})')

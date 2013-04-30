@@ -313,7 +313,7 @@ var fact_numbers_chart = function(col, group) {
   // .. the log is confusing, disable for now
   var use_log = false
 
-  add_fact("numbers_chart", 40, make_column(col, data, use_log), col)
+  add_fact("numbers_chart", 40, make_column(col, data, use_log, bins_step == 1), col)
 }
 
 // Fact show min/median/max
