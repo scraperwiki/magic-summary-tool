@@ -89,6 +89,10 @@ var make_tab = function(cb) {
   $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
   $(".nav").show()
 
+  // these are global variables - clear for each tab
+  fact_scores = {}
+  fact_doms = {}
+
   var local_tab = tab
   var local_tab_id = tab_id
   var local_table_ix = table_ix
