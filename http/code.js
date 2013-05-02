@@ -195,7 +195,7 @@ $(function() {
         $('.tip-right').tooltip({ 'placement': 'right' })
         $('.tip-bottom').tooltip({ 'placement': 'bottom' })
       })
-    })
+    }, handle_error)
   }, function(err) {
     console.log(err)
     scraperwiki.alert(err.responseText, "", true)
