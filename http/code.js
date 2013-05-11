@@ -114,11 +114,15 @@ var make_tab = function(cb) {
   async.auto({
     // Get stopwords
     stopWords: [ function(cb) {
-	scraperwiki.exec("./tool/stopwords.py", function(data) {
-           nltk_stop_words = JSON.parse(data)
-           // console.log("stopwords", nltk_stop_words)
-           cb()
-        }, handle_error)
+        if (nltk_stop_words != null) {
+          cb()
+        } else {
+    	  scraperwiki.exec("./tool/stopwords.py", function(data) {
+             nltk_stop_words = JSON.parse(data)
+             // console.log("stopwords", nltk_stop_words)
+             cb()
+          }, handle_error)
+        }
     } ],
     // Get total number of rows
     getTotal: [ function(cb) {
