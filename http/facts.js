@@ -10,9 +10,30 @@ var fact_total_rows = function() {
 // Fact - if every value in the columns is the same, say that clearly
 var fact_one_value = function(col, group) {
   if (group.length == 1) {
-    html = '<h1>' + col + '</h1><p class="lead">is always <b>' + group[0].val + '</b></p>'
+    html = '<h1>' + col + '</h1><p class="lead">is always <b>' + format_for_display(group[0].val) + '</b></p>'
     add_fact("one_value", 99, html, col)
   }
+}
+
+// Fact - cases when one value has more than 90% or 95%
+var fact_only_one_significant = function(col, group) {
+  if (group.length < 3) {
+    return
+  }
+
+  var phrase
+  if (group[0].c / total >= 0.95) {
+    phrase = "nearly always"
+  } else if (group[0].c / total >= 0.90) {
+    phrase = "almost always"
+  } else {
+    return
+  }
+
+  // we have exactly one value not equal to one
+  html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + group[0].c + " (" + percent(group[0].c, total) + ")" + 
+    '">' + phrase + ' </span> <b>' + format_for_display(group[0].val) + '</b></p>'
+  add_fact("only_one_significant", 95, html, col)
 }
 
 // Fact - for columns with few values, or with some very common values (>5% of
@@ -80,27 +101,6 @@ var fact_groups_pie = function(col, group, score_delta) {
   })
 
   add_fact("groups_pie", 60 + score_delta, make_pie(col, data), col)
-}
-
-// Fact - cases when one value has more than 95%
-var fact_only_one_significant = function(col, group) {
-  if (group.length < 3) {
-    return
-  }
-
-  var phrase
-  if (group[0].c / total >= 0.95) {
-    phrase = "nearly always"
-  } else if (group[0].c / total >= 0.90) {
-    phrase = "almost always"
-  } else {
-    return
-  }
-
-  // we have exactly one value not equal to one
-  html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + group[0].c + " (" + percent(group[0].c, total) + ")" + 
-    '">' + phrase + ' </span> <b>' + format_for_display(group[0].val) + '</b></p>'
-  add_fact("only_one_significant", 95, html, col)
 }
 
 // Fact - date times
