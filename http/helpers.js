@@ -8,15 +8,23 @@ var percent = function(val, tot) {
   return Math.round(100.0 * val / tot) + '%'
 }
 
-var format_for_display = function(val) {
+var format_for_display = function(val, ellide) {
+  if (ellide == undefined) {
+    ellide = true
+  }
+
   if (val === null || val === "") {
     val = "(empty)"
   }
   val = String(val)
-  var MAX_LENGTH = 30
-  if (val.length > MAX_LENGTH) {
-    val = '<span class="ellided" title="' + val + '">' + val.substr(0, MAX_LENGTH) + '&hellip;</span>'
+
+  if (ellide) {
+    var MAX_LENGTH = 30
+    if (val.length > MAX_LENGTH) {
+      val = '<span class="ellided" title="' + val + '">' + val.substr(0, MAX_LENGTH) + '&hellip;</span>'
+    }
   }
+
   return val
 }
 
