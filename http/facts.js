@@ -407,7 +407,7 @@ var fact_image_collage = function(col, group) {
   var html = '<h1>' + col + '</h1><div class="collage">'
   $.each(group, function(ix, value) {
     if (is_image_url(String(value.val))) {
-      html += '<a href="' + value.val + '"><img class="tip-bottom" title="' + percent(value.c, total) + ', ' + value.c + ' rows - ' + value.val + '" src="' + value.val + '"></a>'
+      html += '<a href="' + value.val + '"><img class="tip-bottom" title="' + value.c + " (" + percent(value.c, total) + ') - ' + value.val + '" src="' + value.val + '"></a>'
       count = count + 1
       if (count >= 16) {
         return false
@@ -419,9 +419,9 @@ var fact_image_collage = function(col, group) {
   })
   html += "</div>"
   if (count == image_count) {
-    html += '<p>All the images</p>'
+    html += '<p>Exactly ' + image_count + ' images</p>'
   } else {
-    html += '<p>Some of the images, in order of frequency</p>'
+    html += '<p>Most frequent ' + count + ' images</p>'
   }
   add_fact("image_collage", 90, html, col)
 }
