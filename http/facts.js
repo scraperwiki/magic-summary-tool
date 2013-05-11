@@ -130,8 +130,8 @@ var fact_time_charts = function(col, group) {
 var _to_moment = function(val) {
   var m
   if (jQuery.isNumeric(val)) {
-    // it looks like an epoch date - between 1st January 1990 and 2100
-    if (val > 631152000 && val < 4102444800) {
+    // it looks like an epoch date - between 1st January 1990 and 2100 (but without a leading zero, see https://github.com/frabcus/magic-summary-tool/issues/37)
+    if (val > 631152000 && val < 4102444800 && val[0] != '0') {
       m = moment.unix(Number(val))
     // it looks like a year - between 1900 and 2100
     } else if (val >= 1900 & val <= 2100) {
