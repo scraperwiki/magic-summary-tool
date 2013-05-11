@@ -51,7 +51,7 @@ var fact_groups_table = function(col, group, score_delta) {
     }
 
     html += '<tr>'
-    html += '<td>' + add_empty(value.val) + '</td>'
+    html += '<td>' + format_for_display(value.val) + '</td>'
     //html += '<td>' + value.c + '</td>'
     html += '<td>' + value.c + '</td><td>' + percent(value.c, total) + '</td>'
     html += '</tr>'
@@ -76,7 +76,7 @@ var fact_groups_pie = function(col, group, score_delta) {
 
   var data = [['value', 'frequency']]
   $.each(group, function(ix, value) {
-    data.push([String(add_empty(value.val)), value.c])
+    data.push([format_for_display(value.val), value.c])
   })
 
   add_fact("groups_pie", 60 + score_delta, make_pie(col, data), col)
@@ -99,7 +99,7 @@ var fact_only_one_significant = function(col, group) {
 
   // we have exactly one value not equal to one
   html = '<h1>' + col + '</h1><p class="lead">is <span class="tip-bottom" title="' + group[0].c + " (" + percent(group[0].c, total) + ")" + 
-    '">' + phrase + ' </span> <b>' + add_empty(group[0].val) + '</b></p>'
+    '">' + phrase + ' </span> <b>' + format_for_display(group[0].val) + '</b></p>'
   add_fact("only_one_significant", 95, html, col)
 }
 
@@ -224,7 +224,7 @@ var fact_countries_chart = function(col, group) {
   // Hand the strings to Google to work out what countries they are...
   var data = [['country', 'frequency', 'percent']]
   $.each(group, function(ix, value) {
-    data.push([String(add_empty(value.val)), value.c, percent(value.c, total)])
+    data.push([format_for_display(value.val), value.c, percent(value.c, total)])
   })
 
   add_fact("countries_chart", 90, make_geo_countries(col, data), col)
