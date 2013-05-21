@@ -55,7 +55,7 @@ var make_time_bar = function(title, data) {
    }
 }
 
-var make_geo_countries = function(title, data) {
+var make_geo_regions = function(title, data, region, resolution) {
   return function(el) {
     var googleData = google.visualization.arrayToDataTable(data)
 
@@ -64,7 +64,8 @@ var make_geo_countries = function(title, data) {
         chartArea:{left:"120",top:"0",width:"100%",height:"100%"},
         width: 420,
         fontSize: 16,
-        region: 'world',
+        region: region,
+        resolution: resolution,
         displayMode: 'regions',
         colorAxis: { minValue: 0,  colors: ['#EEFFEE', '#109618'] },
         backgroundColor: { fill: '#FAFAFF', stroke: '#0000FF', strokeWidth: 0 },

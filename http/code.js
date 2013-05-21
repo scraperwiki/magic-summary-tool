@@ -187,6 +187,7 @@ var make_tab = function(cb) {
 
           fact_time_charts(col, group)
           fact_countries_chart(col, group)
+          fact_states_chart(col, group)
           fact_numbers_chart(col, group)
           fact_numbers_range(col, group)
 
