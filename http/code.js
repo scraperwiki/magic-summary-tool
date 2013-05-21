@@ -24,6 +24,12 @@ var blacklisted_column = function(col) {
   return false
 }
 
+// Given a group convert empty string to null
+var merge_empty_and_null = function(group) {
+//          groups[col] = group
+  
+}
+
 // Scores for facts are:
 // <100 show only highest which has same col value
 // >=100 show multiple ones with score more than 100
@@ -144,8 +150,10 @@ var make_tab = function(cb) {
 	  return
         }
         // the nullif here converts empty strings to nulls, to simplify stuff
-        scraperwiki.sql("select nullif(`" + col + "`, '') as val, count(*) as c from `" + table + "` group by val order by c desc", function(group) {
+        scraperwiki.sql("select `" + col + "` as val, count(*) as c from `" + table + "` group by val order by c desc", function(group) {
+          merge_empty_and_null(group)
           groups[col] = group
+          console.log("col group:", col, group)
 
           fact_one_value(col, group)
           fact_only_one_significant(col, group)
