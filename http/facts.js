@@ -383,7 +383,7 @@ var fact_numbers_range = function(col, group) {
   html += '<br><span class="tip-bottom" title="i.e. the median value">Typically</span> it\'s ~ <b>' + add_commas(round_sig_figs(median, 2)) + '</b></p>'
   html += '</p>'
 
-  add_fact("numbers_range", 5, html, col)
+  add_fact("numbers_range", 15, html, col)
 }
 
 // Fact - images to be shown in collages
