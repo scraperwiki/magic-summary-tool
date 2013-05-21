@@ -24,10 +24,36 @@ var blacklisted_column = function(col) {
   return false
 }
 
-// Given a group convert empty string to null
-var merge_empty_and_null = function(group) {
-//          groups[col] = group
-  
+// Given an array of grouped items with their counts, merge empty strings with 
+// nulls -- because most users don't care about the difference particularly, we 
+// display both as (empty) in the user interface
+var merge_empty_and_null = function(col, group) {
+  // console.log("col group:", col, group)
+
+  var empty_ix = null
+  var null_ix = null
+  $.each(group, function(ix, value) {
+    if (value.val === null) {
+      null_ix = ix
+    }
+    if (value.val === "") {
+      empty_ix = ix
+      // use null for empty strings
+      value.val = null
+    }
+    if (null_ix !== null && empty_ix !== null) {
+      // this is just an optimisation
+      return false
+    }
+  })
+  // we found both a null and an empty entry, merge them
+  if (null_ix !== null && empty_ix !== null) {
+    group[null_ix].c += group[empty_ix].c
+    delete group[empty_ix]
+    group.sort(function(a,b) { return b.c - a.c})
+    group.length--
+    // console.log("NULLMERGED col group:", col, group)
+  }
 }
 
 // Scores for facts are:
@@ -151,9 +177,8 @@ var make_tab = function(cb) {
         }
         // the nullif here converts empty strings to nulls, to simplify stuff
         scraperwiki.sql("select `" + col + "` as val, count(*) as c from `" + table + "` group by val order by c desc", function(group) {
-          merge_empty_and_null(group)
+          merge_empty_and_null(col, group)
           groups[col] = group
-          console.log("col group:", col, group)
 
           fact_one_value(col, group)
           fact_only_one_significant(col, group)
