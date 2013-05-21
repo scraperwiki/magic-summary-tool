@@ -240,14 +240,11 @@ var fact_states_chart = function(col, group) {
   // See if we have enough countries
   var states_count = 0
   $.each(group, function(ix, value) {
-if (col == "state") {
-console.log("val", 'US-' + $.trim(value.val).toUpperCase())
-}
     if (_.contains(iso3166_2_us, $.trim(value.val).toUpperCase()) || _.contains(iso3166_2_us, 'US-' + $.trim(value.val).toUpperCase())) {
       states_count++
     }
   })
-  console.log("states_count", states_count, states_count / group.length)
+  //console.log("states_count", states_count, states_count / group.length)
   // if less than three or less than 10% are states, give up
   if (states_count < 3 || (states_count / group.length < 0.7)) {
     return
