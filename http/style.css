@@ -51,3 +51,6 @@ b {
   right: 20px;
   top: 12px;
 }
+.table td.numeric {
+ /* text-align: right */
+}

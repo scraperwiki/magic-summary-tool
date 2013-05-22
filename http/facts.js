@@ -66,7 +66,7 @@ var fact_groups_table = function(col, group, score_delta) {
     if (value.c / total < 0.05 && gotten >= 5) {
       html += '<tr class="muted">'
       html += '<td>Other</td>'
-      html += '<td>' + (total - so_far) + '</td><td>' + percent(total - so_far, total) + '</td>'
+      html += '<td class="numeric">' + (total - so_far) + '</td><td class="numeric">' + percent(total - so_far, total) + '</td>'
       html += '</tr>'
       return false
     }
@@ -74,7 +74,7 @@ var fact_groups_table = function(col, group, score_delta) {
     html += '<tr>'
     html += '<td>' + format_for_display(value.val) + '</td>'
     //html += '<td>' + value.c + '</td>'
-    html += '<td>' + value.c + '</td><td>' + percent(value.c, total) + '</td>'
+    html += '<td class="numeric">' + value.c + '</td><td class="numeric">' + percent(value.c, total) + '</td>'
     html += '</tr>'
 
     so_far += value.c
