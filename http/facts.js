@@ -125,6 +125,29 @@ var fact_time_charts = function(col, group) {
   _bucket_time_chart(col, group, "YYYY-MM", "months", "MMM YYYY", "time_chart_month")
   _bucket_time_chart(col, group, "YYYY-MM-DD", "days", "D MMM YYYY", "time_chart_day")
   _bucket_time_chart(col, group, "YYYY-MM-DD HH", "hours", "ha D MMM YYYY", "time_chart_hour")
+
+  // Add a simple date range fact too, to cover cases where all the charts were too large/small
+  var earliest = moment("9999-12-31")
+  var latest = moment("0001-01-01")
+  var earliest_val
+  var latest_val
+  $.each(group, function(ix, value) {
+    var m = _to_moment(value.val)
+    if (m) {
+      if (m < earliest) {
+        earliest = m
+        earliest_val = value.val
+      }
+      if (m > latest) {
+        latest = m
+        latest_val = value.val
+      }
+    }
+  })
+  var html = '<h1>' + col + '</h1>'
+  html += '<p class="lead">Between <b>' + earliest_val + '</b> and <b>' + latest_val + '</b>'
+  html += '</p>'
+  add_fact("time_range", 16, html, col)
 }
 
 var _to_moment = function(val) {
@@ -172,7 +195,7 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
       }
     }
   })
-  // Loop through every bucket in the range earliest to latest (e.g. each month)
+  // Loop through every bucket in the range earliest to latest (e.g. each month) to make histogram
   var data = []
   var bars_count = 0
   for (var i = moment(earliest); i <= moment(latest); i.add(bucketOffset, 1)) {
@@ -196,7 +219,7 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   data.unshift(['bucket', 'frequency', 'percent'])
 
   // we score slightly more, the more filled in bars there are in the histogram.
-  add_fact(name, 90 + (bars_count / 100), make_time_bar(col, data), col)
+  add_fact(name, 91 + (bars_count / 100), make_time_bar(col, data), col)
 }
 
 // Fact - countries on a world map
