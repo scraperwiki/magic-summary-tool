@@ -121,10 +121,10 @@ var fact_time_charts = function(col, group) {
   // try grouping into buckets at various granularities - do in this order, so
   // we get the most compact (years) by default, unless one of the others produces more information
   // in the chart (see the score used inside _bucket_time_chart's called to add_fact)
-  _bucket_time_chart(col, group, "YYYY", "years", "YYYY", "time_chart_year")
-  _bucket_time_chart(col, group, "YYYY-MM", "months", "MMM YYYY", "time_chart_month")
-  _bucket_time_chart(col, group, "YYYY-MM-DD", "days", "D MMM YYYY", "time_chart_day")
-  _bucket_time_chart(col, group, "YYYY-MM-DD HH", "hours", "ha D MMM YYYY", "time_chart_hour")
+  _bucket_time_chart(col, group, function(m) { return m.format("YYYY") }, 1, "years", function(m) { return m.format("YYYY") }, "time_chart_year")
+  _bucket_time_chart(col, group, function(m) { return m.format("YYYY-MM") }, 1, "months", function(m) { return m.format("MMM YYYY") }, "time_chart_month")
+  _bucket_time_chart(col, group, function(m) { return m.format("YYYY-MM-DD") }, 1, "days", function(m) { return m.format("D MMM YYYY") }, "time_chart_day")
+  _bucket_time_chart(col, group, function(m) { return m.format("YYYY-MM-DD HH") }, 1, "hours", function(m) { return m.format("ha D MMM YYYY") }, "time_chart_hour")
 
   // Add a simple date range fact too, to cover cases where all the charts were too large/small
   var earliest = moment("9999-12-31")
@@ -173,16 +173,16 @@ var _to_moment = function(val) {
   return m
 }
 
-var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanFormat, name) {
+var _bucket_time_chart = function(col, group, bucketFormat, bucketOffsetAmount, bucketOffsetType, humanFormat, name) {
   // Count number of items in each bucket (e.g. each month)
   var html = '<h1>' + col + '</h1>'
   var buckets = {}
-  var earliest = moment("9999-12-31").format(bucketFormat)
-  var latest = moment("0001-01-01").format(bucketFormat)
+  var earliest = bucketFormat(moment("9999-12-31"))
+  var latest = bucketFormat(moment("0001-01-01"))
   $.each(group, function(ix, value) {
     var m = _to_moment(value.val)
     if (m) {
-      var bucket = m.format(bucketFormat)
+      var bucket = bucketFormat(m)
       if (!(bucket in buckets)) {
         buckets[bucket] = 0
       }
@@ -198,9 +198,9 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
   // Loop through every bucket in the range earliest to latest (e.g. each month) to make histogram
   var data = []
   var bars_count = 0
-  for (var i = moment(earliest); i <= moment(latest); i.add(bucketOffset, 1)) {
-    var bucket = i.format(bucketFormat) 
-    var human = i.format(humanFormat)
+  for (var i = moment(earliest); i <= moment(latest); i.add(bucketOffsetType, bucketOffsetAmount)) {
+    var bucket = bucketFormat(i)
+    var human = humanFormat(i)
     if (bucket in buckets) {
       data.push([human, buckets[bucket], percent(buckets[bucket], total)])
       bars_count++
@@ -208,7 +208,7 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffset, humanF
       data.push([human, 0, "0%"])
     }
     // drop out early if too much to show
-    if (data.length > 31) {
+    if (data.length > 131) {
       return
     }
   }
