@@ -119,8 +119,9 @@ var fact_time_charts = function(col, group) {
   }
 
   // try grouping into buckets at various granularities - do in this order, so
-  // we get the most compact (years) by default, unless one of the others produces more information
-  // in the chart (see the score used inside _bucket_time_chart's called to add_fact)
+  // we get the one with the most columns, yet fewer than 31 columns
+  // (see the score used inside _bucket_time_chart's called to add_fact)
+  _bucket_time_chart(col, group, function(m) { return m.format("YYYY").substr(0,3) + "0" }, 10, "years", function(m) { return m.format("YYYY").substr(0,3) + "0s" }, "time_chart_decade")
   _bucket_time_chart(col, group, function(m) { return m.format("YYYY") }, 1, "years", function(m) { return m.format("YYYY") }, "time_chart_year")
   _bucket_time_chart(col, group, function(m) { return m.format("YYYY-MM") }, 1, "months", function(m) { return m.format("MMM YYYY") }, "time_chart_month")
   _bucket_time_chart(col, group, function(m) { return m.format("YYYY-MM-DD") }, 1, "days", function(m) { return m.format("D MMM YYYY") }, "time_chart_day")
@@ -208,7 +209,7 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffsetAmount, 
       data.push([human, 0, "0%"])
     }
     // drop out early if too much to show
-    if (data.length > 131) {
+    if (data.length > 31) {
       return
     }
   }
