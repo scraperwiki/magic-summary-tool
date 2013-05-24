@@ -103,11 +103,8 @@ var add_fact = function(name, score, html, col) {
   }
 }
 
-// Construct one table's summary - make the tab in the user interface, and set
-// off all the queries of the database necessary to make the summary.
+// Construct empty tab for one table
 var make_tab = function(cb) {
-  console.log("table:", table, "meta:", meta)
-
   var tab_id = 'tab_' + table_ix
   var nav_cls = ""
   if (table_ix == saved_table_ix) {
@@ -117,9 +114,20 @@ var make_tab = function(cb) {
   $('body').append('<div class="tab ' + nav_cls + '" id="' + tab_id + '"><div class="facts"></div></div>')
   tab = $("#" + tab_id)
   tab.find('.facts').masonry({ itemSelector : '.item' })
-  tab.find('.facts').append('<p class="loading item">Summarising&hellip;</p>')
-  $(".nav").append('<li class="' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
+  tab.find('.facts').append('<div class="item"><p class="waiting">Please wait&hellip;</p><p>Summarising other tabs first</p></div>')
+  $(".nav").append('<li class="loading ' + nav_cls + '"> <a href="#' + tab_id + '" data-toggle="tab">' + table + '</a> </li>')
   $(".nav").show()
+}
+
+// Fill in one table's summary - make the tab in the user interface, and set
+// off all the queries of the database necessary to make the summary.
+var fill_in_tab = function(cb) {
+  console.log("table:", table, "meta:", meta)
+
+  var tab_id = 'tab_' + table_ix
+  tab = $("#" + tab_id)
+  tab.find('.item').remove()
+  tab.find('.facts').append('<p class="loading item">Summarising&hellip;</p>')
 
   // these are global variables - clear for each tab
   fact_scores = {}
@@ -218,6 +226,7 @@ $(function() {
     tables = _.reject(tables, function(tableName){
       return tableName.slice(0,2) == '__'
     })
+    table_ix = 0
 
     // Load last tab to show
     scraperwiki.exec("cat saved_table_ix", function(new_saved_table_ix) {
@@ -227,6 +236,13 @@ $(function() {
       if (saved_table_ix > tables.length)
         saved_table_ix = tables.length
 
+      // construct empty tabs
+      _.each(tables, function (key) {
+        table = key
+        table_ix++
+        make_tab()
+      })
+
       // Make each table in series - 'table' and others are 
       // global variables for now
       table_ix = 0
@@ -234,7 +250,7 @@ $(function() {
         table = key
         table_ix++
         meta = lmeta['table'][table]
-        make_tab(cb)
+        fill_in_tab(cb)
       }, function () {
         $('.tip-right').tooltip({ 'placement': 'right' })
         $('.tip-bottom').tooltip({ 'placement': 'bottom' })
