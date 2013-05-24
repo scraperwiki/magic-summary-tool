@@ -178,7 +178,7 @@ var fill_in_tab = function(cb) {
     } ],
     // For every column, count the number of meta groupings
     getGroups: [ 'stopWords', 'getTotal', function(cb1) {
-      async.forEachSeries(meta.columnNames, function(col, cb2) {
+      async.forEachLimit(meta.columnNames, 4, function(col, cb2) {
         if (blacklisted_column(col)) {
           cb2()
 	  return
