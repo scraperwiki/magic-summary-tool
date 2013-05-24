@@ -212,7 +212,13 @@ var make_tab = function(cb) {
 $(function() {
   // Get schema of SQL database
   scraperwiki.sql.meta(function(lmeta) {
-    var tables = Object.keys(lmeta['table'])
+    var tables = _.keys(lmeta.table)
+    // filter out tables starting with double underscore
+    // (this tool completely ignores such tables)
+    tables = _.reject(tables, function(tableName){
+      return tableName.slice(0,2) == '__'
+    })
+
     // Load last tab to show
     scraperwiki.exec("cat saved_table_ix", function(new_saved_table_ix) {
       saved_table_ix = Number(new_saved_table_ix)
