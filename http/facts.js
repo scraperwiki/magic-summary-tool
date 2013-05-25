@@ -340,6 +340,7 @@ var fact_numbers_chart = function(col, group) {
   var highest = -Number.MAX_VALUE
   var second_highest = -Number.MAX_VALUE
   var lowest = Number.MAX_VALUE // excluding zero, i.e. lowest visible
+  var visible_count = 0
   for (var i = start - 1; i <= end + 1; i++) {
     var bucket = i
     var bucket_val
@@ -356,14 +357,22 @@ var fact_numbers_chart = function(col, group) {
     if (bucket_val > second_highest && bucket_val < highest) {
       second_highest = bucket_val
     }
-    if (bucket_val > 0 && bucket_val < lowest)
+    if (bucket_val > 0 && bucket_val < lowest) {
       lowest = bucket_val
+    }
+    if (bucket_val > 0) {
+      visible_count ++
+    }
   }
   data.unshift([col, 'frequency', 'start', 'end', 'percent'])
   //console.log("  ", col, "lowest", lowest, "highest", highest, "second_highest", second_highest)
 
   // the second highest column needs to be at least 5% of data to have pretty charts
   if ((second_highest / total) < 0.05) {
+    return
+  }
+  // if there are only got three columns, it's not interesting enough to show (a range / median is as good)
+  if (visible_count <= 3) {
     return
   }
 
