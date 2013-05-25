@@ -73,3 +73,31 @@ var round_sig_figs = function(n, sig) {
    return Number(n.toPrecision(sig))
 }
 
+// casts things that look like a date to one
+var to_moment = function(val) {
+  var m
+  if (jQuery.isNumeric(val)) {
+    // it looks like an epoch date - between 1st January 1990 and 2100 (but without a leading zero, see https://github.com/frabcus/magic-summary-tool/issues/37)
+    if (val > 631152000 && val < 4102444800 && val[0] != '0') {
+      m = moment.unix(Number(val))
+    // it looks like a year - between 1900 and 2100
+    } else if (val >= 1900 & val <= 2100) {
+      m = moment(String(val))
+    } else {
+      // it's just some number, not a date
+      return null
+    }
+  }
+  if (!m) {
+    // We go via Date.parse explicitly because of this bug:
+    // https://github.com/timrwood/moment/issues/804
+    // XXX Remove this when fixed
+    m = moment(Date.parse(val))
+  }
+  if (!m || !m.isValid()) {
+    return null
+  }
+  return m
+}
+
+

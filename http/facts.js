@@ -108,11 +108,12 @@ var fact_time_charts = function(col, group) {
   // See if we have enough images
   var time_count = 0
   $.each(group, function(ix, value) {
-    var m = _to_moment(value.val)
+    var m = to_moment(value.val)
     if (m) {
       time_count++
     }
   })
+  console.log(col, " has time_count ", time_count, " / ", group.length)
   // if less than a quarter are times, give up
   if (time_count / group.length < 0.25) {
     return
@@ -133,7 +134,7 @@ var fact_time_charts = function(col, group) {
   var earliest_val
   var latest_val
   $.each(group, function(ix, value) {
-    var m = _to_moment(value.val)
+    var m = to_moment(value.val)
     if (m) {
       if (m < earliest) {
         earliest = m
@@ -151,29 +152,6 @@ var fact_time_charts = function(col, group) {
   add_fact("time_range", 16, html, col)
 }
 
-var _to_moment = function(val) {
-  var m
-  if (jQuery.isNumeric(val)) {
-    // it looks like an epoch date - between 1st January 1990 and 2100 (but without a leading zero, see https://github.com/frabcus/magic-summary-tool/issues/37)
-    if (val > 631152000 && val < 4102444800 && val[0] != '0') {
-      m = moment.unix(Number(val))
-    // it looks like a year - between 1900 and 2100
-    } else if (val >= 1900 & val <= 2100) {
-      m = moment(String(val))
-    } else {
-      // it's just some number, not a date
-      return
-    }
-  }
-  if (!m) {
-    m = moment(val)
-  }
-  if (!m || !m.isValid()) {
-    return null
-  }
-  return m
-}
-
 var _bucket_time_chart = function(col, group, bucketFormat, bucketOffsetAmount, bucketOffsetType, humanFormat, name) {
   // Count number of items in each bucket (e.g. each month)
   var html = '<h1>' + col + '</h1>'
@@ -181,7 +159,7 @@ var _bucket_time_chart = function(col, group, bucketFormat, bucketOffsetAmount, 
   var earliest = bucketFormat(moment("9999-12-31"))
   var latest = bucketFormat(moment("0001-01-01"))
   $.each(group, function(ix, value) {
-    var m = _to_moment(value.val)
+    var m = to_moment(value.val)
     if (m) {
       var bucket = bucketFormat(m)
       if (!(bucket in buckets)) {
