@@ -521,23 +521,29 @@ var wordCloudPunctuation = /[!"&()*+,-\.\/:;<=>?\[\\\]^`\{|\}~]+/g
 var wordCloudSeparators = /[\s\u3031-\u3035\u309b\u309c\u30a0\u30fc\uff70]+/g
 var wordCloudDiscard = /^(@|https?:)/
 
-// Fact - cluster URLs by domain
+// Fact - cluster URLs or emails by domain
 var fact_domain_table = function(col, group) {
   // count number of URLs, and regroup by domain
-  var url_count = 0
+  var domain_count = 0
   var by_domain = {}
   $.each(group, function(ix, value) {
-    var m = String(value.val).match(/^(http|https|ftp):\/\/([a-zA-Z0-9-_\.]+)/i)
+    // get domains from URLs
+    var m = String(value.val).match(/^(?:http|https|ftp):\/\/([a-zA-Z0-9-_\.]+)/i)
+    if (!m) {
+      // otherwise look for email addresses 
+      // (very simple match: http://www.webmonkey.com/2008/08/four_regular_expressions_to_check_email_addresses/)
+      m = String(value.val).match(/^.+\@(.+\..+)$/i)
+    }
     if (m) {
-      url_count ++
-      var top_domain = get_top_domain(m[2])
+      domain_count ++
+      var top_domain = get_top_domain(m[1])
       if (!(top_domain in by_domain)) {
         by_domain[top_domain] = 0
       }
       by_domain[top_domain] += value.c
     }
   })
-  if (url_count < (group.length / 2)) {
+  if (domain_count < (group.length / 2)) {
     return
   }
 
