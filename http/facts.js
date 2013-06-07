@@ -459,11 +459,6 @@ var fact_image_collage = function(col, group) {
     }
   })
   html += "</div>"
-  if (count == image_count) {
-    html += '<p>Exactly ' + image_count + ' images</p>'
-  } else {
-    html += '<p>Most frequent ' + count + ' images</p>'
-  }
   add_fact("image_collage", 90, html, col)
 }
 
