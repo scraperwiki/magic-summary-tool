@@ -448,7 +448,7 @@ var fact_image_collage = function(col, group) {
   var html = '<h1>' + col + '</h1><div class="collage">'
   $.each(group, function(ix, value) {
     if (is_image_url(String(value.val))) {
-      html += '<a href="' + value.val + '"><img class="tip-bottom" title="' + value.c + " (" + percent(value.c, total) + ') - ' + value.val + '" src="' + value.val + '"></a>'
+      html += '<a target="_image_collage" href="' + value.val + '"><img class="tip-bottom" title="' + value.c + " (" + percent(value.c, total) + ')" src="' + value.val + '"></a>'
       count = count + 1
       if (count >= 16) {
         return false
