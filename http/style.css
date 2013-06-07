@@ -66,5 +66,9 @@ b {
   top: 10px;
 }
 .table td.numeric {
- /* text-align: right */
+  text-align: right;
 }
+
+
+
+
