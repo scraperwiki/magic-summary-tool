@@ -1,8 +1,10 @@
 body {
   padding: 0;
+  background-color: #f3f3f3;
 }  
 ul.nav {
   padding-top: 10px;
+  background-color: white;
 }
 ul.nav li:first-child a {
   margin-left: 10px;
@@ -27,7 +29,6 @@ ul.nav li:first-child a {
 }
 div.tab {
   display: none;
-  background-color: #f3f3f3;
 }
 div.active {
   display: block;
