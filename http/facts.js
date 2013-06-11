@@ -113,7 +113,6 @@ var fact_time_charts = function(col, group) {
       time_count++
     }
   })
-  console.log(col, " has time_count ", time_count, " / ", group.length)
   // if less than a quarter are times, give up
   if (time_count / group.length < 0.25) {
     return
