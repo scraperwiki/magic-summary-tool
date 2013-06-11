@@ -462,7 +462,7 @@ var fact_image_collage = function(col, group) {
     }
   })
   html += "</div>"
-  add_fact("image_collage", 90, html, col)
+  add_fact("image_collage", 100, html, col)
 }
 
 // Fact - text into a Wordle-like thing
