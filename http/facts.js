@@ -431,15 +431,19 @@ var fact_numbers_range = function(col, group) {
 var fact_image_collage = function(col, group) {
   // See if we have enough images
   var image_count = 0
+  var non_null_count = 0
   $.each(group, function(ix, value) {
-    if (is_image_url(String(value.val))) {
-      image_count ++
+    if (value.val != null) {
+      non_null_count ++
+      if (is_image_url(String(value.val))) {
+        image_count ++
+      }
     }
   })
   if (image_count < 1) {
     return
   }
-  if (image_count < 4 && image_count != group.length) {
+  if (image_count < 4 && image_count != non_null_count) {
     return
   }
 
