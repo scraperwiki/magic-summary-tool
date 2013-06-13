@@ -13,7 +13,7 @@ ul.nav li:first-child a {
   float: left;
   width: 420px;
   padding: 20px;
-  margin: 20px;
+  margin: 20px 0 0 20px;
   text-align: center;
   background-color: white;
   box-shadow: 0 2px 6px #ccc;
