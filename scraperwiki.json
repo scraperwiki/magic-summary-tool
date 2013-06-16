@@ -1,4 +1,6 @@
 {
   "displayName": "Summarise this data",
-  "description": "Automatically show trends and patterns."
+  "description": "Automatically show trends and patterns",
+  "icon": "https://s3-eu-west-1.amazonaws.com/sw-icons/tool-icon-summarise.png",
+  "color": "#27affd"
 }
