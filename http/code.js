@@ -235,13 +235,19 @@ $(function() {
       if (saved_table_ix > tables.length)
         saved_table_ix = tables.length
 
-      // construct empty tabs
+      // construct empty tabs, and build array of table info for looping 
       table_ix = 0
       tables_to_render = []
       _.each(tables, function (key) {
         table = key
         table_ix++
-        tables_to_render.push({ 'ix': table_ix, 'table': table })
+        table_info = { 'ix': table_ix, 'table': table }
+        // put the table saved to open on first
+        if (table_ix == saved_table_ix) {
+          tables_to_render.unshift(table_info)
+        } else {
+          tables_to_render.push(table_info)
+        }
         make_tab()
       })
 
