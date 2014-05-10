@@ -29,6 +29,11 @@ var format_for_display = function(val, ellide) {
 }
 
 var is_image_url = function (val) {
+  if (val.match(/wikipedia.org\/wiki\//)) {
+    // This isn't an image, despite the extension: e.g. http://en.m.wikipedia.org/wiki/File:Violette_Leduc.jpg
+    // Japanese example: http://ja.m.wikipedia.org/wiki/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB:%E4%BA%AC%E9%98%AA3000%E7%B3%BB%E8%BB%8A%E5%86%85.jpg
+    return false
+  }
   if (val.match(/^((http|https|ftp):\/\/[a-zA-Z0-9-_~#:\.\?%&\/\[\]@\!\$'\(\)\*\+,;=]+(\.jpeg|\.png|\.jpg|\.gif|\.bmp|_normal))$/i)) {
     return true
   }
