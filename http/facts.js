@@ -94,6 +94,10 @@ var fact_groups_pie = function(col, group, score_delta) {
   if (group.length > 8 || group.length < 2) {
     return
   }
+  // second value must be at least 1% (see https://github.com/scraperwiki/magic-summary-tool/issues/46)
+  if (group[1].c / total < 0.01) {
+    return
+  }
 
   var data = [['value', 'frequency']]
   $.each(group, function(ix, value) {
