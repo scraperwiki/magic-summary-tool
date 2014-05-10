@@ -226,7 +226,6 @@ $(function() {
     tables = _.reject(tables, function(tableName){
       return tableName.slice(0,2) == '__'
     })
-    table_ix = 0
 
     // Load last tab to show
     scraperwiki.exec("cat saved_table_ix", function(new_saved_table_ix) {
@@ -237,18 +236,20 @@ $(function() {
         saved_table_ix = tables.length
 
       // construct empty tabs
+      table_ix = 0
+      tables_to_render = []
       _.each(tables, function (key) {
         table = key
         table_ix++
+        tables_to_render.push({ 'ix': table_ix, 'table': table })
         make_tab()
       })
 
       // Make each table in series - 'table' and others are 
       // global variables for now
-      table_ix = 0
-      async.forEachSeries(tables, function (key, cb) {
-        table = key
-        table_ix++
+      async.forEachSeries(tables_to_render, function (table_info, cb) {
+        table = table_info['table']
+        table_ix = table_info['ix']
         meta = lmeta['table'][table]
         fill_in_tab(cb)
       }, function () {
