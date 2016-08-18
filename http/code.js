@@ -157,7 +157,7 @@ var fill_in_tab = function(cb) {
         if (nltk_stop_words != null) {
           cb()
         } else {
-    	  scraperwiki.exec("./tool/stopwords.py", function(data) {
+    	  scraperwiki.exec("cat ./tool/stopwords.json", function(data) {
              nltk_stop_words = JSON.parse(data)
              // console.log("stopwords", nltk_stop_words)
              cb()
