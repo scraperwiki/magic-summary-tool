@@ -269,7 +269,7 @@ $(function() {
   })
 
   $('#bugs').on('click', function() {
-    window.open("https://github.com/frabcus/magic-summary-tool/issues", "_blank")
+    window.open("https://github.com/scraperwiki/magic-summary-tool/issues", "_blank")
   }
 
       )
